@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.so
+
+# Data & model artifacts (large files)
+Pointcept/data/
+Pointcept/exp/
+Pointcept/weights/
+
+# Pointcept build artifacts
+Pointcept/pointcept/ops/build/
+
+# Logs & outputs
+*log*
+Pointcept/outputs/
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+
+# OS
+*.out
+Dockerfile
