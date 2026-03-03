@@ -1,88 +1,125 @@
-# BDL vs Point Cloud Species Comparison Report
+# BDL vs Point Cloud Species Comparison
 
-## Dataset Summary
+**Question**: How well does BDL cover the species actually present in our point cloud plots?
+
+BDL describes entire forest subdivisions (potentially tens of hectares), while our plots are ~500 m² circles. BDL listing extra species is expected. The interesting cases are when **PC has a genus that BDL doesn't mention at all**.
+
+## Dataset
 
 - **BDL plots**: 272
-- **Point cloud plots**: 271
-- **Overlapping plots**: 271
-- **Genera in comparison**: 11 (Abies, Acer, Alnus, Betula, Carpinus, Fagus, Larix, Picea, Pinus, Quercus, Tilia)
+- **PC plots**: 271
+- **Overlapping**: 271
+- **Genera**: 11 (Abies, Acer, Alnus, Betula, Carpinus, Fagus, Larix, Picea, Pinus, Quercus, Tilia)
 
-## 1. Presence / Absence Agreement
+## 1. Presence / Absence Overview
 
 ![Presence/Absence](presence_absence.png)
 
 ### DRZEW-only
 
-- **Mean Jaccard similarity**: 0.512
-- **Plots analysed**: 264
-
-| Genus | BDL present | PC present | Both | BDL-only | PC-only | Detection rate |
-|-------|------------|------------|------|----------|---------|---------------|
-| Abies | 58 | 32 | 31 | 27 | 1 | 53% |
-| Acer | 77 | 25 | 22 | 55 | 3 | 29% |
-| Alnus | 53 | 14 | 14 | 39 | 0 | 26% |
-| Betula | 215 | 74 | 70 | 145 | 4 | 33% |
-| Carpinus | 49 | 21 | 17 | 32 | 4 | 35% |
-| Fagus | 112 | 65 | 61 | 51 | 4 | 54% |
-| Larix | 75 | 21 | 19 | 56 | 2 | 25% |
-| Picea | 170 | 101 | 94 | 76 | 7 | 55% |
-| Pinus | 241 | 190 | 189 | 52 | 1 | 78% |
-| Quercus | 158 | 81 | 76 | 82 | 5 | 48% |
-| Tilia | 45 | 17 | 14 | 31 | 3 | 31% |
+| Genus | Both | BDL-only | PC-only |
+|-------|------|----------|---------|
+| Abies | 31 | 27 | 1 |
+| Acer | 22 | 55 | 3 |
+| Alnus | 14 | 39 | 0 |
+| Betula | 70 | 145 | 4 |
+| Carpinus | 17 | 32 | 4 |
+| Fagus | 61 | 51 | 4 |
+| Larix | 19 | 56 | 2 |
+| Picea | 94 | 76 | 7 |
+| Pinus | 189 | 52 | 1 |
+| Quercus | 76 | 82 | 5 |
+| Tilia | 14 | 31 | 3 |
 
 ### All layers
 
-- **Mean Jaccard similarity**: 0.504
-- **Plots analysed**: 271
+| Genus | Both | BDL-only | PC-only |
+|-------|------|----------|---------|
+| Abies | 32 | 30 | 0 |
+| Acer | 23 | 58 | 3 |
+| Alnus | 14 | 41 | 0 |
+| Betula | 71 | 148 | 5 |
+| Carpinus | 21 | 33 | 4 |
+| Fagus | 63 | 63 | 3 |
+| Larix | 20 | 58 | 2 |
+| Picea | 95 | 82 | 7 |
+| Pinus | 192 | 53 | 1 |
+| Quercus | 84 | 84 | 4 |
+| Tilia | 14 | 34 | 3 |
 
-| Genus | BDL present | PC present | Both | BDL-only | PC-only | Detection rate |
-|-------|------------|------------|------|----------|---------|---------------|
-| Abies | 62 | 32 | 32 | 30 | 0 | 52% |
-| Acer | 81 | 26 | 23 | 58 | 3 | 28% |
-| Alnus | 55 | 14 | 14 | 41 | 0 | 25% |
-| Betula | 219 | 76 | 71 | 148 | 5 | 32% |
-| Carpinus | 54 | 25 | 21 | 33 | 4 | 39% |
-| Fagus | 126 | 66 | 63 | 63 | 3 | 50% |
-| Larix | 78 | 22 | 20 | 58 | 2 | 26% |
-| Picea | 177 | 102 | 95 | 82 | 7 | 54% |
-| Pinus | 245 | 193 | 192 | 53 | 1 | 78% |
-| Quercus | 168 | 88 | 84 | 84 | 4 | 50% |
-| Tilia | 48 | 17 | 14 | 34 | 3 | 29% |
+## 2. BDL Coverage of PC Species
 
-![Jaccard distribution](jaccard_distribution.png)
+For each genus, of the plots where our point cloud contains it, what fraction also has it listed in BDL?
 
-## 2. Proportional Agreement
-
-![Proportion scatter](proportion_scatter.png)
+![BDL Coverage](bdl_coverage.png)
 
 ### DRZEW-only
 
-- **Plots with 2+ shared genera**: 259
-- **Mean Spearman ρ**: 0.715
-- **Median Spearman ρ**: 0.737
-- **Mean cosine similarity**: 0.860
+| Genus | PC plots | BDL also lists | Coverage |
+|-------|----------|---------------|----------|
+| Abies | 32 | 31 | 97% |
+| Acer | 25 | 22 | 88% |
+| Alnus | 14 | 14 | 100% |
+| Betula | 74 | 70 | 95% |
+| Carpinus | 21 | 17 | 81% |
+| Fagus | 65 | 61 | 94% |
+| Larix | 21 | 19 | 90% |
+| Picea | 101 | 94 | 93% |
+| Pinus | 190 | 189 | 99% |
+| Quercus | 81 | 76 | 94% |
+| Tilia | 17 | 14 | 82% |
 
 ### All layers
 
-- **Plots with 2+ shared genera**: 267
-- **Mean Spearman ρ**: 0.703
-- **Median Spearman ρ**: 0.728
-- **Mean cosine similarity**: 0.840
+| Genus | PC plots | BDL also lists | Coverage |
+|-------|----------|---------------|----------|
+| Abies | 32 | 32 | 100% |
+| Acer | 26 | 23 | 88% |
+| Alnus | 14 | 14 | 100% |
+| Betula | 76 | 71 | 93% |
+| Carpinus | 25 | 21 | 84% |
+| Fagus | 66 | 63 | 95% |
+| Larix | 22 | 20 | 91% |
+| Picea | 102 | 95 | 93% |
+| Pinus | 193 | 192 | 99% |
+| Quercus | 88 | 84 | 95% |
+| Tilia | 17 | 14 | 82% |
 
-![Correlation distribution](correlation_distribution.png)
+## 3. PC-only Cases: How Many Trees?
 
-## 3. Dominant Species Match
+When the point cloud has a genus that BDL doesn't list, is it a single stray tree or multiple?
 
-![Dominant match](dominant_match.png)
+![PC-only counts](pc_only_counts.png)
 
 ### DRZEW-only
 
-- **Overall match rate**: 68.9% (182/264)
+| Genus | Plots | Total trees | Median per plot | Max per plot |
+|-------|-------|-------------|----------------|-------------|
+| Abies | 1 | 1 | 1 | 1 |
+| Acer | 3 | 5 | 1 | 3 |
+| Betula | 4 | 10 | 2 | 6 |
+| Carpinus | 4 | 8 | 2 | 3 |
+| Fagus | 4 | 5 | 1 | 2 |
+| Larix | 2 | 3 | 2 | 2 |
+| Picea | 7 | 13 | 2 | 3 |
+| Pinus | 1 | 46 | 46 | 46 |
+| Quercus | 5 | 15 | 2 | 8 |
+| Tilia | 3 | 4 | 1 | 2 |
 
 ### All layers
 
-- **Overall match rate**: 63.1% (171/271)
+| Genus | Plots | Total trees | Median per plot | Max per plot |
+|-------|-------|-------------|----------------|-------------|
+| Acer | 3 | 5 | 1 | 3 |
+| Betula | 5 | 11 | 1 | 6 |
+| Carpinus | 4 | 8 | 2 | 3 |
+| Fagus | 3 | 4 | 1 | 2 |
+| Larix | 2 | 3 | 2 | 2 |
+| Picea | 7 | 13 | 2 | 3 |
+| Pinus | 1 | 46 | 46 | 46 |
+| Quercus | 4 | 13 | 2 | 8 |
+| Tilia | 3 | 4 | 1 | 2 |
 
 ---
 
-*Note: BDL describes entire forest subdivisions (potentially tens of hectares), while point cloud plots are ~500 m² circles. Some mismatch is expected.*
+*BDL-only occurrences (BDL lists a genus not found in PC) are expected because subdivisions are much larger than our ~500 m² plots.*
