@@ -17,6 +17,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
+from matplotlib.colors import LinearSegmentedColormap
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
@@ -52,7 +53,6 @@ EXP_BASE = "Pointcept/exp/treescanpl"
 METRIC_KEYS = ["allAcc", "mAcc", "macro_f1", "weighted_f1"]
 METRIC_LABELS = ["Overall Acc", "Mean Acc", "Macro F1", "Weighted F1"]
 
-# Plot-level split experiments (11 classes incl. Abies)
 PLOT_CLASS_NAMES = [
     "Abies", "Acer", "Alnus", "Betula", "Carpinus", "Fagus",
     "Larix", "Picea", "Pinus", "Quercus", "Tilia",
@@ -63,6 +63,9 @@ PLOT_EXPERIMENTS = {
     "Projected": "cls-ptv3-v1m1-0-base-context-projected",
     "Direct": "cls-ptv3-v1m1-0-base-context-direct",
 }
+
+# Color map: white (low) → green (high)
+TABLE_CMAP = LinearSegmentedColormap.from_list("wg", ["#ffffff", "#c7e9c0", "#41ab5d", "#006d2c"])
 
 
 # ── Data loading ─────────────────────────────────────────────────────────────
@@ -86,6 +89,7 @@ def parse_log_metrics(log_path, class_names):
 
     recall_arr = np.array([per_class_recall.get(c, 0.0) for c in class_names])
     return dict(mAcc=best_macc, allAcc=best_allacc, per_class_recall=recall_arr)
+
 
 def load_kfold_csv(path):
     """Parse kfold_summary.csv → fold rows, aggregated row, per-class rows."""
@@ -143,6 +147,84 @@ def metrics_from_cm(cm):
         weighted_f1=np.average(f1, weights=support) if support.sum() > 0 else 0.0,
         precision=precision, recall=recall, f1=f1, support=support,
     )
+
+
+# ── Heatmap table helper ────────────────────────────────────────────────────
+
+def plot_heatmap_table(data, row_labels, col_labels, title, out_path,
+                       fmt=".1%", vmin=0.0, vmax=1.0, extra_col=None,
+                       highlight_best=True, figwidth=None):
+    """Render a numeric table as a color-coded heatmap image.
+
+    Args:
+        data: 2D array (rows x cols), values to display and color.
+        row_labels: labels for each row.
+        col_labels: labels for each data column.
+        title: figure title.
+        out_path: save path.
+        fmt: format string for cell values (e.g. ".1%" for percentages, ".3f" for floats).
+        vmin, vmax: color scale range.
+        extra_col: optional list of strings, one per row, shown as a leading column (e.g. support).
+        highlight_best: bold the best value per row.
+        figwidth: optional figure width override.
+    """
+    n_rows, n_cols = data.shape
+    n_display_cols = n_cols + (1 if extra_col else 0)
+
+    if figwidth is None:
+        figwidth = max(5, 1.8 * n_display_cols + 1.5)
+    figheight = max(2.5, 0.45 * n_rows + 1.5)
+
+    fig, ax = plt.subplots(figsize=(figwidth, figheight))
+
+    # Draw colored cells for data columns
+    col_offset = 1 if extra_col else 0
+    im = ax.imshow(data, aspect="auto", cmap=TABLE_CMAP, vmin=vmin, vmax=vmax,
+                   extent=[col_offset - 0.5, n_display_cols - 0.5, n_rows - 0.5, -0.5])
+
+    # Extra column (uncolored)
+    if extra_col:
+        for i in range(n_rows):
+            ax.add_patch(plt.Rectangle((-0.5, i - 0.5), 1, 1,
+                                       facecolor="#f0f0f0", edgecolor="#cccccc", linewidth=0.5))
+            ax.text(0, i, str(extra_col[i]), ha="center", va="center", fontsize=10)
+
+    # Find best per row
+    best_per_row = np.argmax(data, axis=1) if highlight_best else np.full(n_rows, -1)
+
+    # Cell text
+    for i in range(n_rows):
+        for j in range(n_cols):
+            val = data[i, j]
+            if fmt.endswith("%"):
+                text = f"{val:{fmt}}"
+            else:
+                text = f"{val:{fmt}}"
+            weight = "bold" if j == best_per_row[i] else "normal"
+            color = "white" if val > (vmax - vmin) * 0.7 + vmin else "black"
+            ax.text(j + col_offset, i, text, ha="center", va="center",
+                    fontsize=10, fontweight=weight, color=color)
+
+    # Grid lines
+    for i in range(n_rows + 1):
+        ax.axhline(i - 0.5, color="#cccccc", linewidth=0.5)
+    for j in range(n_display_cols + 1):
+        ax.axvline(j - 0.5, color="#cccccc", linewidth=0.5)
+
+    # Labels
+    all_col_labels = ([""] + col_labels) if extra_col else col_labels
+    ax.set_xticks(range(n_display_cols))
+    ax.set_xticklabels(all_col_labels, fontsize=11, fontweight="bold")
+    ax.set_yticks(range(n_rows))
+    ax.set_yticklabels(row_labels, fontsize=10)
+    ax.xaxis.set_ticks_position("top")
+    ax.tick_params(axis="both", which="both", length=0)
+
+    ax.set_title(title, fontsize=13, fontweight="bold", pad=25)
+
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
 
 
 # ── Plotting ─────────────────────────────────────────────────────────────────
@@ -249,57 +331,84 @@ def plot_confusion_matrix(cm, classes, title, out_path):
     plt.close()
 
 
-def plot_plot_level_recall(plot_logs, out_dir):
-    """3-way grouped bar chart of per-class recall from plot-level split."""
-    fig, ax = plt.subplots(figsize=(14, 6))
-    exp_names = list(plot_logs.keys())
-    n_exps = len(exp_names)
-    x = np.arange(len(PLOT_CLASS_NAMES))
-    w = 0.25
-
-    for i, name in enumerate(exp_names):
-        vals = plot_logs[name]["per_class_recall"]
-        offset = (i - (n_exps - 1) / 2) * w
-        ax.bar(x + offset, vals, w, label=name, color=EXP_COLORS[name])
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(PLOT_CLASS_NAMES, rotation=45, ha="right", fontsize=11)
-    ax.set_ylabel("Recall (Per-Class Accuracy)")
-    ax.set_ylim(0, 1.08)
-    ax.set_title("Per-Class Recall: Plot-Level Split (11 Classes)", fontsize=14, fontweight="bold")
-    ax.legend(fontsize=10)
-    ax.grid(axis="y", alpha=0.3)
-    fig.tight_layout()
-    fig.savefig(os.path.join(out_dir, "plot_level_recall.png"), dpi=150, bbox_inches="tight")
-    plt.close(fig)
-
-
 def plot_class_distribution(support, out_path):
     """Bar chart of class sample counts."""
     fig, ax = plt.subplots(figsize=(10, 4))
     colors = plt.cm.tab10(np.linspace(0, 1, len(CLASS_NAMES)))
-    bars = ax.bar(CLASS_NAMES, support, color=colors)
+    ax.bar(range(len(CLASS_NAMES)), support, color=colors)
+    ax.set_xticks(range(len(CLASS_NAMES)))
+    ax.set_xticklabels(CLASS_NAMES, rotation=30, ha="right")
     ax.set_ylabel("Number of Samples")
     ax.set_title("Class Distribution (K-Fold, 10 Classes)", fontsize=13, fontweight="bold")
-    ax.set_xticklabels(CLASS_NAMES, rotation=30, ha="right")
-    for bar, s in zip(bars, support):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 20,
-                str(int(s)), ha="center", fontsize=8)
+    for i, s in enumerate(support):
+        ax.text(i, s + 20, str(int(s)), ha="center", fontsize=8)
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
     plt.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close()
 
 
+# ── Table image generation ───────────────────────────────────────────────────
+
+def generate_table_images(out_dir, plot_logs, all_agg, all_cls, all_folds):
+    exp_names = list(all_agg.keys())
+
+    # 1. Plot-level overall accuracy
+    data = np.array([[plot_logs[name][k] for name in exp_names]
+                     for k in ["allAcc", "mAcc"]])
+    plot_heatmap_table(
+        data, ["Overall Acc", "Mean Acc"], exp_names,
+        "Plot-Level Split: Overall Metrics (11 Classes)",
+        os.path.join(out_dir, "table_plot_overall.png"),
+        fmt=".1%", vmin=0.5, vmax=1.0,
+    )
+
+    # 2. Plot-level per-class recall
+    data = np.array([[plot_logs[name]["per_class_recall"][i] for name in exp_names]
+                     for i in range(len(PLOT_CLASS_NAMES))])
+    plot_heatmap_table(
+        data, PLOT_CLASS_NAMES, exp_names,
+        "Plot-Level Split: Per-Class Recall (11 Classes)",
+        os.path.join(out_dir, "table_plot_recall.png"),
+        fmt=".2f", vmin=0.0, vmax=1.0,
+    )
+
+    # 3. K-fold aggregated metrics
+    data = np.array([[float(all_agg[name].get(k, 0)) for name in exp_names]
+                     for k in METRIC_KEYS])
+    plot_heatmap_table(
+        data, METRIC_LABELS, exp_names,
+        "District K-Fold CV: Aggregated Metrics (10 Classes)",
+        os.path.join(out_dir, "table_kfold_overall.png"),
+        fmt=".1%", vmin=0.4, vmax=0.9,
+    )
+
+    # 4. K-fold per-class F1
+    data = np.array([[float(all_cls[name].get(c, {}).get("f1", 0)) for name in exp_names]
+                     for c in CLASS_NAMES])
+    support = [all_cls[exp_names[0]].get(c, {}).get("support", "") for c in CLASS_NAMES]
+    plot_heatmap_table(
+        data, CLASS_NAMES, exp_names,
+        "District K-Fold CV: Per-Class F1",
+        os.path.join(out_dir, "table_kfold_f1.png"),
+        fmt=".3f", vmin=0.0, vmax=1.0,
+        extra_col=support,
+    )
+
+    # 5. K-fold per-district accuracy
+    data = np.array([[float(all_folds[name][j]["allAcc"]) for name in exp_names]
+                     for j in range(6)])
+    n_samples = [all_folds[exp_names[0]][j].get("n_samples", "") for j in range(6)]
+    plot_heatmap_table(
+        data, DISTRICTS, exp_names,
+        "District K-Fold CV: Per-District Overall Accuracy",
+        os.path.join(out_dir, "table_kfold_districts.png"),
+        fmt=".1%", vmin=0.2, vmax=1.0,
+        extra_col=n_samples,
+    )
+
+
 # ── Report ───────────────────────────────────────────────────────────────────
-
-def bold_best(vals_str, vals_float):
-    """Bold the highest value in a list of formatted strings."""
-    best = int(np.argmax(vals_float))
-    result = list(vals_str)
-    result[best] = f"**{result[best]}**"
-    return result
-
 
 def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms, plot_logs):
     exp_names = list(all_agg.keys())
@@ -345,79 +454,20 @@ def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms, plot_logs):
 
     # ── Plot-level results ─────────────────────────────────────────────
     w("## Plot-Level Split Results (11 Classes)\n")
-
-    w("### Overall Accuracy\n")
-    header = "| Metric | " + " | ".join(exp_names) + " |"
-    sep = "|--------|" + "|".join(["--------"] * len(exp_names)) + "|"
-    w(header)
-    w(sep)
-    for key, label in [("allAcc", "Overall Acc"), ("mAcc", "Mean Acc")]:
-        fvals = [plot_logs[name][key] for name in exp_names]
-        svals = [f"{v:.1%}" for v in fvals]
-        svals = bold_best(svals, fvals)
-        w(f"| {label} | " + " | ".join(svals) + " |")
-    w("")
-
-    w("### Per-Class Recall\n")
+    w("![Plot-Level Overall](table_plot_overall.png)\n")
     w("![Plot-Level Recall](plot_level_recall.png)\n")
-    header = "| Genus | " + " | ".join(exp_names) + " |"
-    sep = "|-------|" + "|".join(["--------"] * len(exp_names)) + "|"
-    w(header)
-    w(sep)
-    for i, c in enumerate(PLOT_CLASS_NAMES):
-        fvals = [plot_logs[name]["per_class_recall"][i] for name in exp_names]
-        svals = [f"{v:.3f}" for v in fvals]
-        svals = bold_best(svals, fvals)
-        w(f"| {c} | " + " | ".join(svals) + " |")
-    w("")
+    w("![Plot-Level Recall Table](table_plot_recall.png)\n")
 
     # ── K-fold results ─────────────────────────────────────────────────
     w("## District K-Fold CV Results (10 Classes)\n")
-    w("### Aggregated Metrics\n")
-    w("![Overall Metrics](overall_metrics.png)\n")
-
-    header = "| Metric | " + " | ".join(exp_names) + " |"
-    sep = "|--------|" + "|".join(["--------"] * len(exp_names)) + "|"
-    w(header)
-    w(sep)
-    for k, label in zip(METRIC_KEYS, METRIC_LABELS):
-        fvals = [float(all_agg[name].get(k, 0)) for name in exp_names]
-        svals = [f"{v:.1%}" for v in fvals]
-        svals = bold_best(svals, fvals)
-        w(f"| {label} | " + " | ".join(svals) + " |")
-    w("")
-
-    # Per-class F1
-    w("### Per-Class F1\n")
+    w("![K-Fold Metrics](overall_metrics.png)\n")
+    w("![K-Fold Metrics Table](table_kfold_overall.png)\n")
     w("![Per-Class F1](per_class_f1.png)\n")
-    header = "| Genus | Support | " + " | ".join(exp_names) + " |"
-    sep = "|-------|---------|" + "|".join(["--------"] * len(exp_names)) + "|"
-    w(header)
-    w(sep)
-    for c in CLASS_NAMES:
-        support = all_cls[exp_names[0]].get(c, {}).get("support", "?")
-        fvals = [float(all_cls[name].get(c, {}).get("f1", 0)) for name in exp_names]
-        svals = [f"{v:.3f}" for v in fvals]
-        svals = bold_best(svals, fvals)
-        w(f"| {c} | {support} | " + " | ".join(svals) + " |")
-    w("")
+    w("![Per-Class F1 Table](table_kfold_f1.png)\n")
+    w("![Per-District Accuracy](per_fold_accuracy.png)\n")
+    w("![Per-District Table](table_kfold_districts.png)\n")
 
-    # Per-district accuracy
-    w("### Per-District Overall Accuracy\n")
-    w("![Per-Fold Accuracy](per_fold_accuracy.png)\n")
-    header = "| District | N | " + " | ".join(exp_names) + " |"
-    sep = "|----------|---|" + "|".join(["--------"] * len(exp_names)) + "|"
-    w(header)
-    w(sep)
-    for j, d in enumerate(DISTRICTS):
-        n = all_folds[exp_names[0]][j].get("n_samples", "?")
-        fvals = [float(all_folds[name][j]["allAcc"]) for name in exp_names]
-        svals = [f"{v:.1%}" for v in fvals]
-        svals = bold_best(svals, fvals)
-        w(f"| {d} | {n} | " + " | ".join(svals) + " |")
-    w("")
-
-    # Confusion matrices (baseline vs projected — the winner)
+    # Confusion matrices
     w("### Confusion Matrices (K-Fold Aggregated, Normalized)\n")
     w("| Baseline | Projected Fusion (best) |")
     w("|----------|------------------------|")
@@ -427,22 +477,28 @@ def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms, plot_logs):
     # Key findings
     w("## Key Findings\n")
 
-    # Compute deltas (projected vs baseline)
     proj_agg = all_agg["Projected"]
     base_agg = all_agg["Baseline"]
     d_acc = float(proj_agg["allAcc"]) - float(base_agg["allAcc"])
     d_f1 = float(proj_agg["macro_f1"]) - float(base_agg["macro_f1"])
 
-    w(f"1. **Projected fusion is the best approach**, improving over baseline by "
-      f"+{d_acc:.1%} overall accuracy and +{d_f1:.1%} macro F1.")
+    w(f"1. **Projected fusion generalizes best.** On the district k-fold "
+      f"(leave-one-district-out), projected fusion improves over baseline by "
+      f"+{d_acc:.1%} overall accuracy and +{d_f1:.1%} macro F1. "
+      f"This is the most reliable evaluation since it tests on entirely unseen districts.")
     w("")
 
-    w("2. **Direct fusion underperforms projected fusion.** Raw concatenation of "
-      "512d point features with 64d context allows the larger point features to "
-      "dominate. Projection to a shared 128d space balances the two sources.")
+    w(f"2. **Direct fusion wins on plot-level split but not on k-fold.** "
+      f"Direct achieves {plot_logs['Direct']['allAcc']:.1%} overall accuracy on the "
+      f"plot-level split (vs {plot_logs['Projected']['allAcc']:.1%} projected), "
+      f"but drops to {float(all_agg['Direct']['allAcc']):.1%} on the k-fold "
+      f"(vs {float(all_agg['Projected']['allAcc']):.1%} projected). "
+      f"This suggests direct fusion overfits to the training distribution — "
+      f"raw concatenation of 512d point features with 64d context lets the model "
+      f"memorize plot-specific patterns rather than learning generalizable ecological context.")
     w("")
 
-    # Top per-class improvements (projected vs baseline)
+    # Top per-class improvements (projected vs baseline, kfold)
     deltas = []
     for c in CLASS_NAMES:
         pf = float(all_cls["Projected"].get(c, {}).get("f1", 0))
@@ -450,18 +506,18 @@ def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms, plot_logs):
         deltas.append((c, pf - bf))
     deltas.sort(key=lambda x: x[1], reverse=True)
     top3 = ", ".join(f"{c} (+{d:.3f})" for c, d in deltas[:3])
-    w(f"3. **Largest per-class F1 gains** (projected vs baseline): {top3}")
+    w(f"3. **Largest per-class F1 gains on k-fold** (projected vs baseline): {top3}. "
+      f"Projected fusion particularly helps species that co-occur with distinctive "
+      f"satellite-visible forest types.")
     w("")
 
-    # Gorlice
     gorlice_vals = {name: float(all_folds[name][0]["allAcc"]) for name in exp_names}
-    w(f"4. **Gorlice is the hardest district** (most different species composition). "
+    w(f"4. **Gorlice is the hardest district** (most distinct species composition). "
       f"Projected fusion rescues it from {gorlice_vals['Baseline']:.0%} to "
       f"{gorlice_vals['Projected']:.0%} overall accuracy; direct fusion does not "
-      f"({gorlice_vals['Direct']:.0%}).")
+      f"({gorlice_vals['Direct']:.0%}), further confirming its poor generalization.")
     w("")
 
-    # Weak classes
     proj_cls = all_cls["Projected"]
     worst = sorted(CLASS_NAMES, key=lambda c: float(proj_cls.get(c, {}).get("f1", 0)))[:3]
     worst_str = ", ".join(f"{c} (F1={float(proj_cls[c]['f1']):.3f}, n={proj_cls[c]['support']})"
@@ -485,7 +541,7 @@ def main():
     out = args.output_dir
     os.makedirs(out, exist_ok=True)
 
-    # Load all experiments
+    # Load k-fold experiments
     all_folds = {}
     all_agg = {}
     all_cls = {}
@@ -499,7 +555,7 @@ def main():
         all_cls[name] = cls
         all_cms[name] = load_kfold_cms(cfg["cm_prefix"])
 
-    # Load plot-level results from train logs
+    # Load plot-level results
     plot_logs = {}
     print("\nLoading plot-level results...")
     for name, exp_dir in PLOT_EXPERIMENTS.items():
@@ -507,34 +563,45 @@ def main():
         if os.path.exists(log_path):
             plot_logs[name] = parse_log_metrics(log_path, PLOT_CLASS_NAMES)
             print(f"  {name}: allAcc={plot_logs[name]['allAcc']:.4f}  mAcc={plot_logs[name]['mAcc']:.4f}")
-        else:
-            print(f"  {name}: train.log not found at {log_path}")
 
-    # Get support from baseline CM for class distribution
     baseline_metrics = metrics_from_cm(all_cms["Baseline"])
 
-    # Generate plots
     print("\nGenerating plots...")
     plot_overall_metrics(all_agg, out)
     plot_per_class_f1(all_cls, out)
     plot_per_fold_accuracy(all_folds, out)
     plot_class_distribution(baseline_metrics["support"], os.path.join(out, "class_distribution.png"))
-    if plot_logs:
-        plot_plot_level_recall(plot_logs, out)
 
-    # Confusion matrices: baseline vs projected (the winner)
-    plot_confusion_matrix(
-        all_cms["Baseline"], CLASS_NAMES,
-        "Baseline — K-Fold Aggregated",
-        os.path.join(out, "cm_baseline.png"),
-    )
-    plot_confusion_matrix(
-        all_cms["Projected"], CLASS_NAMES,
-        "Projected Fusion — K-Fold Aggregated",
-        os.path.join(out, "cm_projected.png"),
-    )
+    # Plot-level recall bar chart
+    fig, ax = plt.subplots(figsize=(14, 6))
+    exp_names = list(plot_logs.keys())
+    x = np.arange(len(PLOT_CLASS_NAMES))
+    w = 0.25
+    for i, name in enumerate(exp_names):
+        offset = (i - (len(exp_names) - 1) / 2) * w
+        ax.bar(x + offset, plot_logs[name]["per_class_recall"], w,
+               label=name, color=EXP_COLORS[name])
+    ax.set_xticks(x)
+    ax.set_xticklabels(PLOT_CLASS_NAMES, rotation=45, ha="right", fontsize=11)
+    ax.set_ylabel("Recall (Per-Class Accuracy)")
+    ax.set_ylim(0, 1.08)
+    ax.set_title("Per-Class Recall: Plot-Level Split (11 Classes)", fontsize=14, fontweight="bold")
+    ax.legend(fontsize=10)
+    ax.grid(axis="y", alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(os.path.join(out, "plot_level_recall.png"), dpi=150, bbox_inches="tight")
+    plt.close(fig)
 
-    # Generate report
+    # Confusion matrices
+    plot_confusion_matrix(all_cms["Baseline"], CLASS_NAMES,
+                          "Baseline — K-Fold Aggregated", os.path.join(out, "cm_baseline.png"))
+    plot_confusion_matrix(all_cms["Projected"], CLASS_NAMES,
+                          "Projected Fusion — K-Fold Aggregated", os.path.join(out, "cm_projected.png"))
+
+    # Heatmap tables
+    print("Generating table images...")
+    generate_table_images(out, plot_logs, all_agg, all_cls, all_folds)
+
     print("\nWriting report...")
     generate_report(out, all_agg, all_cls, all_folds, all_cms, plot_logs)
 
