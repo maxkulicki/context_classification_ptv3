@@ -1,7 +1,7 @@
 """Generate comparison report: PTv3 baseline vs projected vs direct AE fusion.
 
-Reads k-fold summary CSVs and confusion matrices, generates plots and a
-self-contained markdown report in results/report/.
+Reads k-fold summary CSVs, confusion matrices, and plot-level train logs.
+Generates plots and a self-contained markdown report in results/report/.
 
 Usage:
     python generate_report.py [--output_dir results/report]
@@ -10,6 +10,7 @@ Usage:
 import argparse
 import csv
 import os
+import re
 
 import numpy as np
 import matplotlib
@@ -51,8 +52,40 @@ EXP_BASE = "Pointcept/exp/treescanpl"
 METRIC_KEYS = ["allAcc", "mAcc", "macro_f1", "weighted_f1"]
 METRIC_LABELS = ["Overall Acc", "Mean Acc", "Macro F1", "Weighted F1"]
 
+# Plot-level split experiments (11 classes incl. Abies)
+PLOT_CLASS_NAMES = [
+    "Abies", "Acer", "Alnus", "Betula", "Carpinus", "Fagus",
+    "Larix", "Picea", "Pinus", "Quercus", "Tilia",
+]
+
+PLOT_EXPERIMENTS = {
+    "Baseline": "cls-ptv3-v1m1-0-base-finetune",
+    "Projected": "cls-ptv3-v1m1-0-base-context-projected",
+    "Direct": "cls-ptv3-v1m1-0-base-context-direct",
+}
+
 
 # ── Data loading ─────────────────────────────────────────────────────────────
+
+def parse_log_metrics(log_path, class_names):
+    """Parse best mAcc/allAcc and per-class recall from train.log."""
+    best_macc, best_allacc = 0.0, 0.0
+    per_class_recall = {}
+
+    with open(log_path) as f:
+        for line in f:
+            m = re.search(r"Current best record.*mAcc:\s*([\d.]+)\s+allAcc:\s*([\d.]+)", line)
+            if m:
+                macc, allacc = float(m.group(1)), float(m.group(2))
+                if allacc > best_allacc:
+                    best_macc, best_allacc = macc, allacc
+
+            m = re.search(r"Class_\d+\s+-\s+(\w+)\s+Result:\s+iou/accuracy\s+([\d.]+)", line)
+            if m:
+                per_class_recall[m.group(1)] = float(m.group(2))
+
+    recall_arr = np.array([per_class_recall.get(c, 0.0) for c in class_names])
+    return dict(mAcc=best_macc, allAcc=best_allacc, per_class_recall=recall_arr)
 
 def load_kfold_csv(path):
     """Parse kfold_summary.csv → fold rows, aggregated row, per-class rows."""
@@ -216,6 +249,31 @@ def plot_confusion_matrix(cm, classes, title, out_path):
     plt.close()
 
 
+def plot_plot_level_recall(plot_logs, out_dir):
+    """3-way grouped bar chart of per-class recall from plot-level split."""
+    fig, ax = plt.subplots(figsize=(14, 6))
+    exp_names = list(plot_logs.keys())
+    n_exps = len(exp_names)
+    x = np.arange(len(PLOT_CLASS_NAMES))
+    w = 0.25
+
+    for i, name in enumerate(exp_names):
+        vals = plot_logs[name]["per_class_recall"]
+        offset = (i - (n_exps - 1) / 2) * w
+        ax.bar(x + offset, vals, w, label=name, color=EXP_COLORS[name])
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(PLOT_CLASS_NAMES, rotation=45, ha="right", fontsize=11)
+    ax.set_ylabel("Recall (Per-Class Accuracy)")
+    ax.set_ylim(0, 1.08)
+    ax.set_title("Per-Class Recall: Plot-Level Split (11 Classes)", fontsize=14, fontweight="bold")
+    ax.legend(fontsize=10)
+    ax.grid(axis="y", alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(os.path.join(out_dir, "plot_level_recall.png"), dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+
 def plot_class_distribution(support, out_path):
     """Bar chart of class sample counts."""
     fig, ax = plt.subplots(figsize=(10, 4))
@@ -243,26 +301,32 @@ def bold_best(vals_str, vals_float):
     return result
 
 
-def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms):
+def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms, plot_logs):
     exp_names = list(all_agg.keys())
     lines = []
     w = lines.append
 
     w("# PTv3 Tree Species Classification: Experiment Report\n")
     w("Comparison of three approaches for individual tree species classification "
-      "from airborne LiDAR point clouds, evaluated with district-level "
-      "6-fold cross-validation (leave-one-district-out).\n")
+      "from airborne LiDAR point clouds.\n")
 
     # Setup
     w("## Experimental Setup\n")
     w("| | Detail |")
     w("|---|---|")
     w("| **Task** | Tree genus classification from individual LiDAR point clouds |")
-    w("| **Dataset** | TreeScanPL: 6,373 trees across 271 plots in 6 forest districts |")
-    w("| **Classes** | 10 genera: Acer, Alnus, Betula, Carpinus, Fagus, Larix, Picea, Pinus, Quercus, Tilia |")
-    w("| **Evaluation** | 6-fold leave-one-district-out cross-validation |")
+    w("| **Dataset** | TreeScanPL: 6,789 trees across 271 plots in 6 forest districts |")
     w("| **Backbone** | Point Transformer v3 (PTv3-v1m1), pretrained on FOR-species20K |")
-    w("| **Training** | 60 epochs per fold, AdamW, OneCycleLR |")
+    w("| **Optimizer** | AdamW, OneCycleLR |")
+    w("")
+
+    w("### Evaluation Protocols\n")
+    w("| | Plot-Level Split | District K-Fold CV |")
+    w("|---|---|---|")
+    w("| **Split** | 80/20 stratified by plot | 6-fold leave-one-district-out |")
+    w("| **Classes** | 11 genera (incl. Abies) | 10 genera (excl. Abies) |")
+    w("| **Samples** | 5,411 train / 1,378 test | ~5,300 / ~1,060 per fold |")
+    w("| **Epochs** | 100 | 60 per fold |")
     w("")
 
     w("### Methods\n")
@@ -279,8 +343,36 @@ def generate_report(out_dir, all_agg, all_cls, all_folds, all_cms):
     w("### Class Distribution\n")
     w("![Class Distribution](class_distribution.png)\n")
 
-    # Overall metrics
-    w("## Results\n")
+    # ── Plot-level results ─────────────────────────────────────────────
+    w("## Plot-Level Split Results (11 Classes)\n")
+
+    w("### Overall Accuracy\n")
+    header = "| Metric | " + " | ".join(exp_names) + " |"
+    sep = "|--------|" + "|".join(["--------"] * len(exp_names)) + "|"
+    w(header)
+    w(sep)
+    for key, label in [("allAcc", "Overall Acc"), ("mAcc", "Mean Acc")]:
+        fvals = [plot_logs[name][key] for name in exp_names]
+        svals = [f"{v:.1%}" for v in fvals]
+        svals = bold_best(svals, fvals)
+        w(f"| {label} | " + " | ".join(svals) + " |")
+    w("")
+
+    w("### Per-Class Recall\n")
+    w("![Plot-Level Recall](plot_level_recall.png)\n")
+    header = "| Genus | " + " | ".join(exp_names) + " |"
+    sep = "|-------|" + "|".join(["--------"] * len(exp_names)) + "|"
+    w(header)
+    w(sep)
+    for i, c in enumerate(PLOT_CLASS_NAMES):
+        fvals = [plot_logs[name]["per_class_recall"][i] for name in exp_names]
+        svals = [f"{v:.3f}" for v in fvals]
+        svals = bold_best(svals, fvals)
+        w(f"| {c} | " + " | ".join(svals) + " |")
+    w("")
+
+    # ── K-fold results ─────────────────────────────────────────────────
+    w("## District K-Fold CV Results (10 Classes)\n")
     w("### Aggregated Metrics\n")
     w("![Overall Metrics](overall_metrics.png)\n")
 
@@ -407,6 +499,17 @@ def main():
         all_cls[name] = cls
         all_cms[name] = load_kfold_cms(cfg["cm_prefix"])
 
+    # Load plot-level results from train logs
+    plot_logs = {}
+    print("\nLoading plot-level results...")
+    for name, exp_dir in PLOT_EXPERIMENTS.items():
+        log_path = os.path.join(EXP_BASE, exp_dir, "train.log")
+        if os.path.exists(log_path):
+            plot_logs[name] = parse_log_metrics(log_path, PLOT_CLASS_NAMES)
+            print(f"  {name}: allAcc={plot_logs[name]['allAcc']:.4f}  mAcc={plot_logs[name]['mAcc']:.4f}")
+        else:
+            print(f"  {name}: train.log not found at {log_path}")
+
     # Get support from baseline CM for class distribution
     baseline_metrics = metrics_from_cm(all_cms["Baseline"])
 
@@ -416,6 +519,8 @@ def main():
     plot_per_class_f1(all_cls, out)
     plot_per_fold_accuracy(all_folds, out)
     plot_class_distribution(baseline_metrics["support"], os.path.join(out, "class_distribution.png"))
+    if plot_logs:
+        plot_plot_level_recall(plot_logs, out)
 
     # Confusion matrices: baseline vs projected (the winner)
     plot_confusion_matrix(
@@ -431,7 +536,7 @@ def main():
 
     # Generate report
     print("\nWriting report...")
-    generate_report(out, all_agg, all_cls, all_folds, all_cms)
+    generate_report(out, all_agg, all_cls, all_folds, all_cms, plot_logs)
 
     print(f"\nDone! All outputs in {out}/")
 

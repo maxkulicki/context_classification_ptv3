@@ -1,17 +1,24 @@
 # PTv3 Tree Species Classification: Experiment Report
 
-Comparison of three approaches for individual tree species classification from airborne LiDAR point clouds, evaluated with district-level 6-fold cross-validation (leave-one-district-out).
+Comparison of three approaches for individual tree species classification from airborne LiDAR point clouds.
 
 ## Experimental Setup
 
 | | Detail |
 |---|---|
 | **Task** | Tree genus classification from individual LiDAR point clouds |
-| **Dataset** | TreeScanPL: 6,373 trees across 271 plots in 6 forest districts |
-| **Classes** | 10 genera: Acer, Alnus, Betula, Carpinus, Fagus, Larix, Picea, Pinus, Quercus, Tilia |
-| **Evaluation** | 6-fold leave-one-district-out cross-validation |
+| **Dataset** | TreeScanPL: 6,789 trees across 271 plots in 6 forest districts |
 | **Backbone** | Point Transformer v3 (PTv3-v1m1), pretrained on FOR-species20K |
-| **Training** | 60 epochs per fold, AdamW, OneCycleLR |
+| **Optimizer** | AdamW, OneCycleLR |
+
+### Evaluation Protocols
+
+| | Plot-Level Split | District K-Fold CV |
+|---|---|---|
+| **Split** | 80/20 stratified by plot | 6-fold leave-one-district-out |
+| **Classes** | 11 genera (incl. Abies) | 10 genera (excl. Abies) |
+| **Samples** | 5,411 train / 1,378 test | ~5,300 / ~1,060 per fold |
+| **Epochs** | 100 | 60 per fold |
 
 ### Methods
 
@@ -27,7 +34,34 @@ AlphaEarth embeddings are 64-dimensional satellite-derived features representing
 
 ![Class Distribution](class_distribution.png)
 
-## Results
+## Plot-Level Split Results (11 Classes)
+
+### Overall Accuracy
+
+| Metric | Baseline | Projected | Direct |
+|--------|--------|--------|--------|
+| Overall Acc | 89.2% | 91.7% | **92.0%** |
+| Mean Acc | 61.0% | 65.2% | **73.0%** |
+
+### Per-Class Recall
+
+![Plot-Level Recall](plot_level_recall.png)
+
+| Genus | Baseline | Projected | Direct |
+|-------|--------|--------|--------|
+| Abies | 0.887 | 0.924 | **1.000** |
+| Acer | 0.125 | 0.000 | **0.500** |
+| Alnus | 0.114 | 0.568 | **0.750** |
+| Betula | 0.766 | 0.745 | **0.798** |
+| Carpinus | 0.100 | 0.067 | **0.133** |
+| Fagus | 0.802 | **0.969** | 0.833 |
+| Larix | **0.667** | 0.667 | 0.667 |
+| Picea | 0.915 | 0.938 | **0.954** |
+| Pinus | **0.991** | 0.991 | 0.982 |
+| Quercus | 0.833 | 0.817 | **0.900** |
+| Tilia | 0.357 | 0.143 | **0.429** |
+
+## District K-Fold CV Results (10 Classes)
 
 ### Aggregated Metrics
 
