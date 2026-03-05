@@ -425,3 +425,92 @@ class ContextClassifier(nn.Module):
             return dict(loss=loss, cls_logits=cls_logits)
         else:
             return dict(cls_logits=cls_logits)
+
+
+@MODELS.register_module("FullContextClassifier")
+class FullContextClassifier(nn.Module):
+    """Classifier with three-stream fusion: PTv3 + AlphaEarth + BDL site features.
+
+    Fuses PTv3 point cloud features (projected to 128d), AlphaEarth satellite
+    context (projected to 128d), and BDL fertility/moisture one-hot (embedded
+    to bdl_embed_dim) before the classification head.
+    """
+
+    def __init__(
+        self,
+        backbone=None,
+        criteria=None,
+        num_classes=10,
+        backbone_embed_dim=512,
+        context_dim=64,
+        projection_dim=128,
+        bdl_dim=6,
+        bdl_embed_dim=32,
+    ):
+        super().__init__()
+        self.backbone = build_model(backbone)
+        self.criteria = build_criteria(criteria)
+        self.num_classes = num_classes
+
+        self.point_proj = nn.Sequential(
+            nn.Linear(backbone_embed_dim, projection_dim),
+            nn.BatchNorm1d(projection_dim),
+            nn.ReLU(inplace=True),
+        )
+        self.context_proj = nn.Sequential(
+            nn.Linear(context_dim, projection_dim),
+            nn.BatchNorm1d(projection_dim),
+            nn.ReLU(inplace=True),
+        )
+        self.bdl_embed = nn.Sequential(
+            nn.Linear(bdl_dim, bdl_embed_dim),
+            nn.BatchNorm1d(bdl_embed_dim),
+            nn.ReLU(inplace=True),
+        )
+
+        fused_dim = projection_dim * 2 + bdl_embed_dim
+
+        self.cls_head = nn.Sequential(
+            nn.Linear(fused_dim, 256),
+            nn.BatchNorm1d(256),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5),
+            nn.Linear(256, 128),
+            nn.BatchNorm1d(128),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5),
+            nn.Linear(128, num_classes),
+        )
+
+    def forward(self, input_dict):
+        point = Point(input_dict)
+        point = self.backbone(point)
+
+        if isinstance(point, Point):
+            point.feat = torch_scatter.segment_csr(
+                src=point.feat,
+                indptr=nn.functional.pad(point.offset, (1, 0)),
+                reduce="mean",
+            )
+            point_feat = point.feat
+        else:
+            point_feat = point
+
+        context_feat = input_dict["context"]
+        bdl_feat = input_dict["bdl_features"]
+
+        point_feat = self.point_proj(point_feat)
+        context_feat = self.context_proj(context_feat)
+        bdl_feat = self.bdl_embed(bdl_feat)
+
+        fused = torch.cat([point_feat, context_feat, bdl_feat], dim=-1)
+        cls_logits = self.cls_head(fused)
+
+        if self.training:
+            loss = self.criteria(cls_logits, input_dict["category"])
+            return dict(loss=loss)
+        elif "category" in input_dict.keys():
+            loss = self.criteria(cls_logits, input_dict["category"])
+            return dict(loss=loss, cls_logits=cls_logits)
+        else:
+            return dict(cls_logits=cls_logits)

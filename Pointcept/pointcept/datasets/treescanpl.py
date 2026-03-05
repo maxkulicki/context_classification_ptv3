@@ -265,3 +265,88 @@ class TreeScanPLContextDataset(TreeScanPLDataset):
             data_name = self.data_list[idx % len(self.data_list)]
             data_dict["context"] = self.context_lookup[data_name].copy()
         return data_dict
+
+
+@DATASETS.register_module()
+class TreeScanPLFullContextDataset(TreeScanPLContextDataset):
+    """TreeScanPL dataset with AlphaEarth context + BDL fertility/moisture.
+
+    Extends TreeScanPLContextDataset by adding one-hot encoded fertility
+    (4 classes) and moisture (2 classes) as a 6-dim 'bdl_features' key.
+    """
+
+    FERTILITY_CLASSES = ["eutrophic", "mesoeutrophic", "mesotrophic", "oligotrophic"]
+    MOISTURE_CLASSES = ["fresh", "moist_or_wet"]
+
+    def __init__(self, bdl_csv_path=None, **kwargs):
+        self.bdl_csv_path = bdl_csv_path
+        self.bdl_lookup = None
+        super().__init__(**kwargs)
+        self.bdl_lookup = self._load_bdl(bdl_csv_path)
+
+    def _load_bdl(self, bdl_csv_path):
+        """Build sample_name -> one-hot [fertility(4) + moisture(2)] lookup."""
+        logger = get_root_logger()
+
+        if bdl_csv_path is None:
+            logger.warning("BDL CSV path not provided, bdl_features will be zeros.")
+            return None
+
+        if not os.path.isabs(bdl_csv_path):
+            bdl_csv_path = os.path.join(self.data_root, bdl_csv_path)
+
+        # Load plot -> (fertility, moisture) mapping
+        plot_bdl = {}
+        with open(bdl_csv_path, "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                plot_id = int(row["plot_id"])
+                plot_bdl[plot_id] = (row["fertility"], row["moisture"])
+
+        # Load sample -> plot_id mapping (already loaded by parent)
+        sample_to_plot = {}
+        mapping_path = self.sample_plotid_path
+        if not os.path.isabs(mapping_path):
+            mapping_path = os.path.join(self.data_root, mapping_path)
+        with open(mapping_path, "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                sample_to_plot[row["sample_name"]] = int(row["plot_id"])
+
+        fert_to_idx = {c: i for i, c in enumerate(self.FERTILITY_CLASSES)}
+        moist_to_idx = {c: i for i, c in enumerate(self.MOISTURE_CLASSES)}
+        bdl_dim = len(self.FERTILITY_CLASSES) + len(self.MOISTURE_CLASSES)
+
+        bdl_lookup = {}
+        missing = 0
+        for sample_name in self.data_list:
+            plot_id = sample_to_plot.get(sample_name)
+            if plot_id is None or plot_id not in plot_bdl:
+                missing += 1
+                bdl_lookup[sample_name] = np.zeros((1, bdl_dim), dtype=np.float32)
+                continue
+            fert, moist = plot_bdl[plot_id]
+            vec = np.zeros(bdl_dim, dtype=np.float32)
+            if fert in fert_to_idx:
+                vec[fert_to_idx[fert]] = 1.0
+            if moist in moist_to_idx:
+                vec[len(self.FERTILITY_CLASSES) + moist_to_idx[moist]] = 1.0
+            bdl_lookup[sample_name] = vec.reshape(1, -1)
+
+        if missing > 0:
+            logger.warning(
+                f"BDL: {missing}/{len(self.data_list)} samples missing "
+                f"fertility/moisture (using zeros)."
+            )
+        logger.info(
+            f"Loaded BDL fertility/moisture for {len(self.data_list) - missing}/"
+            f"{len(self.data_list)} samples."
+        )
+        return bdl_lookup
+
+    def get_data(self, idx):
+        data_dict = super().get_data(idx)
+        if self.bdl_lookup is not None:
+            data_name = self.data_list[idx % len(self.data_list)]
+            data_dict["bdl_features"] = self.bdl_lookup[data_name].copy()
+        return data_dict
