@@ -11,16 +11,16 @@
 | **TreeScanPL** | Poland | 271 | 6,845 | 18 | TLS (Riegl VZ-400i) | Stereńczak et al. (in review) |
 | **BioDiv-3DTrees** | Germany | 27 | 4,952 | 19 | TLS + ULS (Riegl VZ-400 / Phoenix Recon-XT) | Griese et al. (2025), *Scientific Data* |
 | **LAUTx** | Austria | 6 | 434 | 6 | PLS (GeoSLAM ZEB Horizon) | Tockner et al. (2022), Zenodo |
-| **Weiser et al.** | Germany | 12 | 264 | 12 | TLS + ULS + ALS (Riegl VZ-400 / VUX-1LR / VQ-780i) | Weiser et al. (2022), *ESSD* 14, 2989–3012 |
+| **Weiser et al.** | Germany | 12 | 264 | 12 | TLS (Riegl VZ-400), manual segmentation | Weiser et al. (2022), *ESSD* 14, 2989–3012 |
 | **NIBIO** | Norway | 20 | 481 | 3 | ULS (Riegl miniVUX-1UAV) | Puliti et al. (2023), Zenodo (FOR-Instance) |
-| **Coops 2022** | Canada (BC) | 2 | 279 | 2 | MLS | Coops et al. (2022) |
-| **Frey 2022** | Germany | 15 | 472 | 6 | TLS | Frey et al. (2022) |
-| **Junttila / Yrttimaa** | Finland | 20 | 51 | 1 | ULS | Junttila et al. / Yrttimaa et al. |
-| **Puliti MLS** | Italy (Tuscany) | 1 | 67 | 1 | MLS | Puliti et al. |
-| **Puliti ULS 2** | Norway/Finland | — | 621 | 3 | ULS | Puliti et al. |
-| **Saarinen 2021** | Finland | 10 | 1,976 | 1 | MLS | Saarinen et al. (2021) |
-| **Wytham Woods** | UK (Oxford) | 1 | 769 | 6 | TLS | — |
-| **Total** | **9 countries** | **406+** | **17,211** | — | — | — |
+| **CULS** | Czech Republic | — | 50 | 1 | ULS | Puliti et al. (2023), Zenodo (FOR-Instance) |
+| **Frey 2022** | Germany | 15 | 472 | 6 | TLS | Frey et al. (2022); ForSpecies-GPS |
+| **Junttila / Yrttimaa** | Finland | 20 | 51 | 1 | ULS | Junttila et al. / Yrttimaa et al.; ForSpecies-GPS |
+| **Puliti MLS** | Italy (Tuscany) | 1 | 67 | 1 | MLS | Puliti et al.; ForSpecies-GPS |
+| **Puliti ULS 2** | Norway/Finland | — | 621 | 3 | ULS | Puliti et al.; ForSpecies-GPS |
+| **Saarinen 2021** | Finland | 10 | 1,976 | 1 | MLS | Saarinen et al. (2021); ForSpecies-GPS |
+| **Wytham Woods** | UK (Oxford) | 1 | 769 | 6 | TLS | ForSpecies-GPS |
+| **Total** | **9 countries** | **406+** | **16,982** | — | — | — |
 
 ---
 
@@ -100,7 +100,7 @@ Six circular plots (~1,257 m² each) in Lower Austrian mixed forests, scanned wi
 
 **Data:** PANGAEA, DOI: 10.1594/PANGAEA.942856
 
-Multi-platform dataset from 12 plots in two mixed temperate forest areas near Bretten and Karlsruhe (Baden-Württemberg, SW Germany), plus one plot near Speyer. Provides spatially overlapping, georeferenced point clouds from TLS (Riegl VZ-400), ULS (Riegl VUX-1LR on DJI M600 Pro), and ALS (Riegl VQ-780i). 249 trees have point clouds from all three platforms; 1,031 from both ALS+ULS. Individual trees extracted using Computree/SimpleTree with field-measured metrics for half the plots. Coordinates in ETRS89/UTM32N. The well-balanced species distribution (no species >18%) and species-level oak labels (Q. petraea, Q. robur, Q. rubra) make it particularly valuable for classification despite its small size.
+Multi-platform dataset from 12 plots in two mixed temperate forest areas near Bretten and Karlsruhe (Baden-Württemberg, SW Germany), plus one plot near Speyer. The original dataset provides spatially overlapping, georeferenced point clouds from TLS (Riegl VZ-400), ULS (Riegl VUX-1LR on DJI M600 Pro), and ALS (Riegl VQ-780i). We use only the TLS subset with manual segmentation. Coordinates in ETRS89/UTM32N. The well-balanced species distribution (no species >18%) and species-level oak labels (Q. petraea, Q. robur, Q. rubra) make it particularly valuable for classification despite its small size.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -135,20 +135,21 @@ The NIBIO subset of FOR-Instance: 20 plots in boreal coniferous forests in south
 
 ---
 
-## Coops 2022 (Canada)
+## CULS / FOR-Instance (Czech Republic)
 
-MLS (Mobile Laser Scanning) dataset from British Columbia, Canada, comprising 2 plots. **Caveats:** This is the only dataset with North American species (Picea glauca, Pseudotsuga menziesii var. glauca), which differ from the European Pseudotsuga menziesii found in other datasets. Additionally, the point clouds do not include ground segmentation — the ground surface is retained in the tree point clouds, which will affect geometric features computed from point height distributions.
+**Puliti, S., Pearse, G., Surovy, P., et al. (2023).** "FOR-instance: a UAV laser scanning benchmark dataset for semantic and instance segmentation of individual trees." Zenodo. DOI: 10.5281/zenodo.8287792
+
+The CULS subset of FOR-Instance, contributed by Czech University of Life Sciences in Prague. 50 Pinus sylvestris trees from Czech coniferous forests, acquired by ULS. Single-species dataset — provides an additional Central European Scots pine sample alongside the NIBIO subset from Norway.
 
 | Species | Count | % |
 |---------|-------|---|
-| Picea glauca | 227 | 81.4 |
-| Pseudotsuga menziesii | 52 | 18.6 |
+| Pinus sylvestris | 50 | 100.0 |
 
 ---
 
 ## Frey 2022 (Germany)
 
-TLS dataset with 472 individually segmented trees from 15 locations (B1–B5, K1–K5, S1–S5) in German forests, each with 3 trees per subplot. Well-balanced species mix with a strong representation of Pseudotsuga menziesii (33%) and Quercus robur (24%). Provides species-level oak identification (Q. robur), unlike some datasets that use genus-level labels.
+Part of the ForSpecies-GPS dataset (a subset of ForSpecies that includes geolocations, not part of the official ForSpecies release). TLS dataset with 472 individually segmented trees from 15 locations (B1–B5, K1–K5, S1–S5) in German forests, each with 3 trees per subplot. Well-balanced species mix with a strong representation of Pseudotsuga menziesii (33%) and Quercus robur (24%). Provides species-level oak identification (Q. robur), unlike some datasets that use genus-level labels.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -163,7 +164,7 @@ TLS dataset with 472 individually segmented trees from 15 locations (B1–B5, K1
 
 ## Junttila / Yrttimaa (Finland)
 
-ULS dataset from 20 plots in Finnish boreal forests. Contains only Betula pendula (51 trees). Single-species dataset — useful for cross-dataset consistency checks on birch geometric features rather than species classification.
+Part of the ForSpecies-GPS dataset. ULS dataset from 20 plots in Finnish boreal forests. Contains only Betula pendula (51 trees). Single-species dataset — useful for cross-dataset consistency checks on birch geometric features rather than species classification.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -173,7 +174,7 @@ ULS dataset from 20 plots in Finnish boreal forests. Contains only Betula pendul
 
 ## Puliti MLS (Italy)
 
-MLS dataset from a single plot in Tuscany, Italy (43.76°N, 11.57°E). Contains only Abies alba (67 trees). Point clouds are not georeferenced but plot coordinates are provided. Single-species dataset — contributes additional Abies alba samples from a southern European provenance.
+Part of the ForSpecies-GPS dataset. MLS dataset from a single plot in Tuscany, Italy (43.76°N, 11.57°E). Contains only Abies alba (67 trees). Point clouds are not georeferenced but plot coordinates are provided. Single-species dataset — contributes additional Abies alba samples from a southern European provenance.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -183,7 +184,7 @@ MLS dataset from a single plot in Tuscany, Italy (43.76°N, 11.57°E). Contains 
 
 ## Puliti ULS 2 (Norway/Finland)
 
-ULS dataset with 621 trees across 3 boreal species. Dominated by Betula pendula (54%) and Pinus sylvestris (39%) with minor Picea abies. Provides a substantial additional pool of boreal species from ULS acquisition.
+Part of the ForSpecies-GPS dataset. ULS dataset with 621 trees across 3 boreal species. Dominated by Betula pendula (54%) and Pinus sylvestris (39%) with minor Picea abies. Provides a substantial additional pool of boreal species from ULS acquisition.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -195,7 +196,7 @@ ULS dataset with 621 trees across 3 boreal species. Dominated by Betula pendula 
 
 ## Saarinen 2021 (Finland)
 
-MLS dataset from 10 plots in Finnish forests containing 1,976 Pinus sylvestris trees. The largest single-species contribution in the collection. Single-species dataset — valuable for evaluating cross-scanner and cross-geography consistency of Scots pine geometric features.
+Part of the ForSpecies-GPS dataset. MLS dataset from 10 plots in Finnish forests containing 1,976 Pinus sylvestris trees. The largest single-species contribution in the collection. Single-species dataset — valuable for evaluating cross-scanner and cross-geography consistency of Scots pine geometric features.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -205,7 +206,7 @@ MLS dataset from 10 plots in Finnish forests containing 1,976 Pinus sylvestris t
 
 ## Wytham Woods (UK)
 
-TLS dataset from Wytham Woods, Oxford, UK (51.77°N, −1.34°W). Point clouds are not georeferenced but approximate stand coordinates are provided. 769 trees across 6 species, heavily dominated by Acer pseudoplatanus (72%). Uniquely contributes understory/hedgerow species not found in other datasets: Corylus avellana, Crataegus monogyna, and Acer campestre.
+Part of the ForSpecies-GPS dataset. TLS dataset from Wytham Woods, Oxford, UK (51.77°N, −1.34°W). Point clouds are not georeferenced but approximate stand coordinates are provided. 769 trees across 6 species, heavily dominated by Acer pseudoplatanus (72%). Uniquely contributes understory/hedgerow species not found in other datasets: Corylus avellana, Crataegus monogyna, and Acer campestre.
 
 | Species | Count | % |
 |---------|-------|---|
@@ -222,44 +223,40 @@ TLS dataset from Wytham Woods, Oxford, UK (51.77°N, −1.34°W). Point clouds a
 
 Species with ≥5 trees in at least one dataset. Bold = largest source for that species.
 
-| Species | TreeScanPL | BioDiv3D | LAUTx | Weiser | NIBIO | Coops | Frey | Junttila | Puliti MLS | Puliti ULS 2 | Saarinen | Wytham |
-|---------|-----------|----------|-------|--------|-------|-------|------|----------|------------|-------------|----------|--------|
-| Pinus sylvestris | **3,565** | 512 | 8 | 36 | 39 | — | 68 | — | — | 241 | **1,976** | — |
+| Species | TreeScanPL | BioDiv3D | LAUTx | Weiser | NIBIO | CULS | Frey | Junttila | Puliti MLS | Puliti ULS 2 | Saarinen | Wytham |
+|---------|-----------|----------|-------|--------|-------|------|------|----------|------------|-------------|----------|--------|
+| Pinus sylvestris | **3,565** | 512 | 8 | 36 | 39 | 50 | 68 | — | — | 241 | **1,976** | — |
 | Picea abies | 907 | **1,005** | 123 | 30 | 391 | — | 75 | — | — | 45 | — | — |
 | Fagus sylvatica | 489 | **2,992** | **262** | 46 | — | — | — | — | — | — | — | — |
 | Quercus sp.† | 467 | 178 | 5 | 60 | — | — | 113 | — | — | — | — | 37 |
 | Abies alba | **416** | 5 | 7 | 9 | — | — | 45 | — | 67 | — | — | — |
 | Betula sp. | **415** | 24 | — | — | 51 | — | — | 51 | — | **335** | — | — |
 | Acer pseudoplatanus | 41 | 65 | — | 28 | — | — | — | — | — | — | — | **552** |
-| Pseudotsuga menziesii | — | 11 | — | 47 | — | 52‡ | **157** | — | — | — | — | — |
+| Pseudotsuga menziesii | — | 11 | — | 47 | — | — | **157** | — | — | — | — | — |
 | Carpinus betulus | 125 | **66** | — | 6 | — | — | — | — | — | — | — | — |
 | Larix decidua | **106** | 10 | 29 | 1 | — | — | 14 | — | — | — | — | — |
 | Fraxinus excelsior | 21 | **59** | — | — | — | — | — | — | — | — | — | 85 |
 | Alnus glutinosa | **82** | — | — | — | — | — | — | — | — | — | — | — |
 | Tilia cordata | **77** | 10 | — | — | — | — | — | — | — | — | — | — |
 | Quercus rubra | **51** | 1 | — | 23 | — | — | — | — | — | — | — | — |
-| Picea glauca‡ | — | — | — | — | — | **227** | — | — | — | — | — | — |
 | Corylus avellana | — | — | — | — | — | — | — | — | — | — | — | **67** |
 | Crataegus monogyna | — | — | — | — | — | — | — | — | — | — | — | **26** |
 
 †Quercus: TreeScanPL has Q. sp. and Q. rubra separately; BioDiv3D has Q. spec.; Weiser has Q. petraea (33), Q. rubra (23), Q. robur (4); Frey has Q. robur; Wytham has Q. robur.
 
-‡Coops 2022 contains North American species (Picea glauca, P. menziesii var. glauca) and does not include ground segmentation. These are not directly comparable to their European counterparts in other datasets.
-
 ## Total Trees per Species
 
 | Species | Total | Datasets |
 |---------|------:|----------|
-| Pinus sylvestris | 6,445 | 7 |
+| Pinus sylvestris | 6,495 | 8 |
 | Fagus sylvatica | 3,789 | 4 |
 | Picea abies | 2,576 | 7 |
 | Betula sp. | 876 | 5 |
 | Quercus sp.† | 860 | 6 |
 | Acer pseudoplatanus | 686 | 4 |
 | Abies alba | 549 | 6 |
-| Pseudotsuga menziesii | 267 | 4 |
+| Pseudotsuga menziesii | 215 | 3 |
 | Carpinus betulus | 197 | 3 |
-| Picea glauca‡ | 227 | 1 |
 | Fraxinus excelsior | 165 | 3 |
 | Larix decidua | 160 | 5 |
 | Tilia cordata | 87 | 2 |
@@ -269,8 +266,4 @@ Species with ≥5 trees in at least one dataset. Bold = largest source for that 
 | Crataegus monogyna | 26 | 1 |
 | Acer campestre | 2 | 1 |
 
-†Aggregates all Quercus entries except Q. rubra (listed separately). ‡North American species (Coops 2022).
-
----
-
-**Key points:** Pinus sylvestris is now represented across 7 datasets (6,445 trees total) thanks to Saarinen (1,976) and Puliti ULS 2 (241). Betula sp. coverage improves significantly with Puliti ULS 2 (335) and Junttila (51). Abies alba gains a southern European sample from Puliti MLS (67) alongside Frey (45). Pseudotsuga menziesii is now well-represented through Frey (157). Wytham Woods uniquely contributes Acer pseudoplatanus (552), Corylus avellana, and Crataegus monogyna — understory species absent from all other datasets. Three datasets (Junttila, Puliti MLS, Saarinen) are single-species and serve as cross-scanner/cross-geography feature consistency benchmarks rather than classification training sources.
+†Aggregates all Quercus entries except Q. rubra (listed separately).
