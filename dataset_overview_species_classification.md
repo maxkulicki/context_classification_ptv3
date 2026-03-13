@@ -8,7 +8,7 @@
 
 | Dataset | Country | Plots | Trees | Species | Scanner | Reference |
 |---------|---------|-------|-------|---------|---------|-----------|
-| **TreeScanPL** | Poland | 271 | 6,845 | 18 | TLS (Riegl VZ-400i) | Krok et al. (in review) |
+| **TreeScanPL** | Poland | 271 | 6,845 | 18 | TLS (Riegl VZ-400i) | Stereńczak et al. (in review) |
 | **BioDiv-3DTrees** | Germany | 27 | 4,952 | 19 | TLS + ULS (Riegl VZ-400 / Phoenix Recon-XT) | Griese et al. (2025), *Scientific Data* |
 | **LAUTx** | Austria | 6 | 434 | 6 | PLS (GeoSLAM ZEB Horizon) | Tockner et al. (2022), Zenodo |
 | **Weiser et al.** | Germany | 12 | 264 | 12 | TLS + ULS + ALS (Riegl VZ-400 / VUX-1LR / VQ-780i) | Weiser et al. (2022), *ESSD* 14, 2989–3012 |
