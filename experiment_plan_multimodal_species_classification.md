@@ -8,16 +8,17 @@
 
 ## 1. Overview
 
-This plan addresses the systematic evaluation of multimodal fusion strategies for tree species classification from terrestrial laser scanning (TLS) data. The core architecture is a Point Transformer v3 (PTv3) backbone operating on individual tree point clouds, augmented with contextual features derived from remote sensing, species distribution models, and topography.
+This plan evaluates multimodal fusion strategies for tree species classification from terrestrial laser scanning (TLS) data. The core architecture is a Point Transformer v3 (PTv3) backbone operating on individual tree point clouds, augmented with contextual features derived from remote sensing, species distribution models, and topography.
 
 The key research questions, in order:
 
-1. **Location prior:** How well do context features alone (no point cloud) predict species identity? This quantifies the location prior and contextualizes all subsequent gains.
-2. **Feature selection:** Which combination of contextual features best improves species classification when fused with point cloud features?
-3. **Fusion strategy:** Given the best feature set, does mid-fusion or late fusion perform better?
-4. **Inter-tree attention:** Does a neighborhood attention layer that allows trees to exchange information before final prediction improve accuracy?
+1. **Location prior:** How well do context features alone (no point cloud) predict species identity? Quantifies what location encodes before any geometry is involved.
+2. **Marginal source value:** Which individual context sources improve classification when fused with PTv3?
+3. **Universal model:** Does a single model trained with source dropout over all sources and a CLS-attention context encoder match or exceed individually-tuned models, and which source combinations drive performance?
+4. **Fusion depth:** Does mid-fusion (FiLM conditioning) outperform late fusion for the best context configuration?
+5. **Inter-tree attention:** Does neighborhood-level reasoning improve classification, especially for ambiguous individuals?
 
-The plan is structured in sequential phases. Each phase resolves one question before the next begins, avoiding combinatorial explosion.
+The plan is structured in sequential phases. Each phase resolves one question before the next begins.
 
 ---
 
@@ -47,13 +48,13 @@ The collection spans 16,982 trees across 9 countries. Dominant species cross-dat
 
 ### 2.2 Dataset Roles
 
-**Core training dataset:** TreeScanPL (Poland) — largest single source, full geolocation, complete contextual feature availability, plot structure enabling inter-tree attention. 18 species with 271 circular 15 m plots.
+**Core training dataset:** TreeScanPL (Poland) — largest single source, full geolocation, complete contextual feature availability, plot structure enabling inter-tree attention. 18 species across 271 circular 15 m plots.
 
 **Multi-species external datasets** (primary cross-country generalization targets): BioDiv-3DTrees (Germany, 19 species), LAUTx (Austria, 6 species), Weiser et al. (Germany, 12 species), Frey 2022 (Germany, 6 species), Wytham Woods (UK, 6 species), NIBIO (Norway, 3 species).
 
 **Single-species or low-diversity datasets** (CULS, Junttila/Yrttimaa, Puliti MLS, Puliti ULS 2, Saarinen 2021): limited value for classification training; useful for cross-scanner consistency checks and as additional samples for shared species.
 
-**Scanner diversity** is a significant domain shift factor: TLS (stationary, dense stem detail), ULS (UAV, strong canopy, sparse stem), MLS (mobile, SLAM-based), and PLS (handheld) are all represented. This diversity is both a challenge and a test of how well geometric features generalize.
+**Scanner diversity** is a significant domain shift factor: TLS (stationary, dense stem detail), ULS (UAV, strong canopy, sparse stem), MLS (mobile, SLAM-based), and PLS (handheld) are all represented.
 
 ### 2.3 Context Feature Availability per Dataset
 
@@ -74,56 +75,81 @@ The collection spans 16,982 trees across 9 countries. Dominant species cross-dat
 
 Datasets with approximate-only coordinates receive context features computed from the plot centroid rather than individual tree positions. Given that SINR and topographic features are meaningful at ≥1 km resolution, centroid-based features introduce negligible error for intra-plot variation.
 
-### 2.4 Standardization Principles
+### 2.4 Data Split
+
+The dataset is divided into a fixed train/val/test partition. **The test set is held out completely** — it is never used for model selection or hyperparameter tuning, only for final evaluation.
+
+**Test set** — chosen to cover distinct geographic and ecological conditions:
+
+| Held-out unit | Dataset | Rationale |
+|--------------|---------|-----------|
+| Wytham Woods (entire) | UK | Most geographically distant location; different species composition — species absent from training will be skipped in evaluation |
+| 1 forest district | TreeScanPL (Poland) | Within-country held-out; tests generalization within the core training domain |
+| Subset of plots from 1 area | Weiser et al. (Germany) | Partial holdout from one spatially contiguous area; remaining Weiser plots stay in training |
+| Subset of plots from 1 area | NIBIO (Norway) | Partial holdout from one spatially contiguous area; remaining NIBIO plots stay in training |
+
+**Validation set** — ~15% of remaining data, sampled at geographic unit level (whole plots or plot groups), stratified by country and scanner type. Individual trees are never split across train and val.
+
+**Training set** — all remaining data after test and val exclusion.
+
+The geographic unit of splitting (plots, districts, entire datasets) ensures that no spatial autocorrelation leaks between splits. Trees within the same plot are always in the same partition.
+
+### 2.5 Standardization Principles
 
 - The pipeline operates on **individual tree point clouds** as the primary input unit.
-- Neighboring trees (for inter-tree attention in Phase 3) are retrieved by spatial query within a **15 m radius** of each target tree's stem position, regardless of original plot geometry.
-- All trees across all datasets receive the same contextual feature vector (Section 3), with missing features masked out at the group level using the availability flags in Section 2.3.
+- Neighboring trees (for inter-tree attention in Phase 4) are retrieved by spatial query within a **15 m radius** of each target tree's stem position, regardless of original plot geometry.
+- All trees across all datasets receive the same contextual feature vector (Section 3), with absent sources masked out at the source level.
 
 ---
 
 ## 3. Contextual Features
 
-All non-point-cloud features are encoded into a **single unified 256-dim context embedding** before fusion with the point cloud encoder. The 256-dim output is invariant to which combination of sources is active.
+All non-point-cloud features are encoded into a **single unified 256-dim context embedding** before fusion with the point cloud encoder. The output dimensionality is invariant to which combination of sources is active.
 
 ### 3.1 Feature Inventory
 
-| Feature | Dimensions | Type | Availability | Notes |
-|---------|-----------|------|-------------|-------|
-| **AlphaEarth embeddings** | 64 | Continuous | Global | Satellite-derived, per-location |
-| **SINR embeddings** | 256 | Continuous | Global | Species distribution backbone features; not logits |
-| **GeoPlantNet predictions** | N_species logits | Continuous | Global (precomputed) | Species probability distribution from coordinates |
-| **Topographic variables** | 6 | Continuous | Global | Elevation, slope, northness, eastness, TRI, TPI — derived from FABDEM V1-2 |
+| Feature | Dimensions | Type | Notes |
+|---------|-----------|------|-------|
+| **AlphaEarth** | 64 | Continuous | Satellite-derived per-location embedding |
+| **SINR** | 256 | Continuous | Species distribution backbone features (not logits) |
+| **GeoPlantNet** | N_species | Continuous | Species probability logits from coordinates |
+| **Topographic variables** | 6 | Continuous | Elevation, slope, northness, eastness, TRI, TPI — from FABDEM V1-2 |
 
-SINR and GeoPlantNet are **substitutes** — both encode a species distribution prior from coordinates, differing in form (generic habitat embedding vs. species logits). They are never combined in the same experiment; whichever performs better in Phase 1 is carried forward.
+SINR and GeoPlantNet both encode species distribution priors from coordinates but in different forms (generic habitat embedding vs. species logits). Phase 1 evaluates their individual contribution; the universal model in Phase 2 includes both as separate source paths and can use either or both via masking.
 
 ### 3.2 Context Encoder Architecture
 
-Each source has an independent encoder that projects to 256-dim with LayerNorm. The context embedding is the **masked mean** of available source embeddings:
+Each source has an independent encoder projecting to 256-dim with LayerNorm, producing a **source token**. A learned `[CTX]` token then aggregates information across available tokens via self-attention:
 
 ```
-AlphaEarth (64)   ──► Linear(64→256) + LN  ──► 256 ─┐
-SINR (256)        ──► Linear(256→256) + LN ──► 256 ──┤
-  OR                                                   ├──► masked mean ──► 256-dim context
-GeoPLN (N_sp)     ──► log + MLP(N→256) + LN──► 256 ──┤
-Topo (6)          ──► MLP(6→128→256) + LN  ──► 256 ─┘
+AlphaEarth (64)  ──► Linear(64→256) + LN  ──► token_ae   ─┐
+SINR (256)       ──► Linear(256→256) + LN ──► token_sinr  ─┤  (absent sources
+GeoPlantNet (N)  ──► log + MLP(N→256) + LN──► token_gpn   ─┤   excluded from
+Topo (6)         ──► MLP(6→128→256) + LN  ──► token_topo  ─┘   token sequence)
+                                                 │
+                          prepend learned [CTX] token
+                                                 │
+                     1-layer self-attention (4 heads, 256-dim)
+                     [CTX] attends to all source tokens
+                                                 │
+                          [CTX] output → 256-dim context embedding
 ```
 
-**Why masked mean:** The output is always 256-dim regardless of which sources are present. Missing sources are excluded from the mean — they contribute nothing rather than being zero-filled. This makes any combination of sources produce a representation in the same embedding space, and ablations reduce to simply toggling source masks.
-
-**Source dropout during training** (p=0.25 per source, independently): prevents the model from over-relying on any single source and ensures each individual projection carries meaningful signal on its own.
+Missing sources are simply absent from the token sequence — the [CTX] token attends to however many sources are available. This naturally handles any combination without zero-filling or architectural changes.
 
 GeoPlantNet logits are log-transformed before the MLP (`log(p + ε)`) to handle near-zero values.
+
+**Source dropout during training** (p=0.25 per source, independently) forces the model to operate well with any subset of sources and ensures each source token carries individually meaningful signal.
 
 ---
 
 ## 4. Fusion Strategies
 
-Two fusion strategies are compared. The PTv3 backbone produces a per-tree feature vector (512-dim after global pooling); the context encoder produces a 256-dim context embedding.
+The PTv3 backbone produces a per-tree feature vector (512-dim after global pooling); the context encoder produces a 256-dim context embedding.
 
 ### 4.1 Late Fusion
 
-Context embedding combined with PTv3 output after the backbone:
+Context combined with PTv3 output after the backbone:
 
 ```
 Point Cloud ──► PTv3 Backbone ──► tree_feat (512) ─┐
@@ -131,11 +157,9 @@ Point Cloud ──► PTv3 Backbone ──► tree_feat (512) ─┐
 Context ──► Context Encoder ──► ctx (256) ──────────┘
 ```
 
-Variant: **gated addition** — both streams projected to 256 first, then `out = tree_feat_proj + σ(W·ctx) ⊙ ctx_proj`. Lets the model learn how much context to trust per-instance.
-
 ### 4.2 Mid Fusion (FiLM)
 
-Context injected after PTv3 stage 2 (after first major downsampling, where local geometry is established but global representation is still forming):
+Context injected after PTv3 stage 2, where local geometry is established but the global tree-level representation is still forming:
 
 ```
 Point Cloud ──► PTv3 Stages 1–2
@@ -147,7 +171,7 @@ Point Cloud ──► PTv3 Stages 1–2
               PTv3 Stages 3–end ──► tree_feat (512) ──► classifier
 ```
 
-The injection layer is fixed empirically once and held constant across all mid-fusion experiments.
+The FiLM injection layer is determined empirically on the validation set once and fixed for all mid-fusion experiments.
 
 ---
 
@@ -165,8 +189,8 @@ Per-tree features
 │  Token = tree_feat + pos_encoding(XY)   │
 │                                         │
 │  1-layer multi-head self-attention      │
-│  with Euclidean distance bias           │
-│  (closer neighbors → higher attention)  │
+│  with learned Euclidean distance bias   │
+│  (bias = -α·dist, learned α)            │
 │                                         │
 │  Residual: out = attn(in) + in          │
 └─────────────────┬───────────────────────┘
@@ -176,7 +200,7 @@ Per-tree features
           Classification Head
 ```
 
-Single layer, 4–8 heads. Distance bias: `bias = -α · dist` (learned α) added to attention logits before softmax. Residual connection preserves well-classified trees while refining ambiguous ones.
+Single layer, 4–8 heads. Residual connection preserves well-classified trees while refining ambiguous ones.
 
 ---
 
@@ -184,88 +208,120 @@ Single layer, 4–8 heads. Distance bias: `bias = -α · dist` (learned α) adde
 
 ### Phase 0: Context-Only Baselines
 
-**Goal:** Quantify the location prior. How well does each context source predict species identity without any point cloud geometry? Establishes a ceiling for "what location alone tells you" and contextualizes all Phase 1 gains.
+**Goal:** Quantify the location prior — how much species identity is predictable from location alone, without any point cloud geometry.
 
-**Architecture:** Context encoder (same as all other phases) → 256-dim → Linear classifier. No PTv3, no point cloud.
+**Architecture:** Per-source encoder → 256-dim → Linear classifier. No PTv3. These are small, fast models.
 
-**Same splits and metrics as all other phases** — trees are still individual labeled instances, just without geometry.
+**Same train/val/test split as all other phases.** Trees are still individual labeled instances, just without geometry as input.
 
 | ID | Context sources | Purpose |
 |----|----------------|---------|
 | 0.0 | None (majority class) | Floor |
-| 0.1 | SINR only | Species distribution prior, embedding form |
-| 0.2 | GeoPlantNet only | Species prior, logit form — expected strongest here |
-| 0.3 | AlphaEarth + Topo | Non-species context: satellite + terrain alone |
-| 0.4 | AE + Topo + SINR | Best non-GPN combination |
-| 0.5 | AE + Topo + GeoPlantNet | Full context-only ceiling |
+| 0.1 | AlphaEarth only | Satellite context alone |
+| 0.2 | Topo only | Topographic context alone |
+| 0.3 | SINR only | Species distribution prior, embedding form |
+| 0.4 | GeoPlantNet only | Species prior, logit form — expected strongest here |
 
-**Key question:** What is the gap between the best context-only result (0.5) and the PTv3-only baseline (1.0)? This gap measures how complementary geometry and location are as signal sources.
+**Key interpretive question:** What is the gap between the best context-only result and the PTv3-only baseline (1.0)? A large gap means geometry and location are complementary signals. A small gap means location dominates and geometry adds little — which would be a finding in itself.
 
-### Phase 1: Feature Selection
+---
 
-**Goal:** Determine which contextual features best improve classification when fused with point cloud features.
+### Phase 1: Individual Source + PTv3
 
-**Fixed architecture:** PTv3 → late concat fusion → classifier. Simplest viable fusion, used as a stable testbed.
+**Goal:** Measure the marginal contribution of each context source when added individually to PTv3.
 
-**Fixed evaluation:** Single geographic split — hold out 2–3 districts as test set, remaining for train/val.
+**Architecture:** PTv3 → single-source context encoder (simple linear projection, no CLS attention) → late concat fusion → classifier. One model per source, no combinations.
 
 | ID | Context sources | Purpose |
 |----|----------------|---------|
 | 1.0 | None | PTv3 geometric baseline |
-| 1.1 | AlphaEarth | Satellite context alone |
-| 1.2 | Topo | Topographic context alone |
+| 1.1 | AlphaEarth | Satellite context |
+| 1.2 | Topo | Topographic context |
 | 1.3 | SINR | Species distribution prior (SINR) |
 | 1.4 | GeoPlantNet | Species distribution prior (GPN) |
-| 1.5 | AE + Topo | Non-species context combined |
-| 1.6 | AE + winner(1.3 vs 1.4) | Best species prior + remote sensing |
-| 1.7 | Topo + winner | Best species prior + topography |
-| 1.8 | AE + Topo + winner | Full context |
 
-Experiments 1.6–1.8 use whichever of SINR or GeoPlantNet wins in 1.3 vs 1.4. The loser is dropped and not carried further.
+**Analysis:** Per-source gain over 1.0. Compare 1.3 vs 1.4 — this tells us whether SINR or GeoPlantNet is the stronger species prior as an individual signal.
 
-**Decision rule:** Carry forward the top 2–3 feature sets that improve weighted F1 by ≥ 1pp over the next-best subset, or that improve per-species F1 on hard/ambiguous species even at similar overall F1.
+---
 
-### Phase 2: Fusion Strategy
+### Phase 2: Universal Model (Late Fusion)
 
-**Goal:** Determine whether mid or late fusion is superior for the selected feature sets.
+**Goal:** Train a single model that handles all source combinations via masking and evaluate whether it matches or exceeds the individually-tuned Phase 1 models.
 
-**Feature sets:** Top 2 from Phase 1.
+**Architecture:** PTv3 → full CLS-attention context encoder (all 4 source paths, source dropout p=0.25) → late concat fusion → classifier. One training run.
 
-| ID | Feature set | Fusion |
-|----|------------|--------|
-| 2.1 | Best_1 | Late concat (reuse Phase 1 result) |
-| 2.2 | Best_1 | Late gated addition |
-| 2.3 | Best_1 | Mid FiLM |
-| 2.4 | Best_2 | Late gated addition |
-| 2.5 | Best_2 | Mid FiLM |
+**Evaluation:** Mask sources at inference to evaluate all combinations of interest without retraining:
 
-**Analysis:** Per-species F1 delta relative to Phase 1 winner. Gate/attention visualizations: which trees benefit most from context?
+| Mask configuration | Comparison |
+|-------------------|------------|
+| All sources active | Full context ceiling |
+| AE only | vs 1.1 (individually trained) |
+| Topo only | vs 1.2 |
+| SINR only | vs 1.3 |
+| GPN only | vs 1.4 |
+| AE + Topo | Non-species context combined |
+| AE + SINR | Best non-GPN combo |
+| AE + GPN | Best GPN combo |
+| Topo + SINR | |
+| Topo + GPN | |
+| AE + Topo + SINR | |
+| AE + Topo + GPN | Full without SINR/GPN overlap |
+| No sources (PTv3 only) | vs 1.0 — tests universal model PTv3 baseline |
 
-### Phase 3: Inter-Tree Attention
+The comparison between individual-source mask results and Phase 1 models tests whether multi-task training with source dropout degrades single-source performance (it typically does not, but worth verifying).
+
+**Key decision:** Identify the best-performing source combination(s) to carry into Phase 3.
+
+---
+
+### Phase 3: Mid Fusion (FiLM)
+
+**Goal:** Test whether injecting context earlier in the PTv3 computation (FiLM conditioning) outperforms late fusion for the best context configuration identified in Phase 2.
+
+**Architecture:** Same universal model setup as Phase 2, but context injected via FiLM after PTv3 stage 2 instead of concatenation after pooling. One training run.
+
+| ID | Fusion | Context |
+|----|--------|---------|
+| 3.0 | Late concat | Best Phase 2 config (reuse Phase 2 result) |
+| 3.1 | Mid FiLM | Best Phase 2 config |
+
+**Analysis:** Does early injection — allowing context to modulate how geometry is processed rather than appending after the fact — improve performance? Especially examine per-species effects: do ambiguous species (confusable by geometry alone) benefit more from mid-fusion?
+
+---
+
+### Phase 4: Inter-Tree Attention
 
 **Goal:** Test whether neighborhood-level reasoning improves classification.
 
-**Fixed:** Best configuration from Phase 2.
+**Fixed:** Best configuration from Phase 3 (best fusion strategy + best source combination).
 
 | ID | Configuration | Inter-Tree Attention |
 |----|--------------|---------------------|
-| 3.0 | Phase 2 winner | None (already run) |
-| 3.1 | Phase 2 winner | 1-layer self-attention with distance bias |
+| 4.0 | Phase 3 winner | None (reuse Phase 3 result) |
+| 4.1 | Phase 3 winner | 1-layer self-attention with distance bias |
 
-**Analysis:** Stratified by prediction confidence (does attention help most for low-confidence trees?) and stand structure (dense mixed vs. monoculture).
+**Analysis:**
+- Overall metrics vs 4.0.
+- Stratified by prediction confidence: does attention help most for low-confidence trees?
+- Stratified by stand structure: dense mixed stands vs. monocultures.
+- Attention weight visualization: which neighbors does a tree attend to?
 
-### Phase 4: Final Validation
+---
 
-**Goal:** Robust evaluation of the final 2–3 best configurations.
+### Phase 5: Final Evaluation on Test Set
 
-**Evaluation protocol:** Leave-one-district-out cross-validation. Only the final candidates go through this — it is expensive.
+**Goal:** Unbiased evaluation of the final system on the held-out test set.
 
-**Configurations:**
-1. PTv3 alone (Exp 1.0) — geometric reference
-2. Phase 2 winner — best fusion, no inter-tree attention
-3. Phase 3 winner — best fusion + inter-tree attention
+All preceding phases use only train and val splits. The test set (Wytham Woods, 1 TreeScanPL district, ~4 Weiser plots, ~5 NIBIO plots) is evaluated once, at the end, for the following configurations:
 
-**Analysis:** Per-district performance, cross-country generalization, per-species confusion matrices, statistical significance (Wilcoxon across folds).
+1. **PTv3 only** (Exp 1.0) — geometric reference
+2. **Phase 3 winner** — best fusion without inter-tree attention
+3. **Phase 4 winner** — full system with inter-tree attention
+
+**Analysis:**
+- Per held-out unit: how does performance vary across Wytham (UK, very different ecosystem), Polish district (within-domain), German plots, Norwegian plots?
+- Per-species confusion matrices on each held-out unit.
+- For Wytham specifically: does context help more than geometry, given the species there are either absent or rare in training data?
 
 ---
 
@@ -280,21 +336,17 @@ Experiments 1.6–1.8 use whichever of SINR or GeoPlantNet wins in 1.3 vs 1.4. T
 | Per-species F1 | Per-class | Which species benefit from context |
 | Confusion matrix | Per-class | Full error structure |
 
-### 7.2 Splits
+### 7.2 Reporting
 
-- **Phases 0–3:** Fixed geographic split. Hold out 2–3 districts diverse in species composition and site conditions. 80/20 train/val within training districts.
-- **Phase 4:** Leave-one-district-out across all available districts/regions.
-
-### 7.3 Reporting
-
-- All experiments logged to W&B (or MLflow), tagged with: phase, experiment ID, feature set, fusion strategy, dataset version.
+- All experiments logged to W&B (or MLflow), tagged with: phase, experiment ID, context sources (as bitmask), fusion strategy, dataset version.
 - Per-species metrics logged, not just aggregates.
 - Training curves (loss, val F1) to check for overfitting.
+- For Phase 2 universal model: log per-mask-configuration val metrics to track which combinations are strong vs. weak.
 
 ---
 
 ## 8. Possible Future Ablation: BDL Ecological Classes
 
-The Polish BDL forest database provides categorical site-quality variables (fertility classes, moisture classes) for Polish forest districts. These were excluded from the main experiment plan because they are Poland-only (limiting generalization experiments) and categorical (requiring embedding tables rather than the continuous encoder used for all other sources).
+The Polish BDL forest database provides categorical site-quality variables (fertility classes, moisture classes) for Polish forest districts. Excluded from the main plan because they are Poland-only (incompatible with the cross-country generalization focus) and categorical (requiring a different sub-encoder than the continuous source paths used here).
 
-If Phase 1–2 results show strong performance on Polish data but poor cross-country transfer, BDL could be revisited as a Poland-only ablation to test whether ecological site classifications add signal beyond what AlphaEarth and topography already capture. This would require only adding a categorical sub-encoder to the context module and running the ablation on the Polish subset of the data.
+If Phase 2–3 results show strong performance on Polish data but poor cross-country transfer, BDL could be revisited as a Poland-only ablation to test whether ecological site classifications add signal beyond what AlphaEarth and topography already capture for Polish forests.
