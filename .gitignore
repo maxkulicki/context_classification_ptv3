@@ -26,3 +26,5 @@ Pointcept/outputs/
 # OS
 *.out
 Dockerfile
+sinr/pretrained_models/
+data/

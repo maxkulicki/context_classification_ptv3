@@ -23,22 +23,62 @@ The plan is structured in sequential phases. Each phase resolves one question be
 
 ## 2. Datasets
 
-### 2.1 Core Dataset
+### 2.1 Overview
 
-**TreeScanPL-10K** — 272 circular plots (15 m radius), 10,000+ manually segmented trees across Central European forests (Poland). Full TLS point clouds with species labels, stem XY positions, DBH, and height.
+| Dataset | Country | Plots | Trees | Species | Scanner | Georef. |
+|---------|---------|------:|------:|--------:|---------|---------|
+| **TreeScanPL** | Poland | 271 | 6,845 | 18 | TLS (Riegl VZ-400i) | Yes |
+| **BioDiv-3DTrees** | Germany | 27 | 4,952 | 19 | TLS + ULS | Sensitive† |
+| **LAUTx** | Austria | 6 | 434 | 6 | PLS (handheld) | Yes |
+| **Weiser et al.** | Germany | 12 | 264 | 12 | TLS (Riegl VZ-400) | Yes |
+| **NIBIO** | Norway | 20 | 481 | 3 | ULS | Yes |
+| **CULS** | Czech Republic | — | 50 | 1 | ULS | Yes |
+| **Frey 2022** | Germany | 15 | 472 | 6 | TLS | Yes |
+| **Junttila/Yrttimaa** | Finland | 20 | 51 | 1 | ULS | Yes |
+| **Puliti MLS** | Italy | 1 | 67 | 1 | MLS | Approx. |
+| **Puliti ULS 2** | Norway/Finland | — | 621 | 3 | ULS | Yes |
+| **Saarinen 2021** | Finland | 10 | 1,976 | 1 | MLS | Yes |
+| **Wytham Woods** | UK | 1 | 769 | 6 | TLS | Approx. |
+| **Total** | 9 countries | 383+ | 16,982 | — | | |
 
-### 2.2 External Datasets
+†BioDiv-3DTrees plot coordinates must be requested through BExIS (sensitive biodiversity data), which affects availability of geolocation-dependent context features (AlphaEarth, SINR, GeoPlantNet).
 
-| Dataset | Structure | Coverage | Notes |
-|---------|-----------|----------|-------|
-| Dataset B | Individually segmented trees with geolocation from one contiguous area | TBD country | No plot structure; neighbors retrieved by spatial query within radius |
-| Dataset C | Mix of circular and rectangular plots | TBD country | Clip/query neighbors within 15 m of each target tree |
+The collection spans 16,982 trees across 9 countries. Dominant species cross-dataset: *Pinus sylvestris* (6,495 trees, 8 datasets), *Fagus sylvatica* (3,789, 4 datasets), *Picea abies* (2,576, 7 datasets). Full species overlap matrix is in `dataset_overview_species_classification.md`.
 
-### 2.3 Standardization Principles
+### 2.2 Dataset Roles
+
+**Core training dataset:** TreeScanPL (Poland) — largest single source, full geolocation, complete contextual feature availability, plot structure enabling inter-tree attention. 18 species with 271 circular 15 m plots.
+
+**Multi-species external datasets** (primary cross-country generalization targets): BioDiv-3DTrees (Germany, 19 species), LAUTx (Austria, 6 species), Weiser et al. (Germany, 12 species), Frey 2022 (Germany, 6 species), Wytham Woods (UK, 6 species), NIBIO (Norway, 3 species).
+
+**Single-species or low-diversity datasets** (CULS, Junttila/Yrttimaa, Puliti MLS, Puliti ULS 2, Saarinen 2021): limited value for classification training; useful for cross-scanner consistency checks and as additional samples for shared species.
+
+**Scanner diversity** is a significant domain shift factor: TLS (stationary, dense stem detail), ULS (UAV, strong canopy, sparse stem), MLS (mobile, SLAM-based), and PLS (handheld) are all represented. This diversity is both a challenge and a test of how well geometric features generalize.
+
+### 2.3 Context Feature Availability per Dataset
+
+| Dataset | AlphaEarth | SINR / GeoPlantNet | Topo |
+|---------|------------|-------------------|------|
+| TreeScanPL | Yes | Yes | Yes |
+| BioDiv-3DTrees | Pending BExIS | Pending BExIS | Pending BExIS |
+| LAUTx | Yes | Yes | Yes |
+| Weiser et al. | Yes | Yes | Yes |
+| NIBIO | Yes | Yes | Yes |
+| CULS | Yes | Yes | Yes |
+| Frey 2022 | Yes | Yes | Yes |
+| Junttila/Yrttimaa | Yes | Yes | Yes |
+| Puliti MLS | Approx. only | Approx. only | Approx. only |
+| Puliti ULS 2 | Yes | Yes | Yes |
+| Saarinen 2021 | Yes | Yes | Yes |
+| Wytham Woods | Approx. only | Approx. only | Approx. only |
+
+Datasets with approximate-only coordinates receive context features computed from the plot centroid rather than individual tree positions. Given that SINR and topographic features are meaningful at ≥1 km resolution, centroid-based features introduce negligible error for intra-plot variation.
+
+### 2.4 Standardization Principles
 
 - The pipeline operates on **individual tree point clouds** as the primary input unit.
 - Neighboring trees (for inter-tree attention in Phase 3) are retrieved by spatial query within a **15 m radius** of each target tree's stem position, regardless of original plot geometry.
-- All trees across all datasets receive the same contextual feature vector (see Section 3), with missing features masked or zero-filled.
+- All trees across all datasets receive the same contextual feature vector (Section 3), with missing features masked out at the group level using the availability flags in Section 2.3.
 
 ---
 
