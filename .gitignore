@@ -10,7 +10,7 @@ build/
 Pointcept/data/
 Pointcept/exp/
 Pointcept/weights/
-
+Pointcept/wandb/
 # Pointcept build artifacts
 Pointcept/pointcept/ops/build/
 

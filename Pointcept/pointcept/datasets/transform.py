@@ -158,6 +158,15 @@ class NormalizeCoord(object):
 
 
 @TRANSFORMS.register_module()
+class CenterShiftMean(object):
+    def __call__(self, data_dict):
+        if "coord" in data_dict.keys():
+            centroid = np.mean(data_dict["coord"], axis=0)
+            data_dict["coord"] -= centroid
+        return data_dict
+
+
+@TRANSFORMS.register_module()
 class PositiveShift(object):
     def __call__(self, data_dict):
         if "coord" in data_dict.keys():

@@ -34,7 +34,9 @@ PYTHONPATH=./${EXP_DIR}/code ${PYTHON} "${EXP_DIR}/code/tools/train.py" \
     --num-gpus 1 \
     --options \
         save_path="${EXP_DIR}" \
-        weight="${WEIGHT}"
+        weight="${WEIGHT}" \
+        epoch=5 \
+        eval_epoch=5
 
 echo ""
 echo "======================================================"
