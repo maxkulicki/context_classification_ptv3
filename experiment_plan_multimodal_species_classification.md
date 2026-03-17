@@ -220,9 +220,29 @@ Single layer, 4–8 heads. Residual connection preserves well-classified trees w
 | 0.1 | AlphaEarth only | Satellite context alone |
 | 0.2 | Topo only | Topographic context alone |
 | 0.3 | SINR only | Species distribution prior, embedding form |
-| 0.4 | GeoPlantNet only | Species prior, logit form — expected strongest here |
+| 0.4 | GeoPlantNet only | Species prior, logit form |
 
 **Key interpretive question:** What is the gap between the best context-only result and the PTv3-only baseline (1.0)? A large gap means geometry and location are complementary signals. A small gap means location dominates and geometry adds little — which would be a finding in itself.
+
+#### Phase 0 Results (completed)
+
+Train: 13,288 trees · Val: 1,606 trees (NIBIO, LAUTx, Weiser, Puliti ULS 2) · Test: 1,864 trees (Wytham Woods + TreeScanPL Milicz district)
+
+| Source | Val wF1 | Test wF1 | Notes |
+|--------|---------|----------|-------|
+| Majority class | 0.020 | 0.267 | Test set is heavily Pinus-dominated (~44%) |
+| AlphaEarth | **0.470** | **0.403** | Clear best; meaningful signal on both splits |
+| GeoPlantNet | 0.347 | 0.262 | Second on val; degrades on test (weaker UK coverage) |
+| Topo | 0.039 | 0.192 | Below majority on val; weak standalone |
+| SINR | 0.032 | 0.002 | Near-random on both splits; fails as standalone |
+
+**Key findings:**
+
+- **AlphaEarth** is the strongest standalone source by a clear margin. Satellite appearance directly encodes forest composition and generalises across regions.
+- **SINR fails entirely as a standalone classifier.** It is a generic habitat embedding not designed for direct classification, and it carries almost no discriminative signal alone. This is an important prior for Phase 1: SINR's marginal contribution over PTv3 may also be limited.
+- **GeoPlantNet** is competitive on val but degrades on test, likely because its species distribution model has weaker coverage for Wytham Woods (UK) and the held-out Polish district. Its utility may be region-dependent.
+- **Topography** alone is insufficient — terrain at this spatial scale does not resolve species identity.
+- The large gap between the best context-only result (AE val wF1≈0.47) and a typical point-cloud baseline suggests geometry and location are genuinely complementary signals, motivating the fusion experiments in Phases 1–4.
 
 ---
 
@@ -248,7 +268,7 @@ Single layer, 4–8 heads. Residual connection preserves well-classified trees w
 
 **Goal:** Train a single model that handles all source combinations via masking and evaluate whether it matches or exceeds the individually-tuned Phase 1 models.
 
-**Architecture:** PTv3 → full CLS-attention context encoder (all 4 source paths, source dropout p=0.25) → late concat fusion → classifier. One training run.
+**Architecture:** PTv3 → full CLS-attention context encoder (all 4 source paths, structured source dropout) → late concat fusion → classifier. One training run.
 
 **Evaluation:** Mask sources at inference to evaluate all combinations of interest without retraining:
 
@@ -269,6 +289,25 @@ Single layer, 4–8 heads. Residual connection preserves well-classified trees w
 | No sources (PTv3 only) | vs 1.0 — tests universal model PTv3 baseline |
 
 The comparison between individual-source mask results and Phase 1 models tests whether multi-task training with source dropout degrades single-source performance (it typically does not, but worth verifying).
+
+#### Source Dropout Sampling Scheme
+
+Simple independent Bernoulli dropout underrepresents sparse combinations (1–2 sources get only ~5% of batches at p_drop=0.25). Instead, use **two-stage cardinality sampling**:
+
+1. With probability 0.35: use all 4 sources (protects the primary deployment scenario).
+2. Otherwise: sample cardinality k uniformly from {1, 2, 3}, then sample k sources uniformly from the 4 available.
+
+This gives roughly: full set 35% · 3-source 22% · 2-source 22% · 1-source 22%. At least one source is always active (all-masked is never sampled — it is a degenerate case not seen at inference).
+
+**Training curriculum for source dropout:**
+
+| Epochs | Schedule |
+|--------|----------|
+| 1–5 | All sources always present (no dropout) — establish stable representations |
+| 6–10 | Ramp up: p_full=0.8, sparse combos rare |
+| 11+ | Full sampling scheme (p_full=0.35) |
+
+Starting with no dropout prevents early gradient instability while the CLS attention and source encoders are randomly initialised.
 
 **Key decision:** Identify the best-performing source combination(s) to carry into Phase 3.
 
