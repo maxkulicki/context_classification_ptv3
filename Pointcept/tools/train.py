@@ -5,6 +5,15 @@ Author: Xiaoyang Wu (xiaoyang.wu.cs@gmail.com)
 Please cite our work if the code is helpful to you.
 """
 
+import os
+import sys
+
+# Prefer the checkout that contains this entrypoint over any container-installed
+# Pointcept copy so custom local registries/modules are imported consistently.
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 from pointcept.engines.defaults import (
     default_argument_parser,
     default_config_parser,

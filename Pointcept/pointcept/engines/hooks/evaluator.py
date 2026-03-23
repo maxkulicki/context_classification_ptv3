@@ -5,13 +5,19 @@ Author: Xiaoyang Wu (xiaoyang.wu.cs@gmail.com)
 Please cite our work if the code is helpful to you.
 """
 
+import io
 import os
 import numpy as np
 import wandb
+from PIL import Image as PILImage
 import torch
 import torch.distributed as dist
 import pointops
 from uuid import uuid4
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 import pointcept.utils.comm as comm
 from pointcept.utils.misc import intersection_and_union_gpu
@@ -191,6 +197,267 @@ class ClsEvaluator(HookBase):
         self.trainer.comm_info["current_metric_value"] = all_acc  # save for saver
         self.trainer.comm_info["current_metric_name"] = "allAcc"  # save for saver
         self.trainer.comm_info["current_mAcc_value"] = m_acc  # for secondary checkpoint
+
+    def after_train(self):
+        self.trainer.logger.info(
+            "Best {}: {:.4f}".format("allAcc", self.trainer.best_metric_value)
+        )
+
+
+def _log_normalized_confusion_matrix(cm, class_names, wandb_key, epoch):
+    """Log a row-normalised confusion matrix as a wandb.Image heatmap."""
+    num_classes = len(class_names)
+    cm_norm = cm.astype(float) / (cm.sum(axis=1, keepdims=True) + 1e-10)
+
+    fig, ax = plt.subplots(figsize=(max(8, num_classes), max(7, num_classes - 1)))
+    im = ax.imshow(cm_norm, vmin=0, vmax=1, cmap="Blues")
+    plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    ax.set_xticks(range(num_classes))
+    ax.set_yticks(range(num_classes))
+    ax.set_xticklabels(class_names, rotation=45, ha="right", fontsize=8)
+    ax.set_yticklabels(class_names, fontsize=8)
+    ax.set_xlabel("Predicted", fontsize=9)
+    ax.set_ylabel("True", fontsize=9)
+    ax.set_title(f"Normalised confusion matrix  (epoch {epoch})", fontsize=10)
+    for i in range(num_classes):
+        for j in range(num_classes):
+            val = cm_norm[i, j]
+            ax.text(
+                j, i, f"{val:.2f}",
+                ha="center", va="center", fontsize=6,
+                color="white" if val > 0.55 else "black",
+            )
+    plt.tight_layout()
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=120)
+    buf.seek(0)
+    img = wandb.Image(PILImage.open(buf), caption=f"Epoch {epoch}")
+    plt.close(fig)
+    wandb.log({wandb_key: img, "Epoch": epoch}, step=wandb.run.step)
+
+
+@HOOKS.register_module()
+class UniversalClsEvaluator(HookBase):
+    """Evaluator for UniversalCtxCls-v1m1 (Phase 2).
+
+    Extends the standard ClsEvaluator with:
+    - Per-source auxiliary head validation accuracy
+      (logged as val/aux_acc_{source} for ae/topo/sinr/gpn)
+    - Majority-class accuracy as a reference baseline
+      (logged as val/majority_class_acc)
+    - Row-normalised confusion matrix heatmap (wandb.Image)
+      instead of raw counts only
+
+    The model must return aux_logits_{source} tensors during validation.
+    This is done automatically by UniversalCtxCls-v1m1 when category labels
+    are present in the input dict.
+    """
+
+    # Source names in the same order as UniversalCtxCls.SOURCE_NAMES
+    SOURCE_NAMES = ["ae", "topo", "sinr", "gpn"]
+
+    def before_train(self):
+        if self.trainer.writer is not None and self.trainer.cfg.enable_wandb:
+            wandb.define_metric("val/*", step_metric="Epoch")
+
+    def after_epoch(self):
+        if self.trainer.cfg.evaluate:
+            self.eval()
+
+    def eval(self):
+        self.trainer.logger.info(">>>>>>>>>>>>>>>> Start Evaluation >>>>>>>>>>>>>>>>")
+        self.trainer.model.eval()
+        num_classes = self.trainer.cfg.data.num_classes
+
+        # Main confusion matrix (for primary metrics)
+        confusion = torch.zeros(num_classes, num_classes, dtype=torch.long, device="cuda")
+
+        # Aux head accuracy accumulators: correct and total counts per source
+        aux_correct = {s: torch.zeros(1, dtype=torch.long, device="cuda") for s in self.SOURCE_NAMES}
+        aux_total = torch.zeros(1, dtype=torch.long, device="cuda")
+
+        all_preds_list = []
+        all_labels_list = []
+
+        for i, input_dict in enumerate(self.trainer.val_loader):
+            for key in input_dict.keys():
+                if isinstance(input_dict[key], torch.Tensor):
+                    input_dict[key] = input_dict[key].cuda(non_blocking=True)
+            with torch.no_grad():
+                output_dict = self.trainer.model(input_dict)
+
+            cls_logits = output_dict["cls_logits"]
+            loss = output_dict["loss"]
+            pred = cls_logits.max(1)[1]
+            label = input_dict["category"]
+
+            # Valid (non-ignored) mask
+            valid = label != self.trainer.cfg.data.ignore_index
+
+            # Main metrics
+            intersection, union, target = intersection_and_union_gpu(
+                pred, label, num_classes, self.trainer.cfg.data.ignore_index,
+            )
+            indices = label[valid] * num_classes + pred[valid]
+            confusion += torch.bincount(indices, minlength=num_classes * num_classes).reshape(
+                num_classes, num_classes
+            )
+            all_preds_list.append(pred.cpu())
+            all_labels_list.append(label.cpu())
+
+            # Aux head accuracy
+            for src in self.SOURCE_NAMES:
+                aux_key = f"aux_logits_{src}"
+                if aux_key in output_dict:
+                    aux_pred = output_dict[aux_key].max(1)[1]
+                    aux_correct[src] += (aux_pred[valid] == label[valid]).sum()
+            aux_total += valid.sum()
+
+            if comm.get_world_size() > 1:
+                dist.all_reduce(intersection), dist.all_reduce(union), dist.all_reduce(target)
+            intersection, union, target = (
+                intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy(),
+            )
+            self.trainer.storage.put_scalar("val_intersection", intersection)
+            self.trainer.storage.put_scalar("val_union", union)
+            self.trainer.storage.put_scalar("val_target", target)
+            self.trainer.storage.put_scalar("val_loss", loss.item())
+            self.trainer.logger.info(
+                "Test: [{iter}/{max_iter}] Loss {loss:.4f}".format(
+                    iter=i + 1, max_iter=len(self.trainer.val_loader), loss=loss.item()
+                )
+            )
+
+        # Sync confusion matrix and aux counters across GPUs
+        if comm.get_world_size() > 1:
+            dist.all_reduce(confusion)
+            for src in self.SOURCE_NAMES:
+                dist.all_reduce(aux_correct[src])
+            dist.all_reduce(aux_total)
+
+        cm = confusion.cpu().numpy()
+        all_preds = torch.cat(all_preds_list).numpy()
+        all_labels = torch.cat(all_labels_list).numpy()
+        total_valid = aux_total.item()
+
+        # ── Primary metrics ────────────────────────────────────────────────
+        loss_avg = self.trainer.storage.history("val_loss").avg
+        intersection = self.trainer.storage.history("val_intersection").total
+        union = self.trainer.storage.history("val_union").total
+        target = self.trainer.storage.history("val_target").total
+        iou_class = intersection / (union + 1e-10)
+        acc_class = intersection / (target + 1e-10)
+        m_iou = np.mean(iou_class)
+        m_acc = np.mean(acc_class)
+        all_acc = sum(intersection) / (sum(target) + 1e-10)
+
+        self.trainer.logger.info(
+            "Val result: mIoU/mAcc/allAcc {:.4f}/{:.4f}/{:.4f}.".format(m_iou, m_acc, all_acc)
+        )
+        for i in range(num_classes):
+            self.trainer.logger.info(
+                "Class_{idx}-{name} Result: iou/accuracy {iou:.4f}/{accuracy:.4f}".format(
+                    idx=i, name=self.trainer.cfg.data.names[i],
+                    iou=iou_class[i], accuracy=acc_class[i],
+                )
+            )
+
+        # ── F1 / precision / recall ────────────────────────────────────────
+        tp = np.diag(cm)
+        fp = cm.sum(axis=0) - tp
+        fn = cm.sum(axis=1) - tp
+        precision_cls = tp / (tp + fp + 1e-10)
+        recall_cls = tp / (tp + fn + 1e-10)
+        f1_cls = 2 * precision_cls * recall_cls / (precision_cls + recall_cls + 1e-10)
+        macro_f1 = np.mean(f1_cls)
+        support = cm.sum(axis=1)
+        weighted_f1 = np.average(f1_cls, weights=support)
+        macro_precision = np.mean(precision_cls)
+        macro_recall = np.mean(recall_cls)
+
+        self.trainer.logger.info(
+            "Val result: macro_F1/weighted_F1/macro_P/macro_R "
+            "{:.4f}/{:.4f}/{:.4f}/{:.4f}".format(macro_f1, weighted_f1, macro_precision, macro_recall)
+        )
+        for i in range(num_classes):
+            self.trainer.logger.info(
+                "Class_{idx}-{name} F1/Precision/Recall: {f1:.4f}/{precision:.4f}/{recall:.4f}".format(
+                    idx=i, name=self.trainer.cfg.data.names[i],
+                    f1=f1_cls[i], precision=precision_cls[i], recall=recall_cls[i],
+                )
+            )
+
+        # ── Auxiliary head accuracy ────────────────────────────────────────
+        # Majority-class baseline: most frequent class in val labels
+        majority_class_acc = cm.sum(axis=1).max() / (cm.sum() + 1e-10)
+        aux_acc = {
+            src: aux_correct[src].item() / (total_valid + 1e-10)
+            for src in self.SOURCE_NAMES
+        }
+        self.trainer.logger.info(
+            "Aux head accuracy (majority baseline {:.3f}): "
+            "AE={ae:.3f}  Topo={topo:.3f}  SINR={sinr:.3f}  GPN={gpn:.3f}".format(
+                majority_class_acc,
+                ae=aux_acc["ae"], topo=aux_acc["topo"],
+                sinr=aux_acc["sinr"], gpn=aux_acc["gpn"],
+            )
+        )
+
+        # ── W&B logging ────────────────────────────────────────────────────
+        current_epoch = self.trainer.epoch + 1
+        if self.trainer.writer is not None:
+            self.trainer.writer.add_scalar("val/loss", loss_avg, current_epoch)
+            self.trainer.writer.add_scalar("val/mIoU", m_iou, current_epoch)
+            self.trainer.writer.add_scalar("val/mAcc", m_acc, current_epoch)
+            self.trainer.writer.add_scalar("val/allAcc", all_acc, current_epoch)
+
+            if self.trainer.cfg.enable_wandb:
+                class_names = self.trainer.cfg.data.names
+                wandb_dict = {
+                    "Epoch": current_epoch,
+                    "val/loss": loss_avg,
+                    "val/mIoU": m_iou,
+                    "val/mAcc": m_acc,
+                    "val/allAcc": all_acc,
+                    "val/macro_f1": macro_f1,
+                    "val/weighted_f1": weighted_f1,
+                    "val/macro_precision": macro_precision,
+                    "val/macro_recall": macro_recall,
+                    # Aux head accuracy
+                    "val/majority_class_acc": majority_class_acc,
+                    **{f"val/aux_acc_{src}": v for src, v in aux_acc.items()},
+                }
+                for i in range(num_classes):
+                    name = class_names[i]
+                    wandb_dict[f"val/f1_{name}"] = f1_cls[i]
+                    wandb_dict[f"val/precision_{name}"] = precision_cls[i]
+                    wandb_dict[f"val/recall_{name}"] = recall_cls[i]
+                wandb.log(wandb_dict, step=wandb.run.step)
+
+                # Normalised confusion matrix heatmap
+                _log_normalized_confusion_matrix(
+                    cm, list(class_names), "val/confusion_matrix_normalized", current_epoch
+                )
+                # Also keep the interactive raw-count matrix
+                wandb.log(
+                    {
+                        "val/confusion_matrix": wandb.plot.confusion_matrix(
+                            probs=None,
+                            y_true=all_labels.tolist(),
+                            preds=all_preds.tolist(),
+                            class_names=list(class_names),
+                        )
+                    },
+                    step=wandb.run.step,
+                )
+
+        # Save confusion matrix to disk for offline analysis
+        np.save(os.path.join(self.trainer.cfg.save_path, "confusion_matrix.npy"), cm)
+
+        self.trainer.logger.info("<<<<<<<<<<<<<<<<< End Evaluation <<<<<<<<<<<<<<<<<")
+        self.trainer.comm_info["current_metric_value"] = all_acc
+        self.trainer.comm_info["current_metric_name"] = "allAcc"
+        self.trainer.comm_info["current_mAcc_value"] = m_acc
 
     def after_train(self):
         self.trainer.logger.info(

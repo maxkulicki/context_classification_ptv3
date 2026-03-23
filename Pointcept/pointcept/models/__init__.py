@@ -1,6 +1,7 @@
 from .builder import build_model
 from .default import DefaultSegmentor, DefaultClassifier
 from .modules import PointModule, PointModel
+from .tree_context import *
 
 # Backbones
 from .sparse_unet import *

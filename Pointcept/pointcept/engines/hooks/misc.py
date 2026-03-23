@@ -251,10 +251,13 @@ class CheckpointSaver(HookBase):
 
 @HOOKS.register_module()
 class CheckpointLoader(HookBase):
-    def __init__(self, keywords="", replacement=None, strict=False):
+    def __init__(self, keywords="", replacement=None, strict=False,
+                 resume_optimizer=True, resume_scheduler=True):
         self.keywords = keywords
         self.replacement = replacement if replacement is not None else keywords
         self.strict = strict
+        self.resume_optimizer = resume_optimizer
+        self.resume_scheduler = resume_scheduler
 
     def before_train(self):
         self.trainer.logger.info("=> Loading checkpoint & weight ...")
@@ -301,8 +304,14 @@ class CheckpointLoader(HookBase):
                 )
                 self.trainer.start_epoch = checkpoint["epoch"]
                 self.trainer.best_metric_value = checkpoint["best_metric_value"]
-                self.trainer.optimizer.load_state_dict(checkpoint["optimizer"])
-                self.trainer.scheduler.load_state_dict(checkpoint["scheduler"])
+                if self.resume_optimizer:
+                    self.trainer.optimizer.load_state_dict(checkpoint["optimizer"])
+                else:
+                    self.trainer.logger.info("Skipping optimizer state restore (resume_optimizer=False)")
+                if self.resume_scheduler:
+                    self.trainer.scheduler.load_state_dict(checkpoint["scheduler"])
+                else:
+                    self.trainer.logger.info("Skipping scheduler state restore (resume_scheduler=False)")
                 if self.trainer.cfg.enable_amp:
                     self.trainer.scaler.load_state_dict(checkpoint["scaler"])
         else:

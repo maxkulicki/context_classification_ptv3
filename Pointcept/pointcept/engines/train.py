@@ -197,6 +197,10 @@ class Trainer(TrainerBase):
         if self._gradient_accumulation_counter == 0:
             self.optimizer.zero_grad()
 
+        # Inject current epoch for models that use curriculum source dropout
+        input_dict["epoch"] = self.epoch
+        input_dict["max_epoch"] = self.max_epoch
+
         # Forward pass
         with auto_cast(
             enabled=self.cfg.enable_amp, dtype=AMP_DTYPE[self.cfg.amp_dtype]
@@ -309,7 +313,7 @@ class Trainer(TrainerBase):
             pin_memory=True,
             worker_init_fn=init_fn,
             drop_last=len(train_data) > self.cfg.batch_size,
-            persistent_workers=True,
+            persistent_workers=self.cfg.num_worker_per_gpu > 0,
         )
         return train_loader
 
