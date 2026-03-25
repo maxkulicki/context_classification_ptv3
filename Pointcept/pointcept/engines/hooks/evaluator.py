@@ -204,6 +204,254 @@ class ClsEvaluator(HookBase):
         )
 
 
+@HOOKS.register_module()
+class DualValClsEvaluator(HookBase):
+    """
+    Evaluator for snapshot_10class_dual_val.
+    After each epoch runs separate evaluations on val_id (in-distribution)
+    and val_ood (plot-level spatial holdout).
+
+    Per-epoch outputs saved to {save_path}/plots/ and logged to wandb:
+      - Normalised confusion matrix heatmap for each split
+      - Per-dataset accuracy barplot for each split
+
+    Checkpoint signals written to comm_info:
+      current_metric_value      → val_id allAcc  → model_best.pth
+      current_metric_name       → "allAcc_id"
+      current_mAcc_value        → val_id mAcc    → model_best_mAcc.pth
+      current_metric_value_ood  → val_ood allAcc → model_best_ood.pth
+    """
+
+    def before_train(self):
+        if self.trainer.cfg.evaluate:
+            self._build_val_ood_loader()
+        if self.trainer.writer is not None and self.trainer.cfg.enable_wandb:
+            for tag in ("val_id", "val_ood"):
+                wandb.define_metric(f"{tag}/*", step_metric="Epoch")
+
+    def _build_val_ood_loader(self):
+        from pointcept.datasets import build_dataset, collate_fn as pt_collate_fn
+        cfg = self.trainer.cfg
+        val_ood_cfg = dict(cfg.data.val)
+        val_ood_cfg["split"] = "val_ood"
+        val_ood_data = build_dataset(val_ood_cfg)
+        if comm.get_world_size() > 1:
+            sampler = torch.utils.data.distributed.DistributedSampler(
+                val_ood_data, shuffle=False
+            )
+        else:
+            sampler = None
+        self.val_ood_loader = torch.utils.data.DataLoader(
+            val_ood_data,
+            batch_size=self.trainer.cfg.batch_size_val_per_gpu,
+            shuffle=False,
+            num_workers=self.trainer.cfg.num_worker_per_gpu,
+            pin_memory=True,
+            sampler=sampler,
+            collate_fn=pt_collate_fn,
+        )
+
+    def after_epoch(self):
+        if not self.trainer.cfg.evaluate:
+            return
+        self.trainer.logger.info(">>>>>>>>>>>>>>>> Start Dual Evaluation >>>>>>>>>>>>>>>>")
+        self.trainer.model.eval()
+        metrics_id  = self._eval_split(self.trainer.val_loader,  "val_id")
+        metrics_ood = self._eval_split(self.val_ood_loader,      "val_ood")
+        self.trainer.logger.info("<<<<<<<<<<<<<<<<< End Dual Evaluation <<<<<<<<<<<<<<<<<")
+        self.trainer.comm_info["current_metric_value"]     = metrics_id["all_acc"]
+        self.trainer.comm_info["current_metric_name"]      = "allAcc_id"
+        self.trainer.comm_info["current_mAcc_value"]       = metrics_id["m_acc"]
+        self.trainer.comm_info["current_metric_value_ood"] = metrics_ood["all_acc"]
+
+    def _eval_split(self, loader, split_name):
+        num_classes = self.trainer.cfg.data.num_classes
+        class_names = list(self.trainer.cfg.data.names)
+        ignore_idx  = self.trainer.cfg.data.ignore_index
+
+        source_names = getattr(loader.dataset, "source_names", [])
+        n_sources    = len(source_names)
+
+        confusion      = torch.zeros(num_classes, num_classes, dtype=torch.long, device="cuda")
+        per_ds_correct = torch.zeros(n_sources, dtype=torch.long, device="cuda")
+        per_ds_total   = torch.zeros(n_sources, dtype=torch.long, device="cuda")
+        all_preds_list, all_labels_list = [], []
+        total_loss, n_batches = 0.0, 0
+
+        for i, input_dict in enumerate(loader):
+            for key in input_dict:
+                if isinstance(input_dict[key], torch.Tensor):
+                    input_dict[key] = input_dict[key].cuda(non_blocking=True)
+            with torch.no_grad():
+                output_dict = self.trainer.model(input_dict)
+            pred  = output_dict["cls_logits"].max(1)[1]
+            label = input_dict["category"]
+            total_loss += output_dict["loss"].item()
+            n_batches  += 1
+
+            valid = (label != ignore_idx)
+            indices = label[valid] * num_classes + pred[valid]
+            confusion += torch.bincount(
+                indices, minlength=num_classes * num_classes
+            ).reshape(num_classes, num_classes)
+            all_preds_list.append(pred.cpu())
+            all_labels_list.append(label.cpu())
+
+            # Per-dataset tracking
+            if n_sources > 0 and "source_id" in input_dict:
+                sid = input_dict["source_id"]
+                if sid.dim() == 2:
+                    sid = sid.squeeze(1)
+                ones = torch.ones(valid.sum(), dtype=torch.long, device="cuda")
+                per_ds_total.index_add_(0, sid[valid], ones)
+                per_ds_correct.index_add_(0, sid[valid], (pred == label)[valid].long())
+
+            self.trainer.logger.info(
+                f"{split_name} [{i+1}/{len(loader)}] Loss {output_dict['loss'].item():.4f}"
+            )
+
+        if comm.get_world_size() > 1:
+            dist.all_reduce(confusion)
+            if n_sources > 0:
+                dist.all_reduce(per_ds_correct)
+                dist.all_reduce(per_ds_total)
+
+        cm         = confusion.cpu().numpy()
+        all_preds  = torch.cat(all_preds_list).numpy()
+        all_labels = torch.cat(all_labels_list).numpy()
+
+        tp  = np.diag(cm)
+        fp  = cm.sum(0) - tp
+        fn  = cm.sum(1) - tp
+        acc_class     = tp / (cm.sum(1) + 1e-10)
+        iou_class     = tp / (tp + fp + fn + 1e-10)
+        precision_cls = tp / (tp + fp + 1e-10)
+        recall_cls    = tp / (tp + fn + 1e-10)
+        f1_cls        = 2 * precision_cls * recall_cls / (precision_cls + recall_cls + 1e-10)
+        m_acc       = float(np.mean(acc_class))
+        m_iou       = float(np.mean(iou_class))
+        all_acc     = float(np.diag(cm).sum() / (cm.sum() + 1e-10))
+        macro_f1    = float(np.mean(f1_cls))
+        weighted_f1 = float(np.average(f1_cls, weights=cm.sum(1)))
+        loss_avg    = total_loss / max(n_batches, 1)
+
+        per_ds_acc = {}
+        if n_sources > 0:
+            c_np = per_ds_correct.cpu().numpy()
+            t_np = per_ds_total.cpu().numpy()
+            for s_idx, s_name in enumerate(source_names):
+                if t_np[s_idx] > 0:
+                    per_ds_acc[s_name] = float(c_np[s_idx] / t_np[s_idx])
+
+        # Log to console
+        self.trainer.logger.info(
+            f"{split_name}: mIoU/mAcc/allAcc {m_iou:.4f}/{m_acc:.4f}/{all_acc:.4f}"
+        )
+        for i in range(num_classes):
+            self.trainer.logger.info(
+                f"  {split_name} Class_{i}-{class_names[i]}: "
+                f"iou/acc {iou_class[i]:.4f}/{acc_class[i]:.4f}"
+            )
+        for ds_name, acc in sorted(per_ds_acc.items()):
+            self.trainer.logger.info(f"  {split_name} dataset {ds_name}: acc {acc:.4f}")
+
+        # Save plots (main process only)
+        epoch = self.trainer.epoch + 1
+        if comm.is_main_process():
+            plots_dir = os.path.join(self.trainer.cfg.save_path, "plots")
+            os.makedirs(plots_dir, exist_ok=True)
+
+            cm_fig  = self._make_confusion_matrix(cm, class_names, split_name, epoch)
+            cm_path = os.path.join(plots_dir, f"epoch{epoch:03d}_{split_name}_cm.png")
+            cm_fig.savefig(cm_path, bbox_inches="tight", dpi=120)
+            plt.close(cm_fig)
+
+            bar_fig  = self._make_per_dataset_bar(per_ds_acc, split_name, epoch)
+            bar_path = os.path.join(plots_dir, f"epoch{epoch:03d}_{split_name}_per_ds.png")
+            bar_fig.savefig(bar_path, bbox_inches="tight", dpi=120)
+            plt.close(bar_fig)
+
+            np.save(
+                os.path.join(self.trainer.cfg.save_path, f"confusion_matrix_{split_name}.npy"), cm
+            )
+
+            if self.trainer.writer is not None and self.trainer.cfg.enable_wandb:
+                wandb_dict = {
+                    "Epoch":                       epoch,
+                    f"{split_name}/loss":          loss_avg,
+                    f"{split_name}/mIoU":          m_iou,
+                    f"{split_name}/mAcc":          m_acc,
+                    f"{split_name}/allAcc":        all_acc,
+                    f"{split_name}/macro_f1":      macro_f1,
+                    f"{split_name}/weighted_f1":   weighted_f1,
+                }
+                for i, name in enumerate(class_names):
+                    wandb_dict[f"{split_name}/f1_{name}"]  = float(f1_cls[i])
+                    wandb_dict[f"{split_name}/acc_{name}"] = float(acc_class[i])
+                for ds_name, acc in per_ds_acc.items():
+                    wandb_dict[f"{split_name}/ds_acc_{ds_name}"] = acc
+                wandb.log(wandb_dict, step=wandb.run.step)
+                wandb.log(
+                    {f"{split_name}/confusion_matrix": wandb.plot.confusion_matrix(
+                        probs=None, y_true=all_labels.tolist(),
+                        preds=all_preds.tolist(), class_names=class_names,
+                    )},
+                    step=wandb.run.step,
+                )
+                wandb.log({
+                    f"{split_name}/cm_plot":    wandb.Image(cm_path),
+                    f"{split_name}/per_ds_bar": wandb.Image(bar_path),
+                }, step=wandb.run.step)
+
+        return dict(all_acc=all_acc, m_acc=m_acc, m_iou=m_iou, loss=loss_avg)
+
+    def _make_confusion_matrix(self, cm, class_names, split_name, epoch):
+        n       = len(class_names)
+        cm_norm = cm.astype(float) / (cm.sum(axis=1, keepdims=True) + 1e-10)
+        fig, ax = plt.subplots(figsize=(max(6, n), max(5, n - 1)))
+        im = ax.imshow(cm_norm, interpolation="nearest", cmap="Blues", vmin=0, vmax=1)
+        fig.colorbar(im, ax=ax)
+        ax.set_xticks(range(n))
+        ax.set_xticklabels(class_names, rotation=45, ha="right", fontsize=8)
+        ax.set_yticks(range(n))
+        ax.set_yticklabels(class_names, fontsize=8)
+        for r in range(n):
+            for c in range(n):
+                ax.text(c, r, f"{cm_norm[r, c]:.2f}", ha="center", va="center",
+                        fontsize=6, color="white" if cm_norm[r, c] > 0.5 else "black")
+        ax.set_xlabel("Predicted")
+        ax.set_ylabel("True")
+        ax.set_title(f"{split_name} confusion — epoch {epoch}")
+        fig.tight_layout()
+        return fig
+
+    def _make_per_dataset_bar(self, per_ds_acc, split_name, epoch):
+        if not per_ds_acc:
+            fig, ax = plt.subplots(figsize=(6, 3))
+            ax.text(0.5, 0.5, "No source_id data", ha="center", va="center", transform=ax.transAxes)
+            return fig
+        names = list(per_ds_acc.keys())
+        accs  = [per_ds_acc[n] for n in names]
+        order = np.argsort(accs)
+        names = [names[i] for i in order]
+        accs  = [accs[i]  for i in order]
+        fig, ax = plt.subplots(figsize=(7, max(3, len(names) * 0.6)))
+        bars = ax.barh(names, accs, color="steelblue")
+        ax.set_xlim(0, 1.05)
+        ax.set_xlabel("Accuracy")
+        ax.set_title(f"{split_name} per-dataset accuracy — epoch {epoch}")
+        for bar, acc in zip(bars, accs):
+            ax.text(min(acc + 0.02, 1.0), bar.get_y() + bar.get_height() / 2,
+                    f"{acc:.3f}", va="center", fontsize=8)
+        fig.tight_layout()
+        return fig
+
+    def after_train(self):
+        self.trainer.logger.info(
+            "Best allAcc_id: {:.4f}".format(self.trainer.best_metric_value)
+        )
+
+
 def _log_normalized_confusion_matrix(cm, class_names, wandb_key, epoch):
     """Log a row-normalised confusion matrix as a wandb.Image heatmap."""
     num_classes = len(class_names)

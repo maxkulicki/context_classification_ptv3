@@ -170,11 +170,13 @@ class CheckpointSaver(HookBase):
     def __init__(self, save_freq=None):
         self.save_freq = save_freq  # None or int, None indicate only save model last
         self.best_mAcc_value = -torch.inf
+        self.best_ood_metric_value = -torch.inf
 
     def after_epoch(self):
         if is_main_process():
             is_best = False
             is_best_mAcc = False
+            is_best_ood = False
             if self.trainer.cfg.evaluate:
                 current_metric_value = self.trainer.comm_info["current_metric_value"]
                 current_metric_name = self.trainer.comm_info["current_metric_name"]
@@ -204,6 +206,22 @@ class CheckpointSaver(HookBase):
                         )
                     self.trainer.logger.info(
                         "Currently Best mAcc: {:.4f}".format(self.best_mAcc_value)
+                    )
+                # Track best OOD metric separately
+                current_ood = self.trainer.comm_info.get("current_metric_value_ood")
+                if current_ood is not None:
+                    if current_ood > self.best_ood_metric_value:
+                        self.best_ood_metric_value = current_ood
+                        is_best_ood = True
+                        self.trainer.logger.info(
+                            "Best validation allAcc_ood updated to: {:.4f}".format(
+                                current_ood
+                            )
+                        )
+                    self.trainer.logger.info(
+                        "Currently Best allAcc_ood: {:.4f}".format(
+                            self.best_ood_metric_value
+                        )
                     )
 
             filename = os.path.join(
@@ -236,6 +254,13 @@ class CheckpointSaver(HookBase):
                     filename,
                     os.path.join(
                         self.trainer.cfg.save_path, "model", "model_best_mAcc.pth"
+                    ),
+                )
+            if is_best_ood:
+                shutil.copyfile(
+                    filename,
+                    os.path.join(
+                        self.trainer.cfg.save_path, "model", "model_best_ood.pth"
                     ),
                 )
             if self.save_freq and (self.trainer.epoch + 1) % self.save_freq == 0:

@@ -127,6 +127,7 @@ class StandardizedDataset(Dataset):
                 len(self.data_list), self.loop, split
             )
         )
+        self.source_names, self._source_id_arr = self._build_source_index()
 
         record_name = f"standardized_dataset_{self.split}"
         if num_points is not None:
@@ -234,6 +235,19 @@ class StandardizedDataset(Dataset):
             data_dict[key] = torch.tensor(arr[np.newaxis])  # (1, D)
         return data_dict
 
+    def _build_source_index(self):
+        """Map each data_list entry to an integer dataset source ID from the filename stem."""
+        seen = {}
+        ids = []
+        for path in self.data_list:
+            stem = os.path.splitext(os.path.basename(path))[0]
+            ds_name = stem.split("_")[0]
+            if ds_name not in seen:
+                seen[ds_name] = len(seen)
+            ids.append(seen[ds_name])
+        names = sorted(seen, key=seen.get)
+        return names, ids
+
     def get_data_list(self):
         assert isinstance(self.split, str)
         split_path = os.path.join(
@@ -261,6 +275,9 @@ class StandardizedDataset(Dataset):
     def prepare_train_data(self, idx):
         data_dict = self.get_data(idx)
         data_dict = self._inject_context(data_dict, idx)
+        data_dict["source_id"] = np.array(
+            [self._source_id_arr[idx % len(self.data_list)]], dtype=np.int64
+        )
         data_dict = self.transform(data_dict)
         return data_dict
 
