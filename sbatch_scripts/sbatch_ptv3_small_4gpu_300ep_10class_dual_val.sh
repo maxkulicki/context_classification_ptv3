@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=ptv3_10class_dual_val
-#SBATCH --time=03:00:00
+#SBATCH --time=10:00:00
 #SBATCH --account=plgteecls-gpu-a100
 #SBATCH --partition=plgrid-gpu-a100
 #SBATCH --nodes=1
@@ -21,7 +21,7 @@ WD=$ROOT/context_classification_ptv3/Pointcept
 SIF=$ROOT/ptv3.sif
 
 CONFIG=$WD/configs/standardized_dataset/cls-ptv3-baseline-genus-small-10class-dual-val.py
-EXP_DIR=$WD/exp/snapshot_10class_dual_val/ptv3_small_4gpu_100ep
+EXP_DIR=$WD/exp/snapshot_10class_dual_val/ptv3_small_4gpu_300ep
 
 ls -ld "$ROOT" "$WD" || true
 
@@ -44,6 +44,6 @@ apptainer exec --nv --pwd "$WD" \
   python -u tools/train.py \
     --config-file "$CONFIG" \
     --num-gpus 4 \
-    --options save_path="$EXP_DIR" epoch=100 eval_epoch=100 num_worker=16
+    --options save_path="$EXP_DIR" epoch=300 eval_epoch=300 num_worker=16
 
 echo "Job completed at: $(date)"

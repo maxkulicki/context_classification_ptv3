@@ -1508,4 +1508,78 @@ class ImgAugmentation(object):
         correspondence[~mask] = np.array([-1, -1])
         correspondence[mask] -= np.array(self.crop_start)
         point["correspondence"] = correspondence.reshape(correspondence_shape)
+
+
+@TRANSFORMS.register_module()
+class CtxVMFAugment(object):
+    """
+    von Mises-Fisher noise for precomputed context embeddings (e.g. ctx_ae).
+
+    Assumes embeddings are unit-normalized (on S^(d-1)).  Each embedding is
+    perturbed by sampling from vMF(mu=embedding, kappa), keeping the result
+    on the sphere.  Only applied when the key is present in data_dict — no-ops
+    silently if the key is absent (e.g. val pipeline reuses same class).
+
+    The augmentation is in the train transform list only, so no training flag
+    is needed here.
+
+    Args:
+        key   : data_dict key to augment (default 'ctx_ae')
+        kappa : concentration parameter.  Higher = tighter cone around mu.
+                Rough guide for d=64:
+                  kappa=50  → ~11° mean deviation
+                  kappa=100 → ~8°  mean deviation  (recommended start)
+                  kappa=200 → ~5°  mean deviation
+    """
+
+    def __init__(self, key: str = "ctx_ae", kappa: float = 100.0):
+        self.key = key
+        self.kappa = kappa
+
+    @staticmethod
+    def _sample_vmf(mu: torch.Tensor, kappa: float) -> torch.Tensor:
+        """Sample from vMF(mu, kappa) via Wood/Ulrich rejection sampling."""
+        import torch.nn.functional as F
+
+        B, d = mu.shape
+        device = mu.device
+
+        b = (-2 * kappa + torch.sqrt(
+            torch.tensor(4 * kappa ** 2 + (d - 1) ** 2, dtype=torch.float32, device=device)
+        )) / (d - 1)
+        x0 = (1 - b) / (1 + b)
+        c = kappa * x0 + (d - 1) * torch.log(1 - x0 ** 2)
+
+        w = torch.zeros(B, device=device)
+        mask = torch.ones(B, dtype=torch.bool, device=device)
+
+        while mask.any():
+            n = int(mask.sum().item())
+            z = torch.distributions.Beta(
+                (d - 1) / 2.0, (d - 1) / 2.0
+            ).sample((n,)).to(device)
+            w_cand = (1 - (1 + b) * z) / (1 - (1 - b) * z)
+            u = torch.rand(n, device=device)
+            accept = (kappa * w_cand + (d - 1) * torch.log(1 - x0 * w_cand) - c) >= torch.log(u)
+            w[mask] = torch.where(accept, w_cand, w[mask])
+            new_mask = mask.clone()
+            new_mask[mask] = ~accept
+            mask = new_mask
+
+        # combine: cos(theta)*mu + sin(theta)*v,  v perp to mu
+        eps = torch.randn(B, d, device=device)
+        eps = eps - (eps * mu).sum(-1, keepdim=True) * mu
+        v = F.normalize(eps, dim=-1)
+
+        w = w.unsqueeze(-1)
+        z = torch.sqrt((1 - w ** 2).clamp(min=1e-8)) * v + w * mu
+        return F.normalize(z, dim=-1)
+
+    def __call__(self, data_dict):
+        if self.key not in data_dict:
+            return data_dict
+        ctx = data_dict[self.key]           # (1, d) from _inject_context
+        mu = torch.nn.functional.normalize(ctx, dim=-1)
+        data_dict[self.key] = self._sample_vmf(mu, self.kappa)
+        return data_dict
         return point
