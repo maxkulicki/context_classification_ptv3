@@ -205,6 +205,331 @@ class MultiCatCtxCls(nn.Module):
             return dict(cls_logits=cls_logits)
 
 
+@MODELS.register_module("MultiCatCtxCls-v1m2")
+class MultiCatCtxClsAux(nn.Module):
+    """PTv3 + multiple context encoders, deterministic concat fusion + aux heads.
+
+    Same fusion as v1m1 (all sources always active, simple concatenation),
+    plus one lightweight auxiliary classification head per branch (LiDAR
+    backbone + each context encoder). Aux heads are single Linear probes
+    that provide a direct gradient signal to each encoder, preventing
+    context branches from collapsing when the backbone dominates.
+
+        tree_feat (backbone_embed_dim)  → aux_head_lidar → aux_logits
+        ctx_0 (context_embed_dim)       → aux_head_0     → aux_logits
+        ctx_1 (context_embed_dim)       → aux_head_1     → aux_logits
+        ...
+        [tree_feat || ctx_0 || ctx_1 || ...]
+        → Linear(fused_dim, 512) → LayerNorm → ReLU → Dropout → Linear(512, num_classes)
+
+    loss = CE(main_logits, y)
+         + aux_loss_weight × sum(CE(aux_logits_i, y) for i in branches)
+
+    Parameters
+    ----------
+    backbone : dict
+        Config for the point cloud backbone (e.g. PT-v3m1).
+    context_encoders : list[dict]
+        List of encoder configs, one per source.
+    context_keys : list[str]
+        Data dict keys for each source, same order as context_encoders.
+    criteria : list[dict]
+        Loss function configs for the main fusion head.
+    num_classes : int
+    backbone_embed_dim : int
+    context_embed_dim : int
+        Output dim of each encoder (all must share the same dim).
+    aux_loss_weight : float
+        Weight for each auxiliary loss term (default 0.1).
+    """
+
+    def __init__(
+        self,
+        backbone=None,
+        context_encoders=None,
+        context_keys=None,
+        criteria=None,
+        num_classes=13,
+        backbone_embed_dim=512,
+        context_embed_dim=256,
+        aux_loss_weight=0.1,
+        backbone_weight=None,
+        freeze_backbone=False,
+    ):
+        super().__init__()
+        if context_encoders is None:
+            context_encoders = []
+        if context_keys is None:
+            context_keys = []
+        assert len(context_encoders) == len(context_keys), \
+            "context_encoders and context_keys must have the same length"
+
+        self.backbone = build_model(backbone)
+
+        # Optionally load pretrained backbone weights from a separate checkpoint
+        if backbone_weight is not None:
+            ckpt = torch.load(backbone_weight, map_location="cpu")
+            state_dict = ckpt.get("state_dict", ckpt)
+            # Extract only backbone.* keys and strip the prefix
+            bb_state = {}
+            for k, v in state_dict.items():
+                if k.startswith("backbone."):
+                    bb_state[k[len("backbone."):]] = v
+            missing, unexpected = self.backbone.load_state_dict(bb_state, strict=False)
+            if missing:
+                print(f"[MultiCatCtxCls-v1m2] backbone missing keys: {missing}")
+            if unexpected:
+                print(f"[MultiCatCtxCls-v1m2] backbone unexpected keys: {unexpected}")
+            print(f"[MultiCatCtxCls-v1m2] Loaded {len(bb_state)} backbone params from {backbone_weight}")
+
+        if freeze_backbone:
+            for param in self.backbone.parameters():
+                param.requires_grad = False
+            # Keep backbone in train mode (not .eval()) because spconv's
+            # implicit_gemm tuner crashes in eval mode. With requires_grad=False
+            # the weights are never updated regardless.
+            print("[MultiCatCtxCls-v1m2] Backbone frozen — will not be trained.")
+        self.context_encoders = nn.ModuleList(
+            [build_model(cfg) for cfg in context_encoders]
+        )
+        self.context_keys = context_keys
+        self.criteria = build_criteria(criteria)
+        self.aux_loss_weight = aux_loss_weight
+
+        # Main fusion head
+        fused_dim = backbone_embed_dim + len(context_encoders) * context_embed_dim
+        self.cls_head = nn.Sequential(
+            nn.Linear(fused_dim, 512),
+            nn.LayerNorm(512),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5),
+            nn.Linear(512, num_classes),
+        )
+
+        # Auxiliary heads: one per branch (lidar + each context source)
+        self.aux_head_lidar = nn.Linear(backbone_embed_dim, num_classes)
+        self.aux_heads_ctx = nn.ModuleList(
+            [nn.Linear(context_embed_dim, num_classes) for _ in context_encoders]
+        )
+        self.aux_criterion = nn.CrossEntropyLoss(ignore_index=-1)
+
+    def forward(self, input_dict):
+        point = Point(input_dict)
+        point = self.backbone(point)
+
+        tree_feat = torch_scatter.segment_csr(
+            src=point.feat,
+            indptr=nn.functional.pad(point.offset, (1, 0)),
+            reduce="mean",
+        )
+
+        ctx_feats = [
+            enc(input_dict[key])
+            for enc, key in zip(self.context_encoders, self.context_keys)
+        ]
+        fused = torch.cat([tree_feat] + ctx_feats, dim=-1)
+        cls_logits = self.cls_head(fused)
+
+        if "category" not in input_dict:
+            return dict(cls_logits=cls_logits)
+
+        labels = input_dict["category"]
+        loss_main = self.criteria(cls_logits, labels)
+
+        # Auxiliary logits and losses
+        aux_logits_lidar = self.aux_head_lidar(tree_feat)
+        aux_logits_ctx = {
+            key: head(feat)
+            for key, head, feat in zip(self.context_keys, self.aux_heads_ctx, ctx_feats)
+        }
+        loss_aux_lidar = self.aux_criterion(aux_logits_lidar, labels)
+        loss_aux_ctx = [
+            self.aux_criterion(aux_logits_ctx[key], labels)
+            for key in self.context_keys
+        ]
+        loss_aux_total = loss_aux_lidar + sum(loss_aux_ctx)
+        loss = loss_main + self.aux_loss_weight * loss_aux_total
+
+        if self.training:
+            result = dict(loss=loss, loss_main=loss_main, loss_aux_lidar=loss_aux_lidar)
+            for i, key in enumerate(self.context_keys):
+                result[f"loss_aux_{key}"] = loss_aux_ctx[i]
+            return result
+
+        result = dict(loss=loss, loss_main=loss_main, cls_logits=cls_logits,
+                      aux_logits_lidar=aux_logits_lidar)
+        for key, lgts in aux_logits_ctx.items():
+            result[f"aux_logits_{key}"] = lgts
+        return result
+
+
+@MODELS.register_module("MultiXAttnCtxCls-v1m1")
+class MultiXAttnCtxCls(nn.Module):
+    """PTv3 + multiple context encoders, cross-attention fusion + aux heads.
+
+    Point cloud features (queries) attend to context embeddings (keys/values)
+    via a single cross-attention layer with residual connection and FFN.
+    The output stays in the backbone's feature space (backbone_embed_dim).
+
+        tree_feat (B, backbone_embed_dim)      Q
+        ctx_0     (B, context_embed_dim)       ─┐
+        ctx_1     (B, context_embed_dim)       ─┤ K, V
+        ...                                    ─┘
+
+        CrossAttn(Q, K, V) + residual → LayerNorm
+        → FFN(backbone_embed_dim → 4×backbone_embed_dim → backbone_embed_dim)
+        → LayerNorm → Linear(backbone_embed_dim → num_classes)
+
+    Auxiliary heads (same as v1m2): single Linear probes on tree_feat and
+    each context embedding, applied before cross-attention.
+
+    Parameters
+    ----------
+    backbone : dict
+        Config for the point cloud backbone (e.g. PT-v3m1).
+    context_encoders : list[dict]
+        List of encoder configs, one per source.
+    context_keys : list[str]
+        Data dict keys for each source, same order as context_encoders.
+    criteria : list[dict]
+        Loss function configs for the main fusion head.
+    num_classes : int
+    backbone_embed_dim : int
+    context_embed_dim : int
+        Output dim of each encoder (all must share the same dim).
+    num_heads : int
+        Number of attention heads (default 8).
+    ffn_ratio : int
+        FFN expansion ratio (default 4).
+    dropout : float
+        Dropout in attention and FFN (default 0.1).
+    aux_loss_weight : float
+        Weight for each auxiliary loss term (default 0.25).
+    """
+
+    def __init__(
+        self,
+        backbone=None,
+        context_encoders=None,
+        context_keys=None,
+        criteria=None,
+        num_classes=13,
+        backbone_embed_dim=512,
+        context_embed_dim=256,
+        num_heads=8,
+        ffn_ratio=4,
+        dropout=0.1,
+        aux_loss_weight=0.25,
+    ):
+        super().__init__()
+        if context_encoders is None:
+            context_encoders = []
+        if context_keys is None:
+            context_keys = []
+        assert len(context_encoders) == len(context_keys), \
+            "context_encoders and context_keys must have the same length"
+
+        self.backbone = build_model(backbone)
+        self.context_encoders = nn.ModuleList(
+            [build_model(cfg) for cfg in context_encoders]
+        )
+        self.context_keys = context_keys
+        self.criteria = build_criteria(criteria)
+        self.aux_loss_weight = aux_loss_weight
+
+        # Cross-attention: Q from backbone (512-d), K/V from context (256-d)
+        d = backbone_embed_dim
+        self.cross_attn = nn.MultiheadAttention(
+            embed_dim=d, num_heads=num_heads,
+            kdim=context_embed_dim, vdim=context_embed_dim,
+            dropout=dropout, batch_first=True,
+        )
+        self.norm1 = nn.LayerNorm(d)
+
+        # FFN
+        ffn_dim = d * ffn_ratio
+        self.ffn = nn.Sequential(
+            nn.Linear(d, ffn_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(ffn_dim, d),
+            nn.Dropout(dropout),
+        )
+        self.norm2 = nn.LayerNorm(d)
+
+        # Classification head
+        self.cls_head = nn.Sequential(
+            nn.Dropout(p=0.5),
+            nn.Linear(d, num_classes),
+        )
+
+        # Auxiliary heads: one per branch (lidar + each context source)
+        self.aux_head_lidar = nn.Linear(backbone_embed_dim, num_classes)
+        self.aux_heads_ctx = nn.ModuleList(
+            [nn.Linear(context_embed_dim, num_classes) for _ in context_encoders]
+        )
+        self.aux_criterion = nn.CrossEntropyLoss(ignore_index=-1)
+
+    def forward(self, input_dict):
+        point = Point(input_dict)
+        point = self.backbone(point)
+
+        tree_feat = torch_scatter.segment_csr(
+            src=point.feat,
+            indptr=nn.functional.pad(point.offset, (1, 0)),
+            reduce="mean",
+        )  # (B, backbone_embed_dim)
+
+        ctx_feats = [
+            enc(input_dict[key])
+            for enc, key in zip(self.context_encoders, self.context_keys)
+        ]  # list of (B, context_embed_dim)
+
+        # Cross-attention: Q = tree_feat, K = V = stacked context
+        q = tree_feat.unsqueeze(1)                     # (B, 1, 512)
+        kv = torch.stack(ctx_feats, dim=1)             # (B, N_ctx, 256)
+        attn_out, _ = self.cross_attn(q, kv, kv)      # (B, 1, 512)
+        attn_out = attn_out.squeeze(1)                 # (B, 512)
+
+        # Residual + LayerNorm + FFN + LayerNorm
+        x = self.norm1(tree_feat + attn_out)
+        x = self.norm2(x + self.ffn(x))
+
+        cls_logits = self.cls_head(x)
+
+        if "category" not in input_dict:
+            return dict(cls_logits=cls_logits)
+
+        labels = input_dict["category"]
+        loss_main = self.criteria(cls_logits, labels)
+
+        # Auxiliary logits and losses (on pre-fusion features)
+        aux_logits_lidar = self.aux_head_lidar(tree_feat)
+        aux_logits_ctx = {
+            key: head(feat)
+            for key, head, feat in zip(self.context_keys, self.aux_heads_ctx, ctx_feats)
+        }
+        loss_aux_lidar = self.aux_criterion(aux_logits_lidar, labels)
+        loss_aux_ctx = [
+            self.aux_criterion(aux_logits_ctx[key], labels)
+            for key in self.context_keys
+        ]
+        loss_aux_total = loss_aux_lidar + sum(loss_aux_ctx)
+        loss = loss_main + self.aux_loss_weight * loss_aux_total
+
+        if self.training:
+            result = dict(loss=loss, loss_main=loss_main, loss_aux_lidar=loss_aux_lidar)
+            for i, key in enumerate(self.context_keys):
+                result[f"loss_aux_{key}"] = loss_aux_ctx[i]
+            return result
+
+        result = dict(loss=loss, loss_main=loss_main, cls_logits=cls_logits,
+                      aux_logits_lidar=aux_logits_lidar)
+        for key, lgts in aux_logits_ctx.items():
+            result[f"aux_logits_{key}"] = lgts
+        return result
+
+
 @MODELS.register_module("UniversalCtxCls-v1m1")
 class UniversalCtxCls(nn.Module):
     """PTv3 + CLS-attention multi-source context encoder, late concat fusion.

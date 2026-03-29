@@ -276,7 +276,12 @@ class DualValClsEvaluator(HookBase):
         per_ds_correct = torch.zeros(n_sources, dtype=torch.long, device="cuda")
         per_ds_total   = torch.zeros(n_sources, dtype=torch.long, device="cuda")
         all_preds_list, all_labels_list = [], []
-        total_loss, n_batches = 0.0, 0
+        total_loss, total_loss_main, n_batches = 0.0, 0.0, 0
+
+        # Auxiliary head tracking (populated on first batch if aux logits exist)
+        aux_keys = None          # list of aux branch names, e.g. ["lidar", "ctx_ae", "ctx_sinr"]
+        aux_confusions = {}      # {name: (num_classes, num_classes) confusion tensor}
+        aux_losses = {}          # {name: running sum of CE loss}
 
         for i, input_dict in enumerate(loader):
             for key in input_dict:
@@ -287,6 +292,10 @@ class DualValClsEvaluator(HookBase):
             pred  = output_dict["cls_logits"].max(1)[1]
             label = input_dict["category"]
             total_loss += output_dict["loss"].item()
+            if "loss_main" in output_dict:
+                total_loss_main += output_dict["loss_main"].item()
+            else:
+                total_loss_main += output_dict["loss"].item()
             n_batches  += 1
 
             valid = (label != ignore_idx)
@@ -296,6 +305,27 @@ class DualValClsEvaluator(HookBase):
             ).reshape(num_classes, num_classes)
             all_preds_list.append(pred.cpu())
             all_labels_list.append(label.cpu())
+
+            # Discover and accumulate auxiliary head outputs
+            if aux_keys is None:
+                aux_keys = []
+                for okey in output_dict:
+                    if okey.startswith("aux_logits_"):
+                        name = okey[len("aux_logits_"):]
+                        aux_keys.append(name)
+                        aux_confusions[name] = torch.zeros(
+                            num_classes, num_classes, dtype=torch.long, device="cuda")
+                        aux_losses[name] = 0.0
+            for name in aux_keys:
+                aux_pred = output_dict[f"aux_logits_{name}"].max(1)[1]
+                aux_idx = label[valid] * num_classes + aux_pred[valid]
+                aux_confusions[name] += torch.bincount(
+                    aux_idx, minlength=num_classes * num_classes
+                ).reshape(num_classes, num_classes)
+                aux_losses[name] += torch.nn.functional.cross_entropy(
+                    output_dict[f"aux_logits_{name}"][valid],
+                    label[valid], ignore_index=ignore_idx
+                ).item()
 
             # Per-dataset tracking
             if n_sources > 0 and "source_id" in input_dict:
@@ -315,6 +345,20 @@ class DualValClsEvaluator(HookBase):
             if n_sources > 0:
                 dist.all_reduce(per_ds_correct)
                 dist.all_reduce(per_ds_total)
+            for name in (aux_keys or []):
+                dist.all_reduce(aux_confusions[name])
+
+        # Compute aux head metrics (mAcc, allAcc, loss)
+        aux_metrics = {}
+        for name in (aux_keys or []):
+            acm = aux_confusions[name].cpu().numpy()
+            a_tp = np.diag(acm)
+            a_acc_class = a_tp / (acm.sum(1) + 1e-10)
+            aux_metrics[name] = dict(
+                m_acc=float(np.mean(a_acc_class)),
+                all_acc=float(a_tp.sum() / (acm.sum() + 1e-10)),
+                loss=aux_losses[name] / max(n_batches, 1),
+            )
 
         cm         = confusion.cpu().numpy()
         all_preds  = torch.cat(all_preds_list).numpy()
@@ -333,7 +377,8 @@ class DualValClsEvaluator(HookBase):
         all_acc     = float(np.diag(cm).sum() / (cm.sum() + 1e-10))
         macro_f1    = float(np.mean(f1_cls))
         weighted_f1 = float(np.average(f1_cls, weights=cm.sum(1)))
-        loss_avg    = total_loss / max(n_batches, 1)
+        loss_avg      = total_loss / max(n_batches, 1)
+        loss_main_avg = total_loss_main / max(n_batches, 1)
 
         per_ds_acc = {}
         if n_sources > 0:
@@ -354,6 +399,11 @@ class DualValClsEvaluator(HookBase):
             )
         for ds_name, acc in sorted(per_ds_acc.items()):
             self.trainer.logger.info(f"  {split_name} dataset {ds_name}: acc {acc:.4f}")
+        for name, am in aux_metrics.items():
+            self.trainer.logger.info(
+                f"  {split_name} aux_{name}: loss {am['loss']:.4f} "
+                f"mAcc {am['m_acc']:.4f} allAcc {am['all_acc']:.4f}"
+            )
 
         # Save plots (main process only)
         epoch = self.trainer.epoch + 1
@@ -378,7 +428,8 @@ class DualValClsEvaluator(HookBase):
             if self.trainer.writer is not None and self.trainer.cfg.enable_wandb:
                 wandb_dict = {
                     "Epoch":                       epoch,
-                    f"{split_name}/loss":          loss_avg,
+                    f"{split_name}/loss":          loss_main_avg,
+                    f"{split_name}/loss_total":    loss_avg,
                     f"{split_name}/mIoU":          m_iou,
                     f"{split_name}/mAcc":          m_acc,
                     f"{split_name}/allAcc":        all_acc,
@@ -390,6 +441,10 @@ class DualValClsEvaluator(HookBase):
                     wandb_dict[f"{split_name}/acc_{name}"] = float(acc_class[i])
                 for ds_name, acc in per_ds_acc.items():
                     wandb_dict[f"{split_name}/ds_acc_{ds_name}"] = acc
+                for name, am in aux_metrics.items():
+                    wandb_dict[f"{split_name}/aux_{name}_loss"]   = am["loss"]
+                    wandb_dict[f"{split_name}/aux_{name}_mAcc"]   = am["m_acc"]
+                    wandb_dict[f"{split_name}/aux_{name}_allAcc"] = am["all_acc"]
                 wandb.log(wandb_dict, step=wandb.run.step)
                 wandb.log(
                     {f"{split_name}/confusion_matrix": wandb.plot.confusion_matrix(

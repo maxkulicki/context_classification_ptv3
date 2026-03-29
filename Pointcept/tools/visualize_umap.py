@@ -43,6 +43,7 @@ POINTCEPT_ROOT = SCRIPT_DIR.parent
 sys.path.insert(0, str(POINTCEPT_ROOT))
 
 from pointcept.utils.config import Config
+from pointcept.utils.logger import get_root_logger
 from pointcept.models import build_model
 from pointcept.models.utils.structure import Point
 from pointcept.datasets import build_dataset
@@ -104,16 +105,19 @@ def load_model(cfg, checkpoint_path, device):
     # The standard attention path produces identical results.
     cfg.model.backbone.enable_flash = False
 
+    print("[model] Building model architecture...", flush=True)
     model = build_model(cfg.model)
 
+    print(f"[model] Loading checkpoint: {checkpoint_path}", flush=True)
     ckpt = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     state_dict = OrderedDict()
     for key, val in ckpt["state_dict"].items():
         new_key = key[len("module."):] if key.startswith("module.") else key
         state_dict[new_key] = val
     model.load_state_dict(state_dict, strict=True)
-    print(f"[model] Loaded checkpoint (epoch {ckpt['epoch']})")
+    print(f"[model] Loaded (epoch {ckpt['epoch']})", flush=True)
 
+    print(f"[model] Moving to {device}...", flush=True)
     return model.to(device).eval()
 
 
@@ -205,7 +209,7 @@ def plot_by_genus(embedding, genus_ids, class_names, path, split, method):
     plt.tight_layout()
     plt.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"[plot] Saved → {path}")
+    print(f"[plot] Saved → {path}", flush=True)
 
 
 def plot_by_source(embedding, source_ids, source_names, path, split, method):
@@ -231,7 +235,7 @@ def plot_by_source(embedding, source_ids, source_names, path, split, method):
     plt.tight_layout()
     plt.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"[plot] Saved → {path}")
+    print(f"[plot] Saved → {path}", flush=True)
 
 
 def plot_combined(embedding, genus_ids, source_ids,
@@ -281,7 +285,7 @@ def plot_combined(embedding, genus_ids, source_ids,
     plt.tight_layout()
     plt.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"[plot] Saved → {path}")
+    print(f"[plot] Saved → {path}", flush=True)
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -289,34 +293,54 @@ def plot_combined(embedding, genus_ids, source_ids,
 def main():
     args = parse_args()
 
+    # Initialize the Pointcept logger early so its messages (e.g. dataset cache
+    # loading progress) are routed to stderr and visible in the terminal.
+    get_root_logger()
+
     device = torch.device(
         args.device if args.device else
         ("cuda" if torch.cuda.is_available() else "cpu")
     )
-    print(f"[device] {device}")
+    print(f"[device] {device}", flush=True)
 
+    print(f"[config] Parsing {args.config} ...", flush=True)
     cfg = Config.fromfile(args.config)
     class_names = cfg.data.names
-    print(f"[config] {len(class_names)} classes: {class_names}")
+    print(f"[config] {len(class_names)} classes: {class_names}", flush=True)
 
-    print("[model] Building and loading checkpoint...")
     model = load_model(cfg, args.checkpoint, device)
 
-    print(f"[dataset] Building '{args.split}' split...")
+    # The dataset may load a large cached .pth file (up to ~900 MB for train).
+    # The Pointcept logger prints its own progress line; we add a heads-up here.
+    data_root = args.data_root or cfg.data.val.get("data_root", "")
+    print(
+        f"[dataset] Building '{args.split}' split from {data_root} "
+        f"(loading cache — may take a minute for large splits)...",
+        flush=True,
+    )
     dataset = build_vis_dataset(cfg, args.split, args.data_root)
     source_names = dataset.source_names
-    print(f"[dataset] {len(dataset)} samples, {len(source_names)} sources: {source_names}")
+    print(
+        f"[dataset] {len(dataset)} samples, "
+        f"{len(source_names)} sources: {source_names}",
+        flush=True,
+    )
 
-    print("[features] Running forward pass (backbone only)...")
+    print("[features] Running forward pass (backbone only)...", flush=True)
     features, genus_ids, source_ids = extract_features(
         model, dataset, args.batch_size, args.num_workers, device
     )
-    print(f"[features] {features.shape}  genus: {genus_ids.shape}  source: {source_ids.shape}")
+    print(
+        f"[features] Done — {features.shape}  "
+        f"genus: {genus_ids.shape}  source: {source_ids.shape}",
+        flush=True,
+    )
 
     if args.method == "umap":
         print(
             f"[umap] Fitting UMAP "
-            f"(n_neighbors={args.n_neighbors}, min_dist={args.min_dist}, seed={args.seed})..."
+            f"(n_neighbors={args.n_neighbors}, min_dist={args.min_dist}, seed={args.seed})...",
+            flush=True,
         )
         embedding = UMAP(
             n_neighbors=args.n_neighbors,
@@ -325,9 +349,9 @@ def main():
             verbose=True,
         ).fit_transform(features)
     else:
-        print("[pca] Fitting PCA to 2 components...")
+        print("[pca] Fitting PCA to 2 components...", flush=True)
         embedding = PCA(n_components=2, random_state=args.seed).fit_transform(features)
-    print(f"[{args.method}] Embedding: {embedding.shape}")
+    print(f"[{args.method}] Embedding: {embedding.shape}", flush=True)
 
     path_genus, path_source, path_combined = _output_paths(args.output)
     plot_by_genus(embedding, genus_ids, class_names, path_genus, args.split, args.method)
