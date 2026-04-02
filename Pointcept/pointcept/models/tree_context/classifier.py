@@ -530,6 +530,125 @@ class MultiXAttnCtxCls(nn.Module):
         return result
 
 
+@MODELS.register_module("MidFusionCtxCls-v1m1")
+class MidFusionCtxCls(nn.Module):
+    """PTv3 + single context encoder, mid-level feature injection (concat).
+
+    Context features are injected at an intermediate PTv3 encoder stage,
+    allowing the final encoder layers to learn joint geometry-context
+    representations. After stage `mid_fusion_stage`, the AE embedding is
+    broadcast to all voxels, concatenated with point features, and projected
+    back to the original channel dimension before the remaining encoder stages.
+
+    Architecture (default: inject after enc3, before enc4):
+        embedding → enc0 → enc1 → enc2 → enc3
+                                            ↓
+                                     [inject AE]
+                             cat(point.feat, ae_broadcast)
+                             → Linear(C+ae_dim → C) + LN + GELU
+                                            ↓
+                                          enc4
+                                            ↓
+                                    mean pool → cls_head
+
+    Parameters
+    ----------
+    backbone : dict
+        Config for the point cloud backbone (PT-v3m1), with enc_mode=True.
+    context_encoder : dict
+        Config for the AE context encoder.
+    context_key : str
+        Data dict key for the context features (e.g. 'ctx_ae').
+    criteria : list[dict]
+        Loss function configs.
+    num_classes : int
+    backbone_embed_dim : int
+        Output dim of the final encoder stage (enc_channels[-1], default 512).
+    mid_fusion_channels : int
+        Channel dim at the injection stage (enc_channels[mid_fusion_stage]).
+        Must match backbone enc_channels[mid_fusion_stage]. Default 256.
+    ae_embed_dim : int
+        Output dim of the context encoder (default 256).
+    mid_fusion_stage : int
+        Index of the last encoder stage to run before injection (default 3).
+        With enc_channels=(32,64,128,256,512): stage 3 → 256-d features.
+    """
+
+    def __init__(
+        self,
+        backbone=None,
+        context_encoder=None,
+        context_key="ctx_ae",
+        criteria=None,
+        num_classes=13,
+        backbone_embed_dim=512,
+        mid_fusion_channels=256,
+        ae_embed_dim=256,
+        mid_fusion_stage=3,
+    ):
+        super().__init__()
+        self.backbone = build_model(backbone)
+        self.context_encoder = build_model(context_encoder)
+        self.context_key = context_key
+        self.criteria = build_criteria(criteria)
+        self.mid_fusion_stage = mid_fusion_stage
+        self.num_stages = self.backbone.num_stages
+
+        # Fusion projection: cat(point_feat, ae_broadcast) → point_feat dim
+        self.fusion_proj = nn.Sequential(
+            nn.Linear(mid_fusion_channels + ae_embed_dim, mid_fusion_channels),
+            nn.LayerNorm(mid_fusion_channels),
+            nn.GELU(),
+        )
+
+        # Classification head
+        self.cls_head = nn.Sequential(
+            nn.Dropout(p=0.5),
+            nn.Linear(backbone_embed_dim, num_classes),
+        )
+
+    def forward(self, input_dict):
+        # Replicate PTv3's forward, calling encoder stages individually
+        point = Point(input_dict)
+        point.serialization(
+            order=self.backbone.order,
+            shuffle_orders=self.backbone.shuffle_orders,
+        )
+        point.sparsify()
+        point = self.backbone.embedding(point)
+
+        # Run encoder stages 0..mid_fusion_stage
+        for s in range(self.mid_fusion_stage + 1):
+            point = getattr(self.backbone.enc, f'enc{s}')(point)
+
+        # Inject AE context: broadcast per-tree embedding to all voxels
+        ae_feat = self.context_encoder(input_dict[self.context_key])  # (B, ae_embed_dim)
+        ae_broadcast = ae_feat[point.batch]                            # (N, ae_embed_dim)
+        fused = torch.cat([point.feat, ae_broadcast], dim=-1)         # (N, C+ae_dim)
+        point.feat = self.fusion_proj(fused)                          # (N, C)
+
+        # Run remaining encoder stages
+        for s in range(self.mid_fusion_stage + 1, self.num_stages):
+            point = getattr(self.backbone.enc, f'enc{s}')(point)
+
+        # Global mean pool → classify
+        tree_feat = torch_scatter.segment_csr(
+            src=point.feat,
+            indptr=nn.functional.pad(point.offset, (1, 0)),
+            reduce="mean",
+        )  # (B, backbone_embed_dim)
+        cls_logits = self.cls_head(tree_feat)
+
+        if self.training:
+            loss = self.criteria(cls_logits, input_dict["category"])
+            return dict(loss=loss)
+        elif "category" in input_dict:
+            loss = self.criteria(cls_logits, input_dict["category"])
+            return dict(loss=loss, cls_logits=cls_logits)
+        else:
+            return dict(cls_logits=cls_logits)
+
+
 @MODELS.register_module("UniversalCtxCls-v1m1")
 class UniversalCtxCls(nn.Module):
     """PTv3 + CLS-attention multi-source context encoder, late concat fusion.

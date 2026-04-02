@@ -1583,3 +1583,70 @@ class CtxVMFAugment(object):
         data_dict[self.key] = self._sample_vmf(mu, self.kappa)
         return data_dict
         return point
+
+
+@TRANSFORMS.register_module()
+class CtxGaussianNoise(object):
+    """Isotropic Gaussian noise for precomputed context embeddings (e.g. ctx_sinr).
+
+    Adds i.i.d. N(0, sigma^2) noise to each dimension of the raw embedding.
+    With probability p_drop no noise is applied (acts as identity).
+
+    The noise is scale-relative: sigma is multiplied by the embedding's L2 norm
+    divided by sqrt(d), so sigma=0.1 means each dimension gets noise of ~10% of
+    the typical per-dimension feature magnitude regardless of the feature scale.
+
+    Args:
+        key    : data_dict key to augment (default 'ctx_sinr')
+        sigma  : noise std relative to per-dimension feature magnitude (default 0.1)
+        p_drop : probability of no augmentation per sample (default 0.2)
+    """
+
+    def __init__(self, key: str = "ctx_sinr", sigma: float = 0.1, p_drop: float = 0.2):
+        self.key = key
+        self.sigma = sigma
+        self.p_drop = p_drop
+
+    def __call__(self, data_dict):
+        if self.key not in data_dict:
+            return data_dict
+        if torch.rand(1).item() < self.p_drop:
+            return data_dict
+        ctx = data_dict[self.key]                    # (1, d)
+        scale = ctx.norm() / (ctx.shape[-1] ** 0.5)  # per-dimension magnitude
+        data_dict[self.key] = ctx + self.sigma * scale * torch.randn_like(ctx)
+        return data_dict
+
+
+@TRANSFORMS.register_module()
+class CtxPoolSample(object):
+    """Randomly sample one embedding from a precomputed pool of K embeddings.
+
+    Reads key_in (shape (1, K, D)) and writes a single randomly chosen
+    sample to key_out (shape (1, D)), overwriting it.  Silently no-ops if
+    key_in is absent (e.g. val pipeline where pool is not loaded).
+
+    Use in train transforms only.  Val pipeline loads only key_out (ctx_ae)
+    from the .pth and never sees the pool.
+
+    Args:
+        key_in  : data_dict key of the pool tensor, shape (1, K, D)
+        key_out : data_dict key to overwrite with the sampled embedding
+    """
+
+    def __init__(self, key_in: str = "ctx_ae_pool", key_out: str = "ctx_ae",
+                 p_drop: float = 0.2):
+        self.key_in = key_in
+        self.key_out = key_out
+        self.p_drop = p_drop
+
+    def __call__(self, data_dict):
+        if self.key_in not in data_dict:
+            return data_dict
+        if torch.rand(1).item() < self.p_drop:
+            return data_dict   # keep canonical ctx_ae unchanged
+        pool = data_dict[self.key_in]   # (1, K, D)
+        K = pool.shape[1]
+        idx = torch.randint(K, (1,)).item()
+        data_dict[self.key_out] = pool[:, idx, :]   # (1, D)
+        return data_dict

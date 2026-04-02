@@ -54,6 +54,12 @@ _SOURCE_META = {
             "elevation", "slope", "northness", "eastness", "tri", "tpi",
         } and not c.startswith("A") and not c.startswith("sinr_"),
     },
+    # Pool of K precomputed augmented embeddings per tree (shape K×64).
+    # Only loaded from .pth files (never from CSV), so col_filter is unused.
+    "alphaearth_pool": {
+        "key": "ctx_ae_pool",
+        "col_filter": lambda c: False,
+    },
 }
 
 
