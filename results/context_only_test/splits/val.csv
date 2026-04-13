@@ -1,0 +1,1607 @@
+dataset,tree_id,species,genus,latitude,longitude
+LAUTx,p1_12,Fagus sylvatica,Fagus,,
+LAUTx,p1_35,Fagus sylvatica,Fagus,,
+LAUTx,p1_36,Fagus sylvatica,Fagus,,
+LAUTx,p1_37,Fagus sylvatica,Fagus,,
+LAUTx,p1_38,Larix decidua,Larix,,
+LAUTx,p1_39,Fagus sylvatica,Fagus,,
+LAUTx,p1_40,Fagus sylvatica,Fagus,,
+LAUTx,p1_41,Fagus sylvatica,Fagus,,
+LAUTx,p1_42,Fagus sylvatica,Fagus,,
+LAUTx,p1_43,Fagus sylvatica,Fagus,,
+LAUTx,p1_44,Fagus sylvatica,Fagus,,
+LAUTx,p1_45,Fagus sylvatica,Fagus,,
+LAUTx,p1_46,Fagus sylvatica,Fagus,,
+LAUTx,p1_47,Fagus sylvatica,Fagus,,
+LAUTx,p1_48,Fagus sylvatica,Fagus,,
+LAUTx,p1_49,Fagus sylvatica,Fagus,,
+LAUTx,p1_50,Fagus sylvatica,Fagus,,
+LAUTx,p1_51,Pinus sylvestris,Pinus,,
+LAUTx,p1_58,Fagus sylvatica,Fagus,,
+LAUTx,p1_59,Fagus sylvatica,Fagus,,
+LAUTx,p1_60,Fagus sylvatica,Fagus,,
+LAUTx,p1_61,Fagus sylvatica,Fagus,,
+LAUTx,p1_62,Fagus sylvatica,Fagus,,
+LAUTx,p1_63,Fagus sylvatica,Fagus,,
+LAUTx,p1_64,Fagus sylvatica,Fagus,,
+LAUTx,p1_65,Fagus sylvatica,Fagus,,
+LAUTx,p1_66,Fagus sylvatica,Fagus,,
+LAUTx,p1_68,Fagus sylvatica,Fagus,,
+LAUTx,p1_69,Fagus sylvatica,Fagus,,
+LAUTx,p1_70,Fagus sylvatica,Fagus,,
+LAUTx,p1_71,Larix decidua,Larix,,
+LAUTx,p1_72,Fagus sylvatica,Fagus,,
+LAUTx,p1_73,Fagus sylvatica,Fagus,,
+LAUTx,p1_74,Fagus sylvatica,Fagus,,
+LAUTx,p1_75,Fagus sylvatica,Fagus,,
+LAUTx,p1_76,Fagus sylvatica,Fagus,,
+LAUTx,p1_77,Fagus sylvatica,Fagus,,
+LAUTx,p1_78,Fagus sylvatica,Fagus,,
+LAUTx,p1_79,Fagus sylvatica,Fagus,,
+LAUTx,p1_80,Fagus sylvatica,Fagus,,
+LAUTx,p1_81,Fagus sylvatica,Fagus,,
+LAUTx,p1_82,Fagus sylvatica,Fagus,,
+LAUTx,p1_83,Fagus sylvatica,Fagus,,
+LAUTx,p1_84,Fagus sylvatica,Fagus,,
+LAUTx,p1_85,Fagus sylvatica,Fagus,,
+LAUTx,p1_86,Picea abies,Picea,,
+LAUTx,p1_87,Pinus sylvestris,Pinus,,
+LAUTx,p1_88,Picea abies,Picea,,
+LAUTx,p1_89,Fagus sylvatica,Fagus,,
+LAUTx,p1_90,Fagus sylvatica,Fagus,,
+LAUTx,p1_91,Fagus sylvatica,Fagus,,
+LAUTx,p1_92,Abies alba,Abies,,
+LAUTx,p1_93,Fagus sylvatica,Fagus,,
+LAUTx,p1_107,Fagus sylvatica,Fagus,,
+LAUTx,p1_108,Fagus sylvatica,Fagus,,
+LAUTx,p1_109,Fagus sylvatica,Fagus,,
+LAUTx,p1_110,Fagus sylvatica,Fagus,,
+LAUTx,p1_111,Fagus sylvatica,Fagus,,
+LAUTx,p1_112,Fagus sylvatica,Fagus,,
+LAUTx,p1_113,Fagus sylvatica,Fagus,,
+LAUTx,p1_114,Fagus sylvatica,Fagus,,
+LAUTx,p1_115,Fagus sylvatica,Fagus,,
+LAUTx,p1_116,Fagus sylvatica,Fagus,,
+LAUTx,p1_118,Fagus sylvatica,Fagus,,
+LAUTx,p1_119,Fagus sylvatica,Fagus,,
+LAUTx,p1_120,Fagus sylvatica,Fagus,,
+LAUTx,p1_121,Fagus sylvatica,Fagus,,
+LAUTx,p1_122,Fagus sylvatica,Fagus,,
+LAUTx,p1_123,Fagus sylvatica,Fagus,,
+LAUTx,p1_124,Fagus sylvatica,Fagus,,
+LAUTx,p1_125,Fagus sylvatica,Fagus,,
+LAUTx,p1_126,Fagus sylvatica,Fagus,,
+LAUTx,p1_127,Fagus sylvatica,Fagus,,
+LAUTx,p1_128,Picea abies,Picea,,
+LAUTx,p1_129,Fagus sylvatica,Fagus,,
+LAUTx,p1_130,Fagus sylvatica,Fagus,,
+LAUTx,p1_131,Fagus sylvatica,Fagus,,
+LAUTx,p1_132,Fagus sylvatica,Fagus,,
+LAUTx,p1_133,Pinus sylvestris,Pinus,,
+LAUTx,p1_134,Fagus sylvatica,Fagus,,
+LAUTx,p1_135,Fagus sylvatica,Fagus,,
+LAUTx,p1_136,Fagus sylvatica,Fagus,,
+LAUTx,p1_137,Fagus sylvatica,Fagus,,
+LAUTx,p1_138,Fagus sylvatica,Fagus,,
+LAUTx,p1_139,Fagus sylvatica,Fagus,,
+LAUTx,p1_140,Fagus sylvatica,Fagus,,
+LAUTx,p1_157,Picea abies,Picea,,
+LAUTx,p1_158,Larix decidua,Larix,,
+LAUTx,p1_167,Fagus sylvatica,Fagus,,
+LAUTx,p1_168,Fagus sylvatica,Fagus,,
+LAUTx,p1_170,Quercus sp.,Quercus,,
+LAUTx,p1_171,Fagus sylvatica,Fagus,,
+LAUTx,p1_172,Fagus sylvatica,Fagus,,
+LAUTx,p1_192,Picea abies,Picea,,
+LAUTx,p1_2450,Fagus sylvatica,Fagus,,
+LAUTx,p1_2451,Fagus sylvatica,Fagus,,
+LAUTx,p1_2452,Fagus sylvatica,Fagus,,
+LAUTx,p1_2453,Fagus sylvatica,Fagus,,
+LAUTx,p1_2454,Fagus sylvatica,Fagus,,
+LAUTx,p1_2455,Fagus sylvatica,Fagus,,
+LAUTx,p1_2457,Fagus sylvatica,Fagus,,
+LAUTx,p10_16,Fagus sylvatica,Fagus,,
+LAUTx,p10_17,Fagus sylvatica,Fagus,,
+LAUTx,p10_22,Fagus sylvatica,Fagus,,
+LAUTx,p10_23,Fagus sylvatica,Fagus,,
+LAUTx,p10_30,Fagus sylvatica,Fagus,,
+LAUTx,p10_31,Picea abies,Picea,,
+LAUTx,p10_32,Fagus sylvatica,Fagus,,
+LAUTx,p10_33,Fagus sylvatica,Fagus,,
+LAUTx,p10_35,Fagus sylvatica,Fagus,,
+LAUTx,p10_36,Fagus sylvatica,Fagus,,
+LAUTx,p10_37,Fagus sylvatica,Fagus,,
+LAUTx,p10_38,Fagus sylvatica,Fagus,,
+LAUTx,p10_40,Picea abies,Picea,,
+LAUTx,p10_41,Picea abies,Picea,,
+LAUTx,p10_42,Fagus sylvatica,Fagus,,
+LAUTx,p10_44,Fagus sylvatica,Fagus,,
+LAUTx,p10_45,Fagus sylvatica,Fagus,,
+LAUTx,p10_66,Fagus sylvatica,Fagus,,
+LAUTx,p10_67,Fagus sylvatica,Fagus,,
+LAUTx,p10_68,Fagus sylvatica,Fagus,,
+LAUTx,p10_69,Fagus sylvatica,Fagus,,
+LAUTx,p10_70,Fagus sylvatica,Fagus,,
+LAUTx,p10_71,Fagus sylvatica,Fagus,,
+LAUTx,p10_72,Fagus sylvatica,Fagus,,
+LAUTx,p10_73,Fagus sylvatica,Fagus,,
+LAUTx,p10_74,Fagus sylvatica,Fagus,,
+LAUTx,p10_76,Fagus sylvatica,Fagus,,
+LAUTx,p10_77,Fagus sylvatica,Fagus,,
+LAUTx,p10_78,Fagus sylvatica,Fagus,,
+LAUTx,p10_79,Fagus sylvatica,Fagus,,
+LAUTx,p10_80,Fagus sylvatica,Fagus,,
+LAUTx,p10_81,Fagus sylvatica,Fagus,,
+LAUTx,p10_82,Fagus sylvatica,Fagus,,
+LAUTx,p10_83,Fagus sylvatica,Fagus,,
+LAUTx,p10_84,Fagus sylvatica,Fagus,,
+LAUTx,p10_85,Fagus sylvatica,Fagus,,
+LAUTx,p10_86,Picea abies,Picea,,
+LAUTx,p10_87,Picea abies,Picea,,
+LAUTx,p10_106,Fagus sylvatica,Fagus,,
+LAUTx,p10_108,Fagus sylvatica,Fagus,,
+LAUTx,p10_109,Fagus sylvatica,Fagus,,
+LAUTx,p10_110,Picea abies,Picea,,
+LAUTx,p10_111,Fagus sylvatica,Fagus,,
+LAUTx,p10_112,Fagus sylvatica,Fagus,,
+LAUTx,p10_113,Fagus sylvatica,Fagus,,
+LAUTx,p10_114,Fagus sylvatica,Fagus,,
+LAUTx,p10_115,Fagus sylvatica,Fagus,,
+LAUTx,p10_116,Fagus sylvatica,Fagus,,
+LAUTx,p10_118,Fagus sylvatica,Fagus,,
+LAUTx,p10_119,Fagus sylvatica,Fagus,,
+LAUTx,p10_121,Fagus sylvatica,Fagus,,
+LAUTx,p10_122,Fagus sylvatica,Fagus,,
+LAUTx,p10_123,Fagus sylvatica,Fagus,,
+LAUTx,p10_125,Picea abies,Picea,,
+LAUTx,p10_142,Fagus sylvatica,Fagus,,
+LAUTx,p10_143,Picea abies,Picea,,
+LAUTx,p10_144,Fagus sylvatica,Fagus,,
+LAUTx,p10_146,Fagus sylvatica,Fagus,,
+LAUTx,p10_147,Fagus sylvatica,Fagus,,
+LAUTx,p10_1108,Fagus sylvatica,Fagus,,
+LAUTx,p10_2220,Fagus sylvatica,Fagus,,
+LAUTx,p10_2221,Fagus sylvatica,Fagus,,
+LAUTx,p10_2222,Fagus sylvatica,Fagus,,
+LAUTx,p10_2223,Fagus sylvatica,Fagus,,
+LAUTx,p12_19,Fagus sylvatica,Fagus,,
+LAUTx,p12_21,Fagus sylvatica,Fagus,,
+LAUTx,p12_22,Abies alba,Abies,,
+LAUTx,p12_24,Fagus sylvatica,Fagus,,
+LAUTx,p12_33,Fagus sylvatica,Fagus,,
+LAUTx,p12_34,Picea abies,Picea,,
+LAUTx,p12_35,Fagus sylvatica,Fagus,,
+LAUTx,p12_36,Fagus sylvatica,Fagus,,
+LAUTx,p12_37,Fagus sylvatica,Fagus,,
+LAUTx,p12_38,Fagus sylvatica,Fagus,,
+LAUTx,p12_39,Picea abies,Picea,,
+LAUTx,p12_40,Picea abies,Picea,,
+LAUTx,p12_41,Picea abies,Picea,,
+LAUTx,p12_42,Picea abies,Picea,,
+LAUTx,p12_43,Fagus sylvatica,Fagus,,
+LAUTx,p12_44,Picea abies,Picea,,
+LAUTx,p12_45,Fagus sylvatica,Fagus,,
+LAUTx,p12_46,Picea abies,Picea,,
+LAUTx,p12_47,Picea abies,Picea,,
+LAUTx,p12_49,Picea abies,Picea,,
+LAUTx,p12_61,Fagus sylvatica,Fagus,,
+LAUTx,p12_62,Picea abies,Picea,,
+LAUTx,p12_63,Picea abies,Picea,,
+LAUTx,p12_64,Fagus sylvatica,Fagus,,
+LAUTx,p12_65,Picea abies,Picea,,
+LAUTx,p12_66,Picea abies,Picea,,
+LAUTx,p12_67,Picea abies,Picea,,
+LAUTx,p12_69,Fagus sylvatica,Fagus,,
+LAUTx,p12_70,Fagus sylvatica,Fagus,,
+LAUTx,p12_71,Picea abies,Picea,,
+LAUTx,p12_72,Picea abies,Picea,,
+LAUTx,p12_73,Fagus sylvatica,Fagus,,
+LAUTx,p12_74,Fagus sylvatica,Fagus,,
+LAUTx,p12_75,Picea abies,Picea,,
+LAUTx,p12_76,Picea abies,Picea,,
+LAUTx,p12_79,Picea abies,Picea,,
+LAUTx,p12_91,Fagus sylvatica,Fagus,,
+LAUTx,p12_92,Fagus sylvatica,Fagus,,
+LAUTx,p12_93,Fagus sylvatica,Fagus,,
+LAUTx,p12_94,Picea abies,Picea,,
+LAUTx,p12_95,Picea abies,Picea,,
+LAUTx,p12_96,Picea abies,Picea,,
+LAUTx,p12_99,Picea abies,Picea,,
+LAUTx,p12_100,Picea abies,Picea,,
+LAUTx,p12_101,Fagus sylvatica,Fagus,,
+LAUTx,p12_102,Picea abies,Picea,,
+LAUTx,p12_103,Picea abies,Picea,,
+LAUTx,p12_104,Picea abies,Picea,,
+LAUTx,p12_106,Picea abies,Picea,,
+LAUTx,p12_107,Picea abies,Picea,,
+LAUTx,p12_108,Picea abies,Picea,,
+LAUTx,p12_109,Picea abies,Picea,,
+LAUTx,p12_158,Abies alba,Abies,,
+LAUTx,p12_159,Fagus sylvatica,Fagus,,
+LAUTx,p12_2283,Fagus sylvatica,Fagus,,
+LAUTx,p12_2285,Picea abies,Picea,,
+LAUTx,p14_11,Fagus sylvatica,Fagus,,
+LAUTx,p14_34,Picea abies,Picea,,
+LAUTx,p14_35,Fagus sylvatica,Fagus,,
+LAUTx,p14_36,Fagus sylvatica,Fagus,,
+LAUTx,p14_38,Fagus sylvatica,Fagus,,
+LAUTx,p14_39,Fagus sylvatica,Fagus,,
+LAUTx,p14_40,Fagus sylvatica,Fagus,,
+LAUTx,p14_41,Fagus sylvatica,Fagus,,
+LAUTx,p14_43,Fagus sylvatica,Fagus,,
+LAUTx,p14_44,Fagus sylvatica,Fagus,,
+LAUTx,p14_45,Fagus sylvatica,Fagus,,
+LAUTx,p14_46,Fagus sylvatica,Fagus,,
+LAUTx,p14_47,Fagus sylvatica,Fagus,,
+LAUTx,p14_48,Fagus sylvatica,Fagus,,
+LAUTx,p14_49,Fagus sylvatica,Fagus,,
+LAUTx,p14_50,Fagus sylvatica,Fagus,,
+LAUTx,p14_51,Fagus sylvatica,Fagus,,
+LAUTx,p14_52,Fagus sylvatica,Fagus,,
+LAUTx,p14_54,Fagus sylvatica,Fagus,,
+LAUTx,p14_55,Fagus sylvatica,Fagus,,
+LAUTx,p14_56,Fagus sylvatica,Fagus,,
+LAUTx,p14_57,Fagus sylvatica,Fagus,,
+LAUTx,p14_58,Fagus sylvatica,Fagus,,
+LAUTx,p14_59,Fagus sylvatica,Fagus,,
+LAUTx,p14_75,Pinus sylvestris,Pinus,,
+LAUTx,p14_76,Picea abies,Picea,,
+LAUTx,p14_77,Picea abies,Picea,,
+LAUTx,p14_78,Picea abies,Picea,,
+LAUTx,p14_79,Picea abies,Picea,,
+LAUTx,p14_80,Larix decidua,Larix,,
+LAUTx,p14_81,Fagus sylvatica,Fagus,,
+LAUTx,p14_82,Fagus sylvatica,Fagus,,
+LAUTx,p14_83,Picea abies,Picea,,
+LAUTx,p14_84,Fagus sylvatica,Fagus,,
+LAUTx,p14_85,Picea abies,Picea,,
+LAUTx,p14_86,Fagus sylvatica,Fagus,,
+LAUTx,p14_87,Fagus sylvatica,Fagus,,
+LAUTx,p14_88,Abies alba,Abies,,
+LAUTx,p14_89,Pinus sylvestris,Pinus,,
+LAUTx,p14_90,Picea abies,Picea,,
+LAUTx,p14_91,Fagus sylvatica,Fagus,,
+LAUTx,p14_92,Fagus sylvatica,Fagus,,
+LAUTx,p14_93,Fagus sylvatica,Fagus,,
+LAUTx,p14_94,Fagus sylvatica,Fagus,,
+LAUTx,p14_95,Fagus sylvatica,Fagus,,
+LAUTx,p14_96,Fagus sylvatica,Fagus,,
+LAUTx,p14_109,Fagus sylvatica,Fagus,,
+LAUTx,p14_110,Fagus sylvatica,Fagus,,
+LAUTx,p14_111,Picea abies,Picea,,
+LAUTx,p14_112,Pinus sylvestris,Pinus,,
+LAUTx,p14_113,Picea abies,Picea,,
+LAUTx,p14_114,Picea abies,Picea,,
+LAUTx,p14_115,Picea abies,Picea,,
+LAUTx,p14_116,Picea abies,Picea,,
+LAUTx,p14_117,Picea abies,Picea,,
+LAUTx,p14_118,Picea abies,Picea,,
+LAUTx,p14_119,Picea abies,Picea,,
+LAUTx,p14_120,Fagus sylvatica,Fagus,,
+LAUTx,p14_138,Pinus sylvestris,Pinus,,
+LAUTx,p14_140,Picea abies,Picea,,
+LAUTx,p14_141,Picea abies,Picea,,
+LAUTx,p14_142,Fagus sylvatica,Fagus,,
+LAUTx,p14_143,Picea abies,Picea,,
+LAUTx,p14_144,Picea abies,Picea,,
+LAUTx,p14_145,Picea abies,Picea,,
+LAUTx,p14_146,Picea abies,Picea,,
+LAUTx,p14_147,Fagus sylvatica,Fagus,,
+LAUTx,p14_148,Picea abies,Picea,,
+LAUTx,p14_149,Picea abies,Picea,,
+LAUTx,p14_2000,Fagus sylvatica,Fagus,,
+LAUTx,p14_2002,Fagus sylvatica,Fagus,,
+LAUTx,p2_2,Fagus sylvatica,Fagus,,
+LAUTx,p2_3,Abies alba,Abies,,
+LAUTx,p2_4,Fagus sylvatica,Fagus,,
+LAUTx,p2_5,Fagus sylvatica,Fagus,,
+LAUTx,p2_6,Picea abies,Picea,,
+LAUTx,p2_7,Fagus sylvatica,Fagus,,
+LAUTx,p2_8,Fagus sylvatica,Fagus,,
+LAUTx,p2_9,Fagus sylvatica,Fagus,,
+LAUTx,p2_10,Fagus sylvatica,Fagus,,
+LAUTx,p2_12,Fagus sylvatica,Fagus,,
+LAUTx,p2_13,Fagus sylvatica,Fagus,,
+LAUTx,p2_14,Fagus sylvatica,Fagus,,
+LAUTx,p2_15,Fagus sylvatica,Fagus,,
+LAUTx,p2_16,Larix decidua,Larix,,
+LAUTx,p2_17,Fagus sylvatica,Fagus,,
+LAUTx,p2_18,Abies alba,Abies,,
+LAUTx,p2_19,Fagus sylvatica,Fagus,,
+LAUTx,p2_20,Fagus sylvatica,Fagus,,
+LAUTx,p2_21,Fagus sylvatica,Fagus,,
+LAUTx,p2_22,Fagus sylvatica,Fagus,,
+LAUTx,p2_23,Fagus sylvatica,Fagus,,
+LAUTx,p2_24,Fagus sylvatica,Fagus,,
+LAUTx,p2_25,Fagus sylvatica,Fagus,,
+LAUTx,p2_26,Fagus sylvatica,Fagus,,
+LAUTx,p2_28,Fagus sylvatica,Fagus,,
+LAUTx,p2_30,Picea abies,Picea,,
+LAUTx,p2_31,Fagus sylvatica,Fagus,,
+LAUTx,p2_32,Picea abies,Picea,,
+LAUTx,p2_33,Fagus sylvatica,Fagus,,
+LAUTx,p2_34,Pinus sylvestris,Pinus,,
+LAUTx,p2_35,Fagus sylvatica,Fagus,,
+LAUTx,p2_36,Fagus sylvatica,Fagus,,
+LAUTx,p2_37,Fagus sylvatica,Fagus,,
+LAUTx,p2_38,Larix decidua,Larix,,
+LAUTx,p2_39,Fagus sylvatica,Fagus,,
+LAUTx,p2_40,Abies alba,Abies,,
+LAUTx,p2_41,Quercus sp.,Quercus,,
+LAUTx,p2_42,Fagus sylvatica,Fagus,,
+LAUTx,p2_43,Fagus sylvatica,Fagus,,
+LAUTx,p2_44,Fagus sylvatica,Fagus,,
+LAUTx,p2_45,Quercus sp.,Quercus,,
+LAUTx,p2_46,Fagus sylvatica,Fagus,,
+LAUTx,p2_47,Quercus sp.,Quercus,,
+LAUTx,p2_48,Fagus sylvatica,Fagus,,
+LAUTx,p2_49,Fagus sylvatica,Fagus,,
+LAUTx,p2_50,Quercus sp.,Quercus,,
+LAUTx,p2_51,Picea abies,Picea,,
+LAUTx,p2_53,Fagus sylvatica,Fagus,,
+LAUTx,p2_54,Fagus sylvatica,Fagus,,
+LAUTx,p2_55,Fagus sylvatica,Fagus,,
+LAUTx,p2_56,Fagus sylvatica,Fagus,,
+LAUTx,p2_57,Fagus sylvatica,Fagus,,
+LAUTx,p2_58,Picea abies,Picea,,
+LAUTx,p2_59,Fagus sylvatica,Fagus,,
+LAUTx,p2_1300,Fagus sylvatica,Fagus,,
+LAUTx,p2_1301,Fagus sylvatica,Fagus,,
+LAUTx,p2_2000,Picea abies,Picea,,
+LAUTx,p2_2002,Fagus sylvatica,Fagus,,
+LAUTx,p4_25,Picea abies,Picea,,
+LAUTx,p4_26,Picea abies,Picea,,
+LAUTx,p4_27,Fagus sylvatica,Fagus,,
+LAUTx,p4_28,Picea abies,Picea,,
+LAUTx,p4_29,Picea abies,Picea,,
+LAUTx,p4_30,Picea abies,Picea,,
+LAUTx,p4_31,Picea abies,Picea,,
+LAUTx,p4_33,Fagus sylvatica,Fagus,,
+LAUTx,p4_34,Picea abies,Picea,,
+LAUTx,p4_41,Picea abies,Picea,,
+LAUTx,p4_42,Picea abies,Picea,,
+LAUTx,p4_43,Picea abies,Picea,,
+LAUTx,p4_44,Picea abies,Picea,,
+LAUTx,p4_45,Picea abies,Picea,,
+LAUTx,p4_46,Picea abies,Picea,,
+LAUTx,p4_47,Picea abies,Picea,,
+LAUTx,p4_48,Picea abies,Picea,,
+LAUTx,p4_49,Picea abies,Picea,,
+LAUTx,p4_50,Picea abies,Picea,,
+LAUTx,p4_51,Picea abies,Picea,,
+LAUTx,p4_52,Picea abies,Picea,,
+LAUTx,p4_53,Picea abies,Picea,,
+LAUTx,p4_54,Larix decidua,Larix,,
+LAUTx,p4_55,Larix decidua,Larix,,
+LAUTx,p4_63,Picea abies,Picea,,
+LAUTx,p4_64,Picea abies,Picea,,
+LAUTx,p4_65,Picea abies,Picea,,
+LAUTx,p4_66,Picea abies,Picea,,
+LAUTx,p4_67,Picea abies,Picea,,
+LAUTx,p4_68,Picea abies,Picea,,
+LAUTx,p4_69,Picea abies,Picea,,
+LAUTx,p4_70,Picea abies,Picea,,
+LAUTx,p4_71,Picea abies,Picea,,
+LAUTx,p4_72,Picea abies,Picea,,
+LAUTx,p4_73,Picea abies,Picea,,
+LAUTx,p4_74,Picea abies,Picea,,
+LAUTx,p4_75,Fagus sylvatica,Fagus,,
+LAUTx,p4_76,Fagus sylvatica,Fagus,,
+LAUTx,p4_77,Fagus sylvatica,Fagus,,
+LAUTx,p4_79,Fagus sylvatica,Fagus,,
+LAUTx,p4_80,Picea abies,Picea,,
+LAUTx,p4_81,Picea abies,Picea,,
+LAUTx,p4_82,Fagus sylvatica,Fagus,,
+LAUTx,p4_83,Fagus sylvatica,Fagus,,
+LAUTx,p4_84,Picea abies,Picea,,
+LAUTx,p4_85,Larix decidua,Larix,,
+LAUTx,p4_87,Larix decidua,Larix,,
+LAUTx,p4_88,Larix decidua,Larix,,
+LAUTx,p4_89,Larix decidua,Larix,,
+LAUTx,p4_90,Larix decidua,Larix,,
+LAUTx,p4_91,Larix decidua,Larix,,
+LAUTx,p4_100,Picea abies,Picea,,
+LAUTx,p4_102,Picea abies,Picea,,
+LAUTx,p4_103,Picea abies,Picea,,
+LAUTx,p4_104,Picea abies,Picea,,
+LAUTx,p4_106,Picea abies,Picea,,
+LAUTx,p4_107,Picea abies,Picea,,
+LAUTx,p4_108,Picea abies,Picea,,
+LAUTx,p4_109,Picea abies,Picea,,
+LAUTx,p4_111,Larix decidua,Larix,,
+LAUTx,p4_112,Larix decidua,Larix,,
+LAUTx,p4_113,Larix decidua,Larix,,
+LAUTx,p4_114,Fagus sylvatica,Fagus,,
+LAUTx,p4_116,Larix decidua,Larix,,
+LAUTx,p4_117,Larix decidua,Larix,,
+LAUTx,p4_118,Larix decidua,Larix,,
+LAUTx,p4_120,Larix decidua,Larix,,
+LAUTx,p4_121,Larix decidua,Larix,,
+LAUTx,p4_124,Larix decidua,Larix,,
+LAUTx,p4_134,Larix decidua,Larix,,
+LAUTx,p4_1109,Larix decidua,Larix,,
+LAUTx,p4_1110,Larix decidua,Larix,,
+LAUTx,p4_1111,Larix decidua,Larix,,
+LAUTx,p4_1113,Larix decidua,Larix,,
+LAUTx,p4_1114,Larix decidua,Larix,,
+LAUTx,p4_2210,Fagus sylvatica,Fagus,,
+LAUTx,p4_2211,Picea abies,Picea,,
+LAUTx,p4_2212,Picea abies,Picea,,
+LAUTx,p4_2215,Picea abies,Picea,,
+LAUTx,p4_2216,Picea abies,Picea,,
+LAUTx,p4_2217,Fagus sylvatica,Fagus,,
+LAUTx,p4_2218,Fagus sylvatica,Fagus,,
+LAUTx,p4_2219,Picea abies,Picea,,
+LAUTx,p4_2220,Fagus sylvatica,Fagus,,
+Weiser,FagSyl_BR01_01,Fagus sylvatica,Fagus,49.01436841967521,8.682640859699555
+Weiser,FagSyl_BR01_02,Fagus sylvatica,Fagus,49.01447261262678,8.682868718728068
+Weiser,FagSyl_BR01_03,Fagus sylvatica,Fagus,49.0143080851035,8.682750496446399
+Weiser,FagSyl_BR01_04,Fagus sylvatica,Fagus,49.01437378890487,8.682700137955733
+Weiser,FagSyl_BR01_05,Fagus sylvatica,Fagus,49.01439192707807,8.682817799588435
+Weiser,QuePet_BR01_01,Quercus petraea,Quercus,49.01477400057966,8.682382649500372
+Weiser,QuePet_BR01_02,Quercus petraea,Quercus,49.01474348956995,8.682389543142603
+Weiser,QuePet_BR01_03,Quercus petraea,Quercus,49.014657156957306,8.68239872362735
+Weiser,QuePet_BR01_04,Quercus petraea,Quercus,49.0146925655023,8.68238630964568
+Weiser,QuePet_BR01_05,Quercus petraea,Quercus,49.01462621042635,8.682215980449978
+Weiser,QuePet_BR01_06,Quercus petraea,Quercus,49.01472731194092,8.682167332443079
+Weiser,QuePet_BR01_07,Quercus petraea,Quercus,49.0147575965184,8.682487041964562
+Weiser,QuePet_BR01_08,Quercus petraea,Quercus,49.01478624566929,8.682411995543672
+Weiser,QuePet_BR01_09,Quercus petraea,Quercus,49.014836754568606,8.682293414195966
+Weiser,QuePet_BR01_10,Quercus petraea,Quercus,49.01475165173833,8.682241202288177
+Weiser,FagSyl_BR02_01,Fagus sylvatica,Fagus,49.01193428162786,8.701351488549252
+Weiser,FagSyl_BR02_02,Fagus sylvatica,Fagus,49.01218240637403,8.701519171261682
+Weiser,FagSyl_BR02_03,Fagus sylvatica,Fagus,49.01196865000006,8.70127484180558
+Weiser,FagSyl_BR02_04,Fagus sylvatica,Fagus,49.01200439907296,8.70122335257159
+Weiser,PicAbi_BR02_01,Picea abies,Picea,49.01264107191297,8.700912288356554
+Weiser,PicAbi_BR02_02,Picea abies,Picea,49.012706716289614,8.700981277477647
+Weiser,PicAbi_BR02_03,Picea abies,Picea,49.01266269006189,8.700997980726424
+Weiser,PicAbi_BR02_04,Picea abies,Picea,49.01270174398874,8.701121909590784
+Weiser,PicAbi_BR02_05,Picea abies,Picea,49.01266872696745,8.701037365714685
+Weiser,PicAbi_BR02_06,Picea abies,Picea,49.01273587260659,8.70092633268302
+Weiser,PicAbi_BR02_07,Picea abies,Picea,49.01264566767956,8.700960063275573
+Weiser,PicAbi_BR02_08,Picea abies,Picea,49.01270897790148,8.70093281354884
+Weiser,PicAbi_BR02_09,Picea abies,Picea,49.01267920734243,8.701090939723235
+Weiser,PicAbi_BR02_10,Picea abies,Picea,49.01273643310062,8.701017652272672
+Weiser,PicAbi_BR02_11,Picea abies,Picea,49.01271642744125,8.701028293617204
+Weiser,PicAbi_BR02_12,Picea abies,Picea,49.01211687716543,8.7016110882347
+Weiser,PicAbi_BR02_13,Picea abies,Picea,49.011908498132655,8.701355035935732
+Weiser,PicAbi_BR02_14,Picea abies,Picea,49.012044525967575,8.701466528672526
+Weiser,PicAbi_BR02_15,Picea abies,Picea,49.01202162762129,8.701396993582666
+Weiser,PicAbi_BR02_16,Picea abies,Picea,49.01210763554633,8.70122356557626
+Weiser,PicAbi_BR02_17,Picea abies,Picea,49.01199110663944,8.701374839309006
+Weiser,PicAbi_BR02_18,Picea abies,Picea,49.01194605930323,8.701415859221846
+Weiser,PinSyl_BR02_01,Pinus sylvestris,Pinus,49.01241635515573,8.700827869446549
+Weiser,PinSyl_BR02_02,Pinus sylvestris,Pinus,49.012346205411376,8.701181657235848
+Weiser,PinSyl_BR02_03,Pinus sylvestris,Pinus,49.01234835704633,8.7010533747611
+Weiser,PinSyl_BR02_04,Pinus sylvestris,Pinus,49.01239746853633,8.700986517614426
+Weiser,PinSyl_BR02_05,Pinus sylvestris,Pinus,49.012438464199136,8.701034841879327
+Weiser,PinSyl_BR02_06,Pinus sylvestris,Pinus,49.012171229911054,8.701361209781911
+Weiser,PinSyl_BR02_07,Pinus sylvestris,Pinus,49.01211931037386,8.701309860242452
+Weiser,PinSyl_BR02_08,Pinus sylvestris,Pinus,49.01206981717883,8.701213267053857
+Weiser,PinSyl_BR02_09,Pinus sylvestris,Pinus,49.01243973613262,8.701244169972803
+Weiser,PinSyl_BR02_10,Pinus sylvestris,Pinus,49.01251091299327,8.70118475015688
+Weiser,QuePet_BR02_01,Quercus petraea,Quercus,49.01207069024176,8.7016554191342
+Weiser,QuePet_BR02_02,Quercus petraea,Quercus,49.01201442667002,8.701624784300867
+Weiser,QuePet_BR02_03,Quercus petraea,Quercus,49.01199708344635,8.701507956029213
+Weiser,QuePet_BR02_04,Quercus petraea,Quercus,49.01201827386647,8.70129725779425
+Weiser,QuePet_BR02_05,Quercus petraea,Quercus,49.01248385870233,8.701779787725393
+Weiser,QuePet_BR02_06,Quercus petraea,Quercus,49.01253210702441,8.70174250759898
+Weiser,QuePet_BR02_07,Quercus petraea,Quercus,49.01248414655813,8.701728886238065
+Weiser,QuePet_BR02_08,Quercus petraea,Quercus,49.01251902214862,8.701683492692295
+Weiser,QuePet_BR02_09,Quercus petraea,Quercus,49.01242783683434,8.701697788093146
+Weiser,QuePet_BR02_10,Quercus petraea,Quercus,49.01242609036253,8.70144162987908
+Weiser,AbiAlb_BR03_01,Abies alba,Abies,49.0144747973941,8.70007974918925
+Weiser,AbiAlb_BR03_02,Abies alba,Abies,49.014458949957344,8.700197235088577
+Weiser,AbiAlb_BR03_03,Abies alba,Abies,49.01445037159899,8.70013192254337
+Weiser,AbiAlb_BR03_04,Abies alba,Abies,49.0144545400671,8.700253149930777
+Weiser,AcePse_BR03_01,Acer pseudoplatanus,Acer,49.01443469423666,8.700536663114477
+Weiser,AcePse_BR03_02,Acer pseudoplatanus,Acer,49.01449809439241,8.700592210550166
+Weiser,AcePse_BR03_03,Acer pseudoplatanus,Acer,49.01452753946643,8.700415092930006
+Weiser,AcePse_BR03_04,Acer pseudoplatanus,Acer,49.01446146609021,8.700470731597887
+Weiser,AcePse_BR03_05,Acer pseudoplatanus,Acer,49.01444187605132,8.700427908458742
+Weiser,AcePse_BR03_06,Acer pseudoplatanus,Acer,49.01443757875568,8.700420250088968
+Weiser,AcePse_BR03_P16T12,Acer pseudoplatanus,Acer,49.01493498206354,8.700082620871711
+Weiser,CarBet_BR03_01,Carpinus betulus,Carpinus,49.01432312187745,8.700071329992372
+Weiser,CarBet_BR03_P16T10,Carpinus betulus,Carpinus,49.01493744841181,8.699917136067459
+Weiser,CarBet_BR03_P16T11,Carpinus betulus,Carpinus,49.01495834790892,8.700057432800026
+Weiser,CarBet_BR03_P16T5,Carpinus betulus,Carpinus,49.01488559412687,8.700017816202678
+Weiser,FagSyl_BR03_01,Fagus sylvatica,Fagus,49.01493136745124,8.699995003028606
+Weiser,LarDec_BR03_01,Larix decidua,Larix,49.01430183671471,8.700239931019427
+Weiser,PicAbi_BR03_01,Picea abies,Picea,49.01435768093773,8.70030422799712
+Weiser,PicAbi_BR03_02,Picea abies,Picea,49.01443073911885,8.700238553613568
+Weiser,PicAbi_BR03_03,Picea abies,Picea,49.014404619668426,8.700285037576714
+Weiser,PseMen_BR03_01,Pseudotsuga menziesii,Pseudotsuga,49.01452114420409,8.700587321637162
+Weiser,PseMen_BR03_02,Pseudotsuga menziesii,Pseudotsuga,49.014552157612265,8.70055522281742
+Weiser,PseMen_BR03_03,Pseudotsuga menziesii,Pseudotsuga,49.01456336526075,8.700649791464244
+Weiser,PseMen_BR03_04,Pseudotsuga menziesii,Pseudotsuga,49.01455605978614,8.70060431658229
+Weiser,PseMen_BR03_05,Pseudotsuga menziesii,Pseudotsuga,49.014648699316304,8.700722837733776
+Weiser,PseMen_BR03_06,Pseudotsuga menziesii,Pseudotsuga,49.01447079653895,8.700572017644921
+Weiser,PseMen_BR03_07,Pseudotsuga menziesii,Pseudotsuga,49.01452993408386,8.700822307072045
+Weiser,PseMen_BR03_09,Pseudotsuga menziesii,Pseudotsuga,49.014604500107374,8.70049385766711
+Weiser,PseMen_BR03_12,Pseudotsuga menziesii,Pseudotsuga,49.01461936572884,8.700744939568755
+Weiser,PseMen_BR03_13,Pseudotsuga menziesii,Pseudotsuga,49.01449988878707,8.7005353574815
+Weiser,PseMen_BR03_14,Pseudotsuga menziesii,Pseudotsuga,49.01469156253069,8.70062583686278
+Weiser,PseMen_BR03_15,Pseudotsuga menziesii,Pseudotsuga,49.01467679621423,8.700675240999733
+Weiser,PseMen_BR03_16,Pseudotsuga menziesii,Pseudotsuga,49.01434265332184,8.700259898914727
+Weiser,PseMen_BR03_P3T1,Pseudotsuga menziesii,Pseudotsuga,49.01455314249245,8.700741548281341
+Weiser,PseMen_BR03_P8T1,Pseudotsuga menziesii,Pseudotsuga,49.01460348450656,8.70061769788362
+Weiser,PseMen_BR03_P9Tree3,Pseudotsuga menziesii,Pseudotsuga,49.01457350431791,8.700850929587983
+Weiser,QueRob_BR03_01,Quercus robur,Quercus,49.01445074540448,8.699882117653635
+Weiser,QueRob_BR03_02,Quercus robur,Quercus,49.01440173587417,8.70016141272783
+Weiser,QueRob_BR03_03,Quercus robur,Quercus,49.01434856099363,8.700126526918888
+Weiser,QueRob_BR03_P16T7,Quercus robur,Quercus,49.01494392249367,8.699972481059703
+Weiser,TsuHet_BR03_01,Tsuga heterophylla,Tsuga,49.0143525059603,8.700179902457393
+Weiser,PseMen_BR04_01,Pseudotsuga menziesii,Pseudotsuga,49.01522873639389,8.684382402622449
+Weiser,PseMen_BR04_02,Pseudotsuga menziesii,Pseudotsuga,49.01540263836089,8.684631192720346
+Weiser,PseMen_BR04_03,Pseudotsuga menziesii,Pseudotsuga,49.01533771702721,8.684553440126704
+Weiser,PseMen_BR04_04,Pseudotsuga menziesii,Pseudotsuga,49.01527173274635,8.684456255518471
+Weiser,PseMen_BR04_05,Pseudotsuga menziesii,Pseudotsuga,49.01534071758879,8.684723144102936
+Weiser,PseMen_BR04_06,Pseudotsuga menziesii,Pseudotsuga,49.01522048585066,8.684687837716599
+Weiser,PseMen_BR04_07,Pseudotsuga menziesii,Pseudotsuga,49.01525222135898,8.68452866921964
+Weiser,PseMen_BR04_08,Pseudotsuga menziesii,Pseudotsuga,49.01530532680572,8.684604302982292
+Weiser,PseMen_BR04_09,Pseudotsuga menziesii,Pseudotsuga,49.01517345202366,8.684558553533828
+Weiser,CarBet_BR05_P8T3,Carpinus betulus,Carpinus,48.99575180058348,8.709355388695828
+Weiser,CarBet_BR05_P9T6,Carpinus betulus,Carpinus,48.995624006442455,8.709669876199477
+Weiser,FagSyl_BR05_11,Fagus sylvatica,Fagus,48.99528420840823,8.70923490721366
+Weiser,FagSyl_BR05_12,Fagus sylvatica,Fagus,48.9952513220277,8.709282428155346
+Weiser,FagSyl_BR05_13,Fagus sylvatica,Fagus,48.99527981606861,8.709317378877111
+Weiser,FagSyl_BR05_14,Fagus sylvatica,Fagus,48.99516933345296,8.709327480085381
+Weiser,FagSyl_BR05_15,Fagus sylvatica,Fagus,48.99524027497495,8.709232288654006
+Weiser,FagSyl_BR05_16,Fagus sylvatica,Fagus,48.99532764524014,8.7093443496738
+Weiser,FagSyl_BR05_17,Fagus sylvatica,Fagus,48.99515066077083,8.709280178967381
+Weiser,FagSyl_BR05_P13T1,Fagus sylvatica,Fagus,48.99588255992719,8.709535281207172
+Weiser,FagSyl_BR05_P13T2,Fagus sylvatica,Fagus,48.99591838950143,8.709697889224486
+Weiser,FagSyl_BR05_P3T5,Fagus sylvatica,Fagus,48.99566497013625,8.709433947144671
+Weiser,FagSyl_BR05_P7T2,Fagus sylvatica,Fagus,48.99583944292982,8.709439354242312
+Weiser,FagSyl_BR05_P8T1,Fagus sylvatica,Fagus,48.99572942209998,8.709480569046645
+Weiser,FagSyl_BR05_P8T4,Fagus sylvatica,Fagus,48.99580564348513,8.709515041055589
+Weiser,FagSyl_BR05_P9T8,Fagus sylvatica,Fagus,48.99571267686356,8.70954851454561
+Weiser,FagSyl_BR05_P9T9,Fagus sylvatica,Fagus,48.99576734798137,8.709714775426699
+Weiser,PinSyl_BR05_01,Pinus sylvestris,Pinus,48.99530334030698,8.709226596876201
+Weiser,PinSyl_BR05_02,Pinus sylvestris,Pinus,48.99519927465666,8.70931110103697
+Weiser,PinSyl_BR05_03,Pinus sylvestris,Pinus,48.99529474234584,8.709451857596983
+Weiser,PinSyl_BR05_04,Pinus sylvestris,Pinus,48.99525399142751,8.70935381790988
+Weiser,PinSyl_BR05_05,Pinus sylvestris,Pinus,48.99533374988808,8.709281857927115
+Weiser,PseMen_BR05_01,Pseudotsuga menziesii,Pseudotsuga,48.9949505436299,8.710012481948928
+Weiser,PseMen_BR05_02,Pseudotsuga menziesii,Pseudotsuga,48.994899112478,8.70991284864602
+Weiser,PseMen_BR05_03,Pseudotsuga menziesii,Pseudotsuga,48.994984228671406,8.710126487104796
+Weiser,PseMen_BR05_04,Pseudotsuga menziesii,Pseudotsuga,48.99484342577112,8.70990556603494
+Weiser,PseMen_BR05_05,Pseudotsuga menziesii,Pseudotsuga,48.995083549572016,8.709901461528487
+Weiser,PseMen_BR05_06,Pseudotsuga menziesii,Pseudotsuga,48.99498419960878,8.709939979433164
+Weiser,PseMen_BR05_07,Pseudotsuga menziesii,Pseudotsuga,48.99497972462482,8.709773776198192
+Weiser,PseMen_BR05_08,Pseudotsuga menziesii,Pseudotsuga,48.99490092314964,8.710087443725534
+Weiser,PseMen_BR05_09,Pseudotsuga menziesii,Pseudotsuga,48.99489583910458,8.709866305710179
+Weiser,PseMen_BR05_10,Pseudotsuga menziesii,Pseudotsuga,48.99483933645881,8.709825654662284
+Weiser,PseMen_BR05_11,Pseudotsuga menziesii,Pseudotsuga,48.99506665569857,8.709855376884013
+Weiser,PseMen_BR05_12,Pseudotsuga menziesii,Pseudotsuga,48.995014820408464,8.70990360874561
+Weiser,PseMen_BR05_13,Pseudotsuga menziesii,Pseudotsuga,48.99503537203121,8.709953238441168
+Weiser,FagSyl_BR06_01,Fagus sylvatica,Fagus,48.99780223848846,8.716167357398565
+Weiser,FagSyl_BR06_02,Fagus sylvatica,Fagus,48.99754029004306,8.716735629953106
+Weiser,FagSyl_BR06_03,Fagus sylvatica,Fagus,48.997720121814176,8.716724647242808
+Weiser,FagSyl_BR06_04,Fagus sylvatica,Fagus,48.99762262664709,8.716630122981202
+Weiser,FagSyl_BR06_05,Fagus sylvatica,Fagus,48.99754672614717,8.716628362704402
+Weiser,FagSyl_BR06_06,Fagus sylvatica,Fagus,48.99763078448196,8.716764728872965
+Weiser,FagSyl_BR06_07,Fagus sylvatica,Fagus,48.99758148812565,8.716517369895858
+Weiser,FagSyl_BR06_08,Fagus sylvatica,Fagus,48.99759930416716,8.716648368046432
+Weiser,PinSyl_BR06_01,Pinus sylvestris,Pinus,48.997685863422745,8.716036796097534
+Weiser,PinSyl_BR06_02,Pinus sylvestris,Pinus,48.997754860202605,8.716198686182485
+Weiser,PinSyl_BR06_03,Pinus sylvestris,Pinus,48.997692156728,8.716089692290456
+Weiser,PinSyl_BR06_04,Pinus sylvestris,Pinus,48.99771376618881,8.716192406963401
+Weiser,PinSyl_BR06_05,Pinus sylvestris,Pinus,48.99776487549505,8.716049603039806
+Weiser,PinSyl_BR06_06,Pinus sylvestris,Pinus,48.99758552943072,8.716654709342992
+Weiser,PinSyl_BR06_07,Pinus sylvestris,Pinus,48.997555642644734,8.716634141221867
+Weiser,PinSyl_BR06_08,Pinus sylvestris,Pinus,48.997584482077954,8.716732821124227
+Weiser,PinSyl_BR06_09,Pinus sylvestris,Pinus,48.99764029022018,8.716673425789239
+Weiser,QuePet_BR06_01,Quercus petraea,Quercus,48.99777412109767,8.716271429678397
+Weiser,QuePet_BR06_02,Quercus petraea,Quercus,48.99781504139124,8.716779565156425
+Weiser,QuePet_BR06_03,Quercus petraea,Quercus,48.99789764270628,8.716846462589034
+Weiser,QuePet_BR06_04,Quercus petraea,Quercus,48.998144495339645,8.716831819135646
+Weiser,QuePet_BR06_05,Quercus petraea,Quercus,48.99801375494943,8.7169536855807
+Weiser,QuePet_BR06_06,Quercus petraea,Quercus,48.99800947568878,8.71684249115461
+Weiser,QuePet_BR06_07,Quercus petraea,Quercus,48.99802509429831,8.716660164307433
+Weiser,QuePet_BR06_08,Quercus petraea,Quercus,48.99796099600768,8.716707832633432
+Weiser,QuePet_BR06_09,Quercus petraea,Quercus,48.99759252755641,8.716819859982802
+Weiser,QuePet_BR06_10,Quercus petraea,Quercus,48.99752186494778,8.716557604462496
+Weiser,QuePet_BR06_11,Quercus petraea,Quercus,48.9975735987029,8.716549306382671
+Weiser,QuePet_BR06_12,Quercus petraea,Quercus,48.9976732973461,8.716668344249758
+Weiser,FagSyl_BR07_01,Fagus sylvatica,Fagus,48.99750920244725,8.708651621711928
+Weiser,FagSyl_BR07_02,Fagus sylvatica,Fagus,48.997443470751065,8.708561453470686
+Weiser,FagSyl_BR07_03,Fagus sylvatica,Fagus,48.9974520531737,8.70867923431771
+Weiser,FagSyl_BR07_04,Fagus sylvatica,Fagus,48.99753324967343,8.708542844294438
+Weiser,FagSyl_BR07_05,Fagus sylvatica,Fagus,48.99749096889425,8.708718664324524
+Weiser,FagSyl_BR07_06,Fagus sylvatica,Fagus,48.99751650433982,8.708598064601857
+Weiser,FagSyl_BR07_07,Fagus sylvatica,Fagus,48.99745709118522,8.708623750866822
+Weiser,FagSyl_BR07_08,Fagus sylvatica,Fagus,48.99747707819316,8.708722103325467
+Weiser,FagSyl_BR07_09,Fagus sylvatica,Fagus,48.99748345645198,8.70852009358673
+Weiser,PseMen_BR07_01,Pseudotsuga menziesii,Pseudotsuga,48.99708558965638,8.707849682711194
+Weiser,PseMen_BR07_02,Pseudotsuga menziesii,Pseudotsuga,48.99704262468188,8.707904039272316
+Weiser,PseMen_BR07_03,Pseudotsuga menziesii,Pseudotsuga,48.99702804960336,8.7079942600835
+Weiser,PseMen_BR07_04,Pseudotsuga menziesii,Pseudotsuga,48.99713052069532,8.707993189453243
+Weiser,PseMen_BR07_05,Pseudotsuga menziesii,Pseudotsuga,48.9971067676979,8.707941203544628
+Weiser,PseMen_BR07_06,Pseudotsuga menziesii,Pseudotsuga,48.99699099570119,8.707932163626475
+Weiser,PseMen_BR07_07,Pseudotsuga menziesii,Pseudotsuga,48.99710263634715,8.707870094898512
+Weiser,AcePse_KA09_T049,Acer pseudoplatanus,Acer,49.041444992414206,8.435196539668643
+Weiser,FagSyl_KA09_T045,Fagus sylvatica,Fagus,49.041231165988506,8.435395395485555
+Weiser,FagSyl_KA09_T046,Fagus sylvatica,Fagus,49.04137906429488,8.43531708413678
+Weiser,PicAbi_KA09_T035,Picea abies,Picea,49.04130555019011,8.435450911742084
+Weiser,PinSyl_KA09_T038,Pinus sylvestris,Pinus,49.04125666569359,8.435159510587063
+Weiser,PinSyl_KA09_T047,Pinus sylvestris,Pinus,49.0412403023309,8.435364863755657
+Weiser,PinSyl_KA09_T048,Pinus sylvestris,Pinus,49.041322267439455,8.435156547535922
+Weiser,PinSyl_KA09_T050,Pinus sylvestris,Pinus,49.04126492402115,8.435223913473372
+Weiser,QueRub_KA09_T051,Quercus rubra,Quercus,49.04150975425351,8.435332606131988
+Weiser,QueRub_KA09_T052,Quercus rubra,Quercus,49.0415312439535,8.435251552037696
+Weiser,QueRub_KA09_T053,Quercus rubra,Quercus,49.0415997996857,8.435117413655021
+Weiser,QueRub_KA09_T054,Quercus rubra,Quercus,49.0414962110501,8.435230517090332
+Weiser,QueRub_KA09_T055,Quercus rubra,Quercus,49.04133786383655,8.435391899115881
+Weiser,QueRub_KA09_T056,Quercus rubra,Quercus,49.04147759396312,8.435375152719343
+Weiser,QueRub_KA09_T057,Quercus rubra,Quercus,49.041509893924605,8.435264635660085
+Weiser,PinSyl_KA10_01,Pinus sylvestris,Pinus,49.02893660591776,8.416051833076766
+Weiser,PinSyl_KA10_02,Pinus sylvestris,Pinus,49.02906036418543,8.416039993084894
+Weiser,PinSyl_KA10_03,Pinus sylvestris,Pinus,49.02916049343152,8.416065536635474
+Weiser,PinSyl_KA10_04,Pinus sylvestris,Pinus,49.0291232390116,8.416080401603999
+Weiser,PinSyl_KA10_05,Pinus sylvestris,Pinus,49.02903927372384,8.416049287512278
+Weiser,QueRub_KA10_01,Quercus rubra,Quercus,49.02892837659667,8.416153945975516
+Weiser,QueRub_KA10_02,Quercus rubra,Quercus,49.02888273782034,8.41607228059814
+Weiser,QueRub_KA10_03,Quercus rubra,Quercus,49.02891859958002,8.416064632782282
+Weiser,QueRub_KA10_04,Quercus rubra,Quercus,49.02895182490564,8.415820461826161
+Weiser,QueRub_KA10_05,Quercus rubra,Quercus,49.02908232854087,8.41582968130708
+Weiser,QueRub_KA10_06,Quercus rubra,Quercus,49.02909230563508,8.41592583069813
+Weiser,AcePse_KA11_01,Acer pseudoplatanus,Acer,49.03516544917874,8.427455983019534
+Weiser,FagSyl_KA11_01,Fagus sylvatica,Fagus,49.03511932053237,8.427584459834483
+Weiser,PinSyl_KA11_P17Tree65,Pinus sylvestris,Pinus,49.03513812291484,8.427525151296503
+Weiser,PinSyl_KA11_P17Tree72,Pinus sylvestris,Pinus,49.03511377892761,8.42741735243913
+Weiser,PinSyl_KA11_P17Tree73,Pinus sylvestris,Pinus,49.03509144291611,8.427459984280354
+Weiser,QuePet_KA11_01,Quercus petraea,Quercus,49.03514960494788,8.427493921117435
+Weiser,QueRub_KA11_01,Quercus rubra,Quercus,49.03483166363113,8.427813598774053
+Weiser,QueRub_KA11_02,Quercus rubra,Quercus,49.03480830773321,8.427824054291678
+Weiser,QueRub_KA11_06,Quercus rubra,Quercus,49.034871348676766,8.427782021419606
+Weiser,QueRub_KA11_07,Quercus rubra,Quercus,49.03482435435564,8.42776590997511
+Weiser,QueRub_KA11_08,Quercus rubra,Quercus,49.03507880258952,8.427514763569476
+Weiser,QueRub_KA11_09,Quercus rubra,Quercus,49.03508448259913,8.427564258434822
+Weiser,QueRub_KA11_10,Quercus rubra,Quercus,49.03519078423386,8.427504713691023
+Weiser,QueRub_KA11_P14Tree17,Quercus rubra,Quercus,49.03486578435508,8.427697336378921
+Weiser,QueRub_KA11_P14Tree18,Quercus rubra,Quercus,49.03482994530242,8.427693157349267
+Weiser,QueRub_KA11_P14Tree19,Quercus rubra,Quercus,49.03483523548242,8.42777357853164
+Weiser,AbiAlb_SP02_01,Abies alba,Abies,49.01989302453894,8.656390069226074
+Weiser,AbiAlb_SP02_02,Abies alba,Abies,49.01979989404706,8.65649276761447
+Weiser,AbiAlb_SP02_03,Abies alba,Abies,49.01980743255161,8.656413515066852
+Weiser,AbiAlb_SP02_04,Abies alba,Abies,49.01979027501915,8.656448416483515
+Weiser,AbiAlb_SP02_05,Abies alba,Abies,49.01974007765549,8.656357156031879
+Weiser,AcePse_SP02_01,Acer pseudoplatanus,Acer,49.01929961429322,8.656317086198403
+Weiser,AcePse_SP02_02,Acer pseudoplatanus,Acer,49.01931718921249,8.65636079910461
+Weiser,AcePse_SP02_03,Acer pseudoplatanus,Acer,49.01921723448522,8.65639024531695
+Weiser,AcePse_SP02_04,Acer pseudoplatanus,Acer,49.01922184354309,8.656515992863675
+Weiser,AcePse_SP02_05,Acer pseudoplatanus,Acer,49.019160725591554,8.656421344791266
+Weiser,AcePse_SP02_06,Acer pseudoplatanus,Acer,49.019204816450326,8.65630240672244
+Weiser,AcePse_SP02_07,Acer pseudoplatanus,Acer,49.01930056344833,8.65650594719235
+Weiser,AcePse_SP02_08,Acer pseudoplatanus,Acer,49.01929507679128,8.656453289903093
+Weiser,AcePse_SP02_09,Acer pseudoplatanus,Acer,49.01915302851442,8.656388420292501
+Weiser,AcePse_SP02_10,Acer pseudoplatanus,Acer,49.019282895179416,8.656221322066765
+Weiser,AcePse_SP02_11,Acer pseudoplatanus,Acer,49.01929893132399,8.65623427169427
+Weiser,AcePse_SP02_12,Acer pseudoplatanus,Acer,49.019259896522286,8.65626502026273
+Weiser,AcePse_SP02_13,Acer pseudoplatanus,Acer,49.019299768187096,8.65636234147113
+Weiser,AcePse_SP02_14,Acer pseudoplatanus,Acer,49.0191963717194,8.656293689216726
+Weiser,AcePse_SP02_15,Acer pseudoplatanus,Acer,49.01922009602532,8.656277292691742
+Weiser,PseMen_SP02_01,Pseudotsuga menziesii,Pseudotsuga,49.0191992741335,8.656268843351402
+Weiser,PseMen_SP02_02,Pseudotsuga menziesii,Pseudotsuga,49.01929742631159,8.656411173429278
+Weiser,AcePse_BR08_01,Acer pseudoplatanus,Acer,49.0136122049883,8.698341837784158
+Weiser,AcePse_BR08_02,Acer pseudoplatanus,Acer,49.01370228085936,8.698518882958384
+Weiser,AcePse_BR08_03,Acer pseudoplatanus,Acer,49.01369754901402,8.698295971752941
+Weiser,AcePse_BR08_04,Acer pseudoplatanus,Acer,49.01370751110715,8.698363719174221
+Weiser,FagSyl_BR08_01,Fagus sylvatica,Fagus,49.01368738258179,8.698170319213709
+Weiser,PicAbi_BR08_01,Picea abies,Picea,49.01363364562496,8.699125525646865
+Weiser,PicAbi_BR08_02,Picea abies,Picea,49.013600168477744,8.69921999219382
+Weiser,PicAbi_BR08_03,Picea abies,Picea,49.01365448393189,8.699029362450318
+Weiser,PicAbi_BR08_04,Picea abies,Picea,49.01357946332285,8.699066219359493
+Weiser,PicAbi_BR08_05,Picea abies,Picea,49.01358710669046,8.69917334620179
+Weiser,PicAbi_BR08_06,Picea abies,Picea,49.01361089133732,8.69905054220681
+Weiser,PicAbi_BR08_07,Picea abies,Picea,49.01372217303558,8.699003686796738
+Weiser,PicAbi_BR08_08,Picea abies,Picea,49.01358376805809,8.698972369682302
+NIBIO,plot10_1,Pinus sylvestris,Pinus,60.02179182270054,10.777982461267896
+NIBIO,plot10_2,Picea abies,Picea,60.02176186839773,10.77797124227508
+NIBIO,plot10_3,Pinus sylvestris,Pinus,60.021748092782616,10.777946723213804
+NIBIO,plot10_4,Pinus sylvestris,Pinus,60.02173439459924,10.777961785268106
+NIBIO,plot10_5,Pinus sylvestris,Pinus,60.021722307252176,10.777991650763758
+NIBIO,plot10_6,Pinus sylvestris,Pinus,60.02169392797131,10.77799881946009
+NIBIO,plot10_7,Pinus sylvestris,Pinus,60.02169230614254,10.777886845392183
+NIBIO,plot10_8,Pinus sylvestris,Pinus,60.02177535236862,10.777910280336286
+NIBIO,plot10_9,Pinus sylvestris,Pinus,60.02174342400178,10.777820895218508
+NIBIO,plot10_10,Pinus sylvestris,Pinus,60.0217860145337,10.777867609874338
+NIBIO,plot10_11,Pinus sylvestris,Pinus,60.02178022026763,10.778059249076334
+NIBIO,plot10_12,Picea abies,Picea,60.0217609520991,10.778016211811831
+NIBIO,plot10_13,Picea abies,Picea,60.02175131134015,10.77804309512571
+NIBIO,plot10_14,Picea abies,Picea,60.02173307704872,10.77800806729886
+NIBIO,plot10_15,Pinus sylvestris,Pinus,60.021741578195055,10.778077094433517
+NIBIO,plot10_17,Picea abies,Picea,60.02173650474558,10.77806922349231
+NIBIO,plot10_18,Picea abies,Picea,60.0217118528215,10.77803721242587
+NIBIO,plot10_19,Pinus sylvestris,Pinus,60.02170201518401,10.778082354477514
+NIBIO,plot10_21,Picea abies,Picea,60.0217015600925,10.777910682304055
+NIBIO,plot10_22,Pinus sylvestris,Pinus,60.02168066632711,10.777856189585815
+NIBIO,plot10_23,Pinus sylvestris,Pinus,60.02170745479898,10.777850217330544
+NIBIO,plot10_24,Pinus sylvestris,Pinus,60.02171504620838,10.777822708202471
+NIBIO,plot10_25,Pinus sylvestris,Pinus,60.0217288882376,10.777848685355725
+NIBIO,plot10_26,Picea abies,Picea,60.02175236398801,10.777809302434658
+NIBIO,plot10_27,Picea abies,Picea,60.02173000559218,10.777782796043898
+NIBIO,plot11_1,Picea abies,Picea,60.02551599912644,10.779012288201278
+NIBIO,plot11_2,Picea abies,Picea,60.025478236278495,10.779096822155536
+NIBIO,plot11_3,Picea abies,Picea,60.025450098735135,10.779125789217204
+NIBIO,plot11_4,Picea abies,Picea,60.02543662845857,10.779005135050951
+NIBIO,plot11_5,Picea abies,Picea,60.02537786575817,10.779073286845172
+NIBIO,plot11_6,Picea abies,Picea,60.0253853968598,10.779010036538764
+NIBIO,plot11_7,Picea abies,Picea,60.025405316198665,10.77894730810271
+NIBIO,plot11_8,Picea abies,Picea,60.02542132752672,10.778863129912567
+NIBIO,plot11_9,Picea abies,Picea,60.02546315632368,10.778956858743587
+NIBIO,plot11_10,Picea abies,Picea,60.02545684407536,10.778991239984338
+NIBIO,plot11_11,Picea abies,Picea,60.02549507475496,10.77906730220136
+NIBIO,plot11_14,Picea abies,Picea,60.02543516140684,10.779094940078458
+NIBIO,plot11_15,Picea abies,Picea,60.02545280554405,10.779047505218676
+NIBIO,plot11_16,Picea abies,Picea,60.02542213397199,10.779060753552232
+NIBIO,plot11_17,Picea abies,Picea,60.02540442586588,10.779010512308208
+NIBIO,plot11_18,Picea abies,Picea,60.0254029952849,10.779109999427009
+NIBIO,plot11_19,Picea abies,Picea,60.02536188272422,10.778975873944797
+NIBIO,plot11_21,Picea abies,Picea,60.025376938483895,10.778944406531716
+NIBIO,plot11_22,Picea abies,Picea,60.0254206967848,10.77897689956157
+NIBIO,plot11_23,Picea abies,Picea,60.02538304428221,10.778918158907748
+NIBIO,plot11_24,Picea abies,Picea,60.02538273098829,10.778881016359929
+NIBIO,plot11_26,Picea abies,Picea,60.02542993601662,10.778914500907057
+NIBIO,plot11_27,Picea abies,Picea,60.025442304474495,10.778949208241452
+NIBIO,plot11_29,Picea abies,Picea,60.025466831069465,10.77891740279114
+NIBIO,plot11_30,Picea abies,Picea,60.02547829857811,10.77899126163694
+NIBIO,plot11_31,Picea abies,Picea,60.02549266546015,10.778936826333398
+NIBIO,plot12_1,Betula sp.,Betula,60.0257090204093,10.779008596726346
+NIBIO,plot12_2,Betula sp.,Betula,60.025720703391976,10.779071691590609
+NIBIO,plot12_3,Picea abies,Picea,60.02567245578405,10.779046172335274
+NIBIO,plot12_4,Betula sp.,Betula,60.02565920980268,10.779044421676316
+NIBIO,plot12_5,Picea abies,Picea,60.02564992241874,10.779101355715992
+NIBIO,plot12_6,Picea abies,Picea,60.025657912357055,10.779010891786545
+NIBIO,plot12_7,Picea abies,Picea,60.02560186861914,10.779112503877416
+NIBIO,plot12_8,Picea abies,Picea,60.02559776072095,10.77899950542002
+NIBIO,plot12_9,Picea abies,Picea,60.02562766860692,10.778898952756515
+NIBIO,plot12_10,Betula sp.,Betula,60.02565717997069,10.778938181862893
+NIBIO,plot12_11,Betula sp.,Betula,60.02574108283504,10.7790197814653
+NIBIO,plot12_13,Picea abies,Picea,60.0256858352745,10.779083962531269
+NIBIO,plot12_14,Betula sp.,Betula,60.025664198347634,10.779123258329577
+NIBIO,plot12_15,Picea abies,Picea,60.02568256415221,10.779148657116483
+NIBIO,plot12_16,Picea abies,Picea,60.02562175018857,10.779085159127144
+NIBIO,plot12_17,Picea abies,Picea,60.025632871772686,10.778996418081386
+NIBIO,plot12_20,Picea abies,Picea,60.02564169104227,10.778933569462907
+NIBIO,plot12_21,Picea abies,Picea,60.02565861417255,10.778928763950535
+NIBIO,plot12_22,Picea abies,Picea,60.02565601736144,10.778883385383056
+NIBIO,plot12_23,Picea abies,Picea,60.02567813734616,10.778942778081063
+NIBIO,plot12_24,Betula sp.,Betula,60.02571463988691,10.778941345350702
+NIBIO,plot12_25,Picea abies,Picea,60.02572483276344,10.778945051533366
+NIBIO,plot12_26,Picea abies,Picea,60.02570513963517,10.77896701247062
+NIBIO,plot12_27,Picea abies,Picea,60.02572103419812,10.77899299188287
+NIBIO,plot13_1,Picea abies,Picea,60.02593012327929,10.779051800629944
+NIBIO,plot13_2,Picea abies,Picea,60.0258887561737,10.779041822386532
+NIBIO,plot13_3,Picea abies,Picea,60.02586681158735,10.779099450411676
+NIBIO,plot13_4,Picea abies,Picea,60.02585815040006,10.77906338198772
+NIBIO,plot13_5,Picea abies,Picea,60.02582088863001,10.779066567872428
+NIBIO,plot13_6,Picea abies,Picea,60.02583954365959,10.779019921077682
+NIBIO,plot13_7,Picea abies,Picea,60.02582906799755,10.77898215116574
+NIBIO,plot13_8,Picea abies,Picea,60.02583433356442,10.778937961472732
+NIBIO,plot13_9,Picea abies,Picea,60.02585958299877,10.778964608399797
+NIBIO,plot13_10,Picea abies,Picea,60.02590407298193,10.77899023647698
+NIBIO,plot13_11,Picea abies,Picea,60.0259313537811,10.779088046700789
+NIBIO,plot13_13,Picea abies,Picea,60.02595126271718,10.779102151754138
+NIBIO,plot13_14,Picea abies,Picea,60.025899441829566,10.779147880093392
+NIBIO,plot13_15,Picea abies,Picea,60.02588886943335,10.779122998658304
+NIBIO,plot13_19,Picea abies,Picea,60.02587450590668,10.779155040685511
+NIBIO,plot13_20,Picea abies,Picea,60.02585578050181,10.779127515398228
+NIBIO,plot13_21,Picea abies,Picea,60.025843189807496,10.779095771764906
+NIBIO,plot13_23,Picea abies,Picea,60.02581205943366,10.77903330623322
+NIBIO,plot13_24,Picea abies,Picea,60.02582271460363,10.779011470501558
+NIBIO,plot13_25,Picea abies,Picea,60.02580234911304,10.77898198717526
+NIBIO,plot13_28,Picea abies,Picea,60.0258504956999,10.778915237810253
+NIBIO,plot13_29,Picea abies,Picea,60.0258394789992,10.778880950258172
+NIBIO,plot13_30,Picea abies,Picea,60.025876380017465,10.778896096121173
+NIBIO,plot13_31,Picea abies,Picea,60.02586110327628,10.77887630330838
+NIBIO,plot13_32,Picea abies,Picea,60.02587154052623,10.77892506249752
+NIBIO,plot13_33,Picea abies,Picea,60.02588785535575,10.77886526838337
+NIBIO,plot13_34,Picea abies,Picea,60.02590525943158,10.778869557722697
+NIBIO,plot13_35,Picea abies,Picea,60.02590118526038,10.778929928015662
+NIBIO,plot13_36,Picea abies,Picea,60.02593909081408,10.77897680639156
+NIBIO,plot16_1,Picea abies,Picea,60.024997820855056,10.779439761406548
+NIBIO,plot16_2,Picea abies,Picea,60.02497140693212,10.77942563725258
+NIBIO,plot16_3,Picea abies,Picea,60.02497134720774,10.779490106723635
+NIBIO,plot16_4,Picea abies,Picea,60.02495007349931,10.77948898562668
+NIBIO,plot16_5,Picea abies,Picea,60.02491976340728,10.779434481024216
+NIBIO,plot16_6,Picea abies,Picea,60.024909689578365,10.779392627176636
+NIBIO,plot16_7,Picea abies,Picea,60.02494826339582,10.779341897824304
+NIBIO,plot16_8,Betula sp.,Betula,60.02495394350285,10.77937672997365
+NIBIO,plot16_9,Picea abies,Picea,60.025023887912695,10.779338860533777
+NIBIO,plot16_10,Picea abies,Picea,60.02501143232855,10.779408563774584
+NIBIO,plot16_11,Picea abies,Picea,60.02501848513139,10.77945316750272
+NIBIO,plot16_13,Betula sp.,Betula,60.02499534795664,10.779509736609269
+NIBIO,plot16_15,Picea abies,Picea,60.024984653723926,10.779470465612576
+NIBIO,plot16_16,Picea abies,Picea,60.02494035107336,10.779527350372934
+NIBIO,plot16_18,Picea abies,Picea,60.0249276121774,10.77946995006709
+NIBIO,plot16_19,Picea abies,Picea,60.02491864614496,10.77955297776285
+NIBIO,plot16_20,Picea abies,Picea,60.02489969125088,10.779505469032271
+NIBIO,plot16_21,Picea abies,Picea,60.02490589943543,10.779468743359056
+NIBIO,plot16_24,Picea abies,Picea,60.02489014499311,10.779415465242334
+NIBIO,plot16_26,Picea abies,Picea,60.02491148459853,10.7793600157757
+NIBIO,plot16_27,Picea abies,Picea,60.02490243598601,10.779325660981062
+NIBIO,plot16_29,Betula sp.,Betula,60.024938739916905,10.779298917499652
+NIBIO,plot16_33,Picea abies,Picea,60.02499004551984,10.779282679468704
+NIBIO,plot16_34,Picea abies,Picea,60.02499712324326,10.77932360439998
+NIBIO,plot16_35,Picea abies,Picea,60.02497818642055,10.779362889313084
+NIBIO,plot16_36,Betula sp.,Betula,60.02500081228175,10.77936305259419
+NIBIO,plot16_37,Picea abies,Picea,60.024991801001,10.779396489478328
+NIBIO,plot16_39,Picea abies,Picea,60.02503785565572,10.779407298278995
+NIBIO,plot17_1,Picea abies,Picea,60.02523939850421,10.77946925282608
+NIBIO,plot17_2,Picea abies,Picea,60.025174009380265,10.77943620869739
+NIBIO,plot17_3,Picea abies,Picea,60.02518562009033,10.779481516551296
+NIBIO,plot17_4,Picea abies,Picea,60.02517060886013,10.779568872328138
+NIBIO,plot17_5,Picea abies,Picea,60.025128764542096,10.77952829779794
+NIBIO,plot17_6,Picea abies,Picea,60.0251123542096,10.779498422535411
+NIBIO,plot17_7,Picea abies,Picea,60.02514251664899,10.779414707571082
+NIBIO,plot17_8,Picea abies,Picea,60.02515587858393,10.77937841525802
+NIBIO,plot17_9,Picea abies,Picea,60.02516883499304,10.77935703139257
+NIBIO,plot17_10,Picea abies,Picea,60.02519367780936,10.77938565279931
+NIBIO,plot17_11,Picea abies,Picea,60.0252329987084,10.779494639937951
+NIBIO,plot17_12,Betula sp.,Betula,60.02520820801474,10.779517255689116
+NIBIO,plot17_13,Betula sp.,Betula,60.02520362871709,10.77957744797438
+NIBIO,plot17_14,Picea abies,Picea,60.02518470140469,10.779526301684054
+NIBIO,plot17_15,Betula sp.,Betula,60.02515653857045,10.77952134196085
+NIBIO,plot17_17,Picea abies,Picea,60.025148883106304,10.77957799486972
+NIBIO,plot17_18,Picea abies,Picea,60.02513614291127,10.7795564188763
+NIBIO,plot17_19,Picea abies,Picea,60.02511818074292,10.779451710458106
+NIBIO,plot17_22,Picea abies,Picea,60.025122322584,10.779379437414358
+NIBIO,plot17_23,Picea abies,Picea,60.02514973734812,10.779326176741172
+NIBIO,plot17_26,Picea abies,Picea,60.02518016734432,10.779293778574967
+NIBIO,plot17_28,Picea abies,Picea,60.025215397277925,10.77930997606737
+NIBIO,plot17_30,Betula sp.,Betula,60.02521255861461,10.779428360320008
+NIBIO,plot18_1,Picea abies,Picea,60.025411052927375,10.779463353822024
+NIBIO,plot18_2,Picea abies,Picea,60.02539873067489,10.779491796866395
+NIBIO,plot18_3,Picea abies,Picea,60.025404973649145,10.779532573335294
+NIBIO,plot18_4,Picea abies,Picea,60.02538348059845,10.779518016923946
+NIBIO,plot18_5,Picea abies,Picea,60.02534013196516,10.779568671512235
+NIBIO,plot18_6,Picea abies,Picea,60.02535202030223,10.779463117936931
+NIBIO,plot18_7,Picea abies,Picea,60.02535168076728,10.779424227740316
+NIBIO,plot18_8,Picea abies,Picea,60.02537875682405,10.779417179830778
+NIBIO,plot18_9,Picea abies,Picea,60.02538454100002,10.779361669212486
+NIBIO,plot18_10,Betula sp.,Betula,60.02542103966029,10.779398777266351
+NIBIO,plot18_11,Picea abies,Picea,60.02542928650151,10.779478587888065
+NIBIO,plot18_13,Picea abies,Picea,60.02542470683555,10.779535556853272
+NIBIO,plot18_14,Picea abies,Picea,60.02543875076869,10.779572370327829
+NIBIO,plot18_17,Picea abies,Picea,60.02540450126494,10.779586785378717
+NIBIO,plot18_18,Picea abies,Picea,60.02538218998345,10.779567603001182
+NIBIO,plot18_19,Picea abies,Picea,60.02537122042123,10.779606745090682
+NIBIO,plot18_20,Picea abies,Picea,60.0253611656259,10.779542630101927
+NIBIO,plot18_22,Picea abies,Picea,60.02533965428694,10.7795135840048
+NIBIO,plot18_23,Picea abies,Picea,60.02536800659896,10.77948706587329
+NIBIO,plot18_24,Picea abies,Picea,60.02536941077944,10.779446390752527
+NIBIO,plot18_25,Picea abies,Picea,60.0253344078151,10.77938005578261
+NIBIO,plot18_26,Betula sp.,Betula,60.025369442536416,10.77933067123017
+NIBIO,plot19_1,Picea abies,Picea,60.02564089877513,10.779457749820873
+NIBIO,plot19_2,Picea abies,Picea,60.025615283235645,10.779461000525666
+NIBIO,plot19_3,Picea abies,Picea,60.02566123915158,10.779513800406525
+NIBIO,plot19_4,Picea abies,Picea,60.025617559878526,10.77950328747318
+NIBIO,plot19_5,Picea abies,Picea,60.02560357451331,10.779533599288362
+NIBIO,plot19_6,Picea abies,Picea,60.02559697229541,10.779500742934308
+NIBIO,plot19_7,Picea abies,Picea,60.02557845725638,10.77947880483256
+NIBIO,plot19_8,Picea abies,Picea,60.02556219404097,10.779456945451104
+NIBIO,plot19_9,Picea abies,Picea,60.02557669172606,10.779410462103716
+NIBIO,plot19_10,Picea abies,Picea,60.02561843584435,10.779399227358953
+NIBIO,plot19_11,Picea abies,Picea,60.025668768141934,10.779467955707869
+NIBIO,plot19_12,Picea abies,Picea,60.02567800937221,10.779497295537068
+NIBIO,plot19_13,Picea abies,Picea,60.025676977004,10.779416231692768
+NIBIO,plot19_14,Picea abies,Picea,60.02566058307904,10.779540770013387
+NIBIO,plot19_15,Picea abies,Picea,60.02564502511503,10.779587386348757
+NIBIO,plot19_16,Picea abies,Picea,60.02563023375527,10.779548795686154
+NIBIO,plot19_17,Picea abies,Picea,60.025612131079455,10.779556136860569
+NIBIO,plot19_18,Picea abies,Picea,60.02559542860205,10.779575900107078
+NIBIO,plot19_19,Picea abies,Picea,60.02561269064345,10.77959965570404
+NIBIO,plot19_20,Picea abies,Picea,60.0256336228085,10.779621484850788
+NIBIO,plot19_21,Picea abies,Picea,60.0255733080463,10.779524167952792
+NIBIO,plot19_22,Picea abies,Picea,60.02557110590233,10.779585923074972
+NIBIO,plot19_23,Betula sp.,Betula,60.025552139585,10.7795178749824
+NIBIO,plot19_24,Picea abies,Picea,60.02559657954224,10.77945658251037
+NIBIO,plot19_25,Picea abies,Picea,60.02558955286994,10.779433021191098
+NIBIO,plot19_26,Betula sp.,Betula,60.02554849766828,10.7794584463618
+NIBIO,plot19_27,Betula sp.,Betula,60.02554855873413,10.779437996763626
+NIBIO,plot19_28,Picea abies,Picea,60.02554536064564,10.779400289347944
+NIBIO,plot19_31,Picea abies,Picea,60.0256345266167,10.779369206195518
+NIBIO,plot19_32,Betula sp.,Betula,60.025591391392496,10.779369063590217
+NIBIO,plot19_33,Picea abies,Picea,60.02560216162781,10.779327818498244
+NIBIO,plot1_1,Picea abies,Picea,60.02102552205999,10.777424187370336
+NIBIO,plot1_2,Picea abies,Picea,60.02099690477583,10.777463421562429
+NIBIO,plot1_3,Picea abies,Picea,60.02095718374857,10.77741611694776
+NIBIO,plot1_4,Picea abies,Picea,60.02094415154339,10.777498260075062
+NIBIO,plot1_5,Picea abies,Picea,60.02090630718591,10.777464401050477
+NIBIO,plot1_6,Picea abies,Picea,60.02091129660292,10.77740308922081
+NIBIO,plot1_7,Picea abies,Picea,60.02083975626286,10.77736376387852
+NIBIO,plot1_8,Picea abies,Picea,60.02086593593911,10.777323686593704
+NIBIO,plot1_9,Picea abies,Picea,60.02089903358692,10.777250957818284
+NIBIO,plot1_10,Picea abies,Picea,60.02096133553118,10.7772512259129
+NIBIO,plot1_11,Picea abies,Picea,60.02098240208869,10.777427953961045
+NIBIO,plot1_12,Picea abies,Picea,60.02097770042548,10.777463621272297
+NIBIO,plot1_19,Picea abies,Picea,60.0209464292,10.777456522032214
+NIBIO,plot1_21,Picea abies,Picea,60.02095118800646,10.777523311308231
+NIBIO,plot1_23,Picea abies,Picea,60.02089092006475,10.777524555030764
+NIBIO,plot1_24,Picea abies,Picea,60.0209228220224,10.77747552046782
+NIBIO,plot1_25,Picea abies,Picea,60.02092078974284,10.777418528117751
+NIBIO,plot1_26,Picea abies,Picea,60.020876256769725,10.777430013414184
+NIBIO,plot1_27,Picea abies,Picea,60.02088409357314,10.77738345388592
+NIBIO,plot1_29,Picea abies,Picea,60.02085869049275,10.77734664511094
+NIBIO,plot1_30,Picea abies,Picea,60.02086029207391,10.777291304447107
+NIBIO,plot1_32,Picea abies,Picea,60.02091727684269,10.777339169102431
+NIBIO,plot1_33,Picea abies,Picea,60.02092800047701,10.777266016287005
+NIBIO,plot1_35,Picea abies,Picea,60.0209594384363,10.777352604228271
+NIBIO,plot1_36,Picea abies,Picea,60.02098086630464,10.77737475181815
+NIBIO,plot1_37,Picea abies,Picea,60.02099107605358,10.777347681686267
+NIBIO,plot21_1,Picea abies,Picea,60.02502028056321,10.77988293956599
+NIBIO,plot21_2,Picea abies,Picea,60.02497698702459,10.77989847177833
+NIBIO,plot21_3,Picea abies,Picea,60.02494461339813,10.779901370990162
+NIBIO,plot21_4,Picea abies,Picea,60.02493188122262,10.779874532074489
+NIBIO,plot21_5,Picea abies,Picea,60.02490953390486,10.779868866571729
+NIBIO,plot21_6,Picea abies,Picea,60.02491624430243,10.779820714003671
+NIBIO,plot21_7,Picea abies,Picea,60.02490767913682,10.779757614876596
+NIBIO,plot21_8,Picea abies,Picea,60.02493952404616,10.779760231395304
+NIBIO,plot21_9,Picea abies,Picea,60.02497286807222,10.7797217588474
+NIBIO,plot21_10,Picea abies,Picea,60.02500653025106,10.779787723654325
+NIBIO,plot21_11,Picea abies,Picea,60.02495864015207,10.779943785807516
+NIBIO,plot21_13,Picea abies,Picea,60.02488125203369,10.779844201916177
+NIBIO,plot21_17,Picea abies,Picea,60.02488081367146,10.779775417460852
+NIBIO,plot21_20,Picea abies,Picea,60.02495462073112,10.779741361574189
+NIBIO,plot21_21,Picea abies,Picea,60.02495930526747,10.779676620368438
+NIBIO,plot21_22,Picea abies,Picea,60.02498527868995,10.779762194053104
+NIBIO,plot21_23,Picea abies,Picea,60.02496140160536,10.779808972499476
+NIBIO,plot21_24,Picea abies,Picea,60.02499116804964,10.779823118628851
+NIBIO,plot22_1,Picea abies,Picea,60.02522856433509,10.779879279804192
+NIBIO,plot22_2,Picea abies,Picea,60.02520660924044,10.779891677399885
+NIBIO,plot22_3,Betula sp.,Betula,60.02518058636062,10.77990955904454
+NIBIO,plot22_4,Picea abies,Picea,60.025161995075926,10.779939523556186
+NIBIO,plot22_5,Picea abies,Picea,60.02513900984711,10.779986169249002
+NIBIO,plot22_6,Picea abies,Picea,60.025095816402,10.7799218771385
+NIBIO,plot22_7,Picea abies,Picea,60.02513841810341,10.779874749443934
+NIBIO,plot22_8,Picea abies,Picea,60.02509578467162,10.779855834476962
+NIBIO,plot22_9,Picea abies,Picea,60.02513553662449,10.779724169263154
+NIBIO,plot22_10,Picea abies,Picea,60.02521629620291,10.779761751977947
+NIBIO,plot22_11,Picea abies,Picea,60.02519874585828,10.77997759773854
+NIBIO,plot22_12,Betula sp.,Betula,60.025167292014935,10.779989358713197
+NIBIO,plot22_13,Picea abies,Picea,60.02521811251776,10.77999132685109
+NIBIO,plot22_16,Picea abies,Picea,60.025169007174085,10.779757762486076
+NIBIO,plot22_20,Picea abies,Picea,60.02520519599924,10.77983420359547
+NIBIO,plot23_1,Picea abies,Picea,60.02543962496697,10.779911303407388
+NIBIO,plot23_2,Picea abies,Picea,60.02542764019252,10.779981396883889
+NIBIO,plot23_3,Picea abies,Picea,60.02539481917987,10.779961109215211
+NIBIO,plot23_4,Picea abies,Picea,60.02540430176551,10.780004490286425
+NIBIO,plot23_5,Picea abies,Picea,60.02535034921036,10.780028045065617
+NIBIO,plot23_6,Picea abies,Picea,60.02534070873462,10.779990242287909
+NIBIO,plot23_7,Picea abies,Picea,60.02534627916364,10.779921437616515
+NIBIO,plot23_8,Picea abies,Picea,60.02537297622786,10.779938752768455
+NIBIO,plot23_9,Picea abies,Picea,60.02542135313583,10.779863614161115
+NIBIO,plot23_10,Picea abies,Picea,60.025400992134045,10.779899934192157
+NIBIO,plot23_11,Picea abies,Picea,60.025454993221295,10.779884657803075
+NIBIO,plot23_12,Picea abies,Picea,60.025430581831934,10.779827616785315
+NIBIO,plot23_16,Picea abies,Picea,60.02538143181395,10.780025962926874
+NIBIO,plot23_17,Picea abies,Picea,60.02541399913222,10.780072460487366
+NIBIO,plot23_21,Picea abies,Picea,60.02534788745432,10.7800637856825
+NIBIO,plot23_24,Picea abies,Picea,60.02530550424058,10.779959511667093
+NIBIO,plot23_26,Betula sp.,Betula,60.02535906125358,10.77988206338139
+NIBIO,plot23_28,Betula sp.,Betula,60.02537569615655,10.779734563984796
+NIBIO,plot2_1,Picea abies,Picea,60.02121484262411,10.777530868275052
+NIBIO,plot2_2,Picea abies,Picea,60.02118631996999,10.777571743192809
+NIBIO,plot2_3,Betula sp.,Betula,60.02114587438626,10.77750554314099
+NIBIO,plot2_4,Picea abies,Picea,60.02109899856538,10.777539914255966
+NIBIO,plot2_5,Picea abies,Picea,60.02113628605841,10.77743289160076
+NIBIO,plot2_6,Picea abies,Picea,60.02112111328875,10.777390127907609
+NIBIO,plot2_7,Picea abies,Picea,60.02112472441583,10.777259280084143
+NIBIO,plot2_8,Picea abies,Picea,60.02115909774456,10.777339600783751
+NIBIO,plot2_9,Picea abies,Picea,60.02117592092674,10.777389533790236
+NIBIO,plot2_10,Pinus sylvestris,Pinus,60.02124745472016,10.77738025340354
+NIBIO,plot2_11,Picea abies,Picea,60.02122407091778,10.777463548884912
+NIBIO,plot2_13,Picea abies,Picea,60.02119156967585,10.777504920813405
+NIBIO,plot2_14,Picea abies,Picea,60.02119209307571,10.777530280327984
+NIBIO,plot2_15,Picea abies,Picea,60.02117090499436,10.777476300206626
+NIBIO,plot2_16,Picea abies,Picea,60.02116018029799,10.777592297503883
+NIBIO,plot2_17,Picea abies,Picea,60.02112243612166,10.777551940920956
+NIBIO,plot2_19,Picea abies,Picea,60.02109208615646,10.777514596023222
+NIBIO,plot2_21,Betula sp.,Betula,60.02108278557099,10.77748747843306
+NIBIO,plot2_22,Picea abies,Picea,60.02114288620647,10.777475532834105
+NIBIO,plot2_23,Picea abies,Picea,60.02111389016756,10.777461904744593
+NIBIO,plot2_24,Picea abies,Picea,60.021094776747184,10.77747629294129
+NIBIO,plot2_25,Picea abies,Picea,60.02107592177231,10.777452977633
+NIBIO,plot2_26,Picea abies,Picea,60.02108012222593,10.777427576032183
+NIBIO,plot2_29,Picea abies,Picea,60.02108900651632,10.777394085754745
+NIBIO,plot2_30,Picea abies,Picea,60.02109380346573,10.77734154212198
+NIBIO,plot2_31,Picea abies,Picea,60.02112289498178,10.777318269449076
+NIBIO,plot2_32,Betula sp.,Betula,60.021142273305045,10.77740962209055
+NIBIO,plot2_33,Picea abies,Picea,60.02112350556585,10.777346693271248
+NIBIO,plot2_34,Picea abies,Picea,60.02114589321056,10.77737697263022
+NIBIO,plot2_35,Picea abies,Picea,60.02118897529217,10.777325923120138
+NIBIO,plot2_36,Picea abies,Picea,60.02120222407016,10.777360775268026
+NIBIO,plot2_38,Picea abies,Picea,60.02116061697181,10.777419702676678
+NIBIO,plot2_39,Picea abies,Picea,60.021197619862086,10.777442169194824
+NIBIO,plot2_40,Picea abies,Picea,60.021153218555554,10.777433579822464
+NIBIO,plot3_1,Picea abies,Picea,60.02140718665115,10.77753111020349
+NIBIO,plot3_2,Picea abies,Picea,60.02136167708142,10.77762885769801
+NIBIO,plot3_3,Pinus sylvestris,Pinus,60.021340099391765,10.7775903547481
+NIBIO,plot3_4,Betula sp.,Betula,60.02131074762158,10.77763389545469
+NIBIO,plot3_6,Betula sp.,Betula,60.02133329839042,10.777490890127195
+NIBIO,plot3_7,Picea abies,Picea,60.02129042896378,10.777440329468355
+NIBIO,plot3_8,Picea abies,Picea,60.02131864381591,10.777409895510791
+NIBIO,plot3_9,Betula sp.,Betula,60.021351341669416,10.777436375737658
+NIBIO,plot3_10,Picea abies,Picea,60.02138621025108,10.777411644683834
+NIBIO,plot3_12,Betula sp.,Betula,60.02139494337969,10.777576652247523
+NIBIO,plot3_13,Picea abies,Picea,60.02139199842522,10.777587961943976
+NIBIO,plot3_14,Picea abies,Picea,60.02137895767406,10.77758820761952
+NIBIO,plot3_15,Picea abies,Picea,60.0213556659008,10.777592651976754
+NIBIO,plot3_16,Pinus sylvestris,Pinus,60.021365790773125,10.77755647787057
+NIBIO,plot3_17,Picea abies,Picea,60.02134186614671,10.77753705263257
+NIBIO,plot3_18,Picea abies,Picea,60.02133400170534,10.777485335851011
+NIBIO,plot3_19,Picea abies,Picea,60.02131312966248,10.777471835972513
+NIBIO,plot3_21,Betula sp.,Betula,60.0213507922412,10.777389497733202
+NIBIO,plot3_22,Picea abies,Picea,60.0213692244299,10.777358236207798
+NIBIO,plot3_23,Picea abies,Picea,60.02138831884745,10.777317324479888
+NIBIO,plot3_25,Picea abies,Picea,60.02142951528937,10.777404927599743
+NIBIO,plot3_26,Betula sp.,Betula,60.02141635242892,10.77745902594745
+NIBIO,plot3_27,Picea abies,Picea,60.02144430535852,10.777466855101231
+NIBIO,plot4_1,Pinus sylvestris,Pinus,60.02166399648691,10.777495182760152
+NIBIO,plot4_2,Pinus sylvestris,Pinus,60.02165380391679,10.777595512269
+NIBIO,plot4_3,Picea abies,Picea,60.021603873250925,10.777604992427012
+NIBIO,plot4_4,Picea abies,Picea,60.021584283797495,10.77760434393226
+NIBIO,plot4_5,Picea abies,Picea,60.02156663434877,10.777583043089738
+NIBIO,plot4_6,Picea abies,Picea,60.02155612779231,10.777550443067309
+NIBIO,plot4_7,Picea abies,Picea,60.021509136164816,10.777562293540951
+NIBIO,plot4_8,Pinus sylvestris,Pinus,60.021512386147776,10.777403689347445
+NIBIO,plot4_9,Betula sp.,Betula,60.02156422743327,10.777466521155525
+NIBIO,plot4_10,Betula sp.,Betula,60.0215931964664,10.77746694583496
+NIBIO,plot4_11,Betula sp.,Betula,60.02163168043294,10.777518108494586
+NIBIO,plot4_12,Pinus sylvestris,Pinus,60.02162194855441,10.777523446702212
+NIBIO,plot4_13,Picea abies,Picea,60.0216136728279,10.777569028191046
+NIBIO,plot4_16,Betula sp.,Betula,60.02154919603903,10.777506659407582
+NIBIO,plot4_17,Picea abies,Picea,60.0215740406446,10.777642131251234
+NIBIO,plot4_18,Picea abies,Picea,60.02154862276336,10.777620897851516
+NIBIO,plot4_19,Pinus sylvestris,Pinus,60.02152943811064,10.777612036762404
+NIBIO,plot4_20,Picea abies,Picea,60.02151796218905,10.77760014238325
+NIBIO,plot4_21,Picea abies,Picea,60.021529803712426,10.777551590720124
+NIBIO,plot4_22,Betula sp.,Betula,60.021579030228885,10.77755340584449
+NIBIO,plot4_23,Betula sp.,Betula,60.02151664983006,10.77750100794688
+NIBIO,plot4_24,Betula sp.,Betula,60.02153534058058,10.777471839429476
+NIBIO,plot4_25,Betula sp.,Betula,60.02155481784804,10.777374775675016
+NIBIO,plot5_1,Picea abies,Picea,60.02180267048099,10.777550732699044
+NIBIO,plot5_2,Picea abies,Picea,60.02179267650087,10.777672419709788
+NIBIO,plot5_3,Pinus sylvestris,Pinus,60.02177312163264,10.77756030783525
+NIBIO,plot5_5,Picea abies,Picea,60.02175157451204,10.77753728372923
+NIBIO,plot5_6,Pinus sylvestris,Pinus,60.02173350037228,10.77748860588469
+NIBIO,plot5_7,Picea abies,Picea,60.0217228594228,10.777375227583445
+NIBIO,plot5_8,Picea abies,Picea,60.021782747981696,10.777424511518117
+NIBIO,plot5_9,Picea abies,Picea,60.02180390284946,10.777397341793815
+NIBIO,plot5_10,Picea abies,Picea,60.02184203995914,10.777416848528976
+NIBIO,plot5_11,Picea abies,Picea,60.02178494006894,10.777631309523086
+NIBIO,plot5_12,Picea abies,Picea,60.02176194440983,10.777626167185064
+NIBIO,plot5_13,Picea abies,Picea,60.02175272604101,10.777604770276762
+NIBIO,plot5_14,Pinus sylvestris,Pinus,60.02174663521776,10.777609867447223
+NIBIO,plot5_15,Pinus sylvestris,Pinus,60.02172912672033,10.777554006425634
+NIBIO,plot5_16,Pinus sylvestris,Pinus,60.02173159276136,10.77752900418434
+NIBIO,plot5_17,Pinus sylvestris,Pinus,60.02173795127325,10.77745055676706
+NIBIO,plot5_18,Picea abies,Picea,60.02173755085635,10.777425709090064
+NIBIO,plot5_19,Pinus sylvestris,Pinus,60.021760575958346,10.777395119059088
+NIBIO,plot5_20,Picea abies,Picea,60.02183095644137,10.777456012272744
+NIBIO,plot6_1,Picea abies,Picea,60.0208808158548,10.777805240500689
+NIBIO,plot6_2,Picea abies,Picea,60.02092109121588,10.777902409333215
+NIBIO,plot6_4,Picea abies,Picea,60.02087077503034,10.777838456512766
+NIBIO,plot6_5,Picea abies,Picea,60.02084836798328,10.777820153063194
+NIBIO,plot6_6,Picea abies,Picea,60.02085158889721,10.7777024360605
+NIBIO,plot6_7,Picea abies,Picea,60.02083313109527,10.777771042056736
+NIBIO,plot6_8,Picea abies,Picea,60.02087710355362,10.777753773791863
+NIBIO,plot6_9,Picea abies,Picea,60.02090313441083,10.777772283990904
+NIBIO,plot6_10,Betula sp.,Betula,60.02089423573505,10.777829717366094
+NIBIO,plot6_11,Picea abies,Picea,60.02087895016446,10.777824150410089
+NIBIO,plot6_12,Picea abies,Picea,60.02091382189323,10.777829547821105
+NIBIO,plot6_14,Picea abies,Picea,60.020943579674125,10.777829136129949
+NIBIO,plot6_15,Picea abies,Picea,60.020922057189374,10.77785699158036
+NIBIO,plot6_16,Picea abies,Picea,60.02090578624674,10.777860427524056
+NIBIO,plot6_17,Pinus sylvestris,Pinus,60.02089149570935,10.777884810084045
+NIBIO,plot6_18,Pinus sylvestris,Pinus,60.02089149174031,10.777952871582032
+NIBIO,plot6_20,Picea abies,Picea,60.02088520998319,10.777954458153188
+NIBIO,plot6_21,Pinus sylvestris,Pinus,60.02087946859616,10.777978568275795
+NIBIO,plot6_23,Picea abies,Picea,60.02086266673239,10.777974770593636
+NIBIO,plot6_24,Picea abies,Picea,60.02085071327242,10.77794422808101
+NIBIO,plot6_25,Picea abies,Picea,60.02084053777982,10.777919601535793
+NIBIO,plot6_26,Picea abies,Picea,60.02085399480181,10.777868555894536
+NIBIO,plot6_27,Picea abies,Picea,60.02084885831193,10.7778714845499
+NIBIO,plot6_28,Picea abies,Picea,60.0208280235143,10.777871145317846
+NIBIO,plot6_29,Picea abies,Picea,60.02081592407407,10.777831655601174
+NIBIO,plot6_30,Picea abies,Picea,60.020807243069775,10.777811978023832
+NIBIO,plot6_32,Picea abies,Picea,60.02080350353521,10.777773605015618
+NIBIO,plot6_34,Picea abies,Picea,60.0208237464397,10.777687703568631
+NIBIO,plot6_35,Picea abies,Picea,60.02086242637753,10.777788778204398
+NIBIO,plot6_37,Picea abies,Picea,60.02087994241862,10.777671484350458
+NIBIO,plot6_38,Picea abies,Picea,60.02089459708102,10.777697859187594
+NIBIO,plot6_39,Picea abies,Picea,60.02093748151788,10.777736854769492
+NIBIO,plot6_41,Picea abies,Picea,60.020921662094295,10.77774978605486
+NIBIO,plot6_42,Picea abies,Picea,60.02089333144139,10.77780248660926
+NIBIO,plot6_43,Picea abies,Picea,60.02093550306719,10.77777607699722
+NIBIO,plot6_45,Picea abies,Picea,60.02092666039095,10.7778104648891
+NIBIO,plot7_1,Picea abies,Picea,60.02113707843981,10.777887044735465
+NIBIO,plot7_2,Picea abies,Picea,60.02112106702454,10.77789734626537
+NIBIO,plot7_3,Picea abies,Picea,60.02107109639781,10.77788854036911
+NIBIO,plot7_4,Picea abies,Picea,60.02104784743389,10.777845760622093
+NIBIO,plot7_5,Betula sp.,Betula,60.02100903293625,10.777797210941136
+NIBIO,plot7_6,Picea abies,Picea,60.02106192161029,10.777806235000142
+NIBIO,plot7_7,Picea abies,Picea,60.02105405592223,10.77776050852158
+NIBIO,plot7_8,Picea abies,Picea,60.02108367197273,10.777782088529626
+NIBIO,plot7_9,Picea abies,Picea,60.02112076093444,10.777773313009543
+NIBIO,plot7_10,Picea abies,Picea,60.02111854563277,10.777841231264157
+NIBIO,plot7_11,Picea abies,Picea,60.02110530574007,10.777870266655498
+NIBIO,plot7_12,Picea abies,Picea,60.021158259388656,10.777893325230536
+NIBIO,plot7_13,Betula sp.,Betula,60.02107780290481,10.777955485533552
+NIBIO,plot7_16,Picea abies,Picea,60.02102501926469,10.777855086395974
+NIBIO,plot7_17,Picea abies,Picea,60.02102683640696,10.777872550801746
+NIBIO,plot7_18,Picea abies,Picea,60.02101003199908,10.777884374497797
+NIBIO,plot7_19,Picea abies,Picea,60.02102784805584,10.77781926784973
+NIBIO,plot7_20,Picea abies,Picea,60.021017397907656,10.777820821382672
+NIBIO,plot7_21,Picea abies,Picea,60.02106672689377,10.77782235668986
+NIBIO,plot7_22,Picea abies,Picea,60.02107187067769,10.77774218439964
+NIBIO,plot7_27,Picea abies,Picea,60.021102529492026,10.777719731078914
+NIBIO,plot7_28,Picea abies,Picea,60.02111063922307,10.77773296358598
+NIBIO,plot8_1,Betula sp.,Betula,60.021351471780015,10.777938011540687
+NIBIO,plot8_2,Picea abies,Picea,60.021321840080255,10.778019167690092
+NIBIO,plot8_3,Picea abies,Picea,60.02129585630696,10.77795625588743
+NIBIO,plot8_4,Picea abies,Picea,60.02125744016302,10.777953842170538
+NIBIO,plot8_5,Picea abies,Picea,60.02127347897548,10.777914573655112
+NIBIO,plot8_6,Picea abies,Picea,60.021268415562176,10.777872196196814
+NIBIO,plot8_7,Picea abies,Picea,60.0212486226201,10.777771824120418
+NIBIO,plot8_8,Picea abies,Picea,60.02128040997139,10.777805367556848
+NIBIO,plot8_9,Picea abies,Picea,60.02129999632699,10.7778366077464
+NIBIO,plot8_10,Picea abies,Picea,60.02135436563941,10.777753490854645
+NIBIO,plot8_11,Picea abies,Picea,60.02134213834728,10.777960037251727
+NIBIO,plot8_12,Betula sp.,Betula,60.02129158643891,10.77802319503348
+NIBIO,plot8_13,Picea abies,Picea,60.021275379708406,10.777996528041252
+NIBIO,plot8_14,Pinus sylvestris,Pinus,60.0212415402226,10.777931887520012
+NIBIO,plot8_15,Picea abies,Picea,60.02123153747629,10.777907433483664
+NIBIO,plot8_16,Picea abies,Picea,60.02123778282042,10.777883586519373
+NIBIO,plot8_18,Picea abies,Picea,60.02123086749469,10.777845221780892
+NIBIO,plot8_20,Picea abies,Picea,60.021273271452365,10.777783161882208
+NIBIO,plot8_21,Betula sp.,Betula,60.021340157465865,10.777828273246772
+NIBIO,plot8_22,Picea abies,Picea,60.02136633526591,10.77788298545266
+NIBIO,plot9_1,Betula sp.,Betula,60.02153840711148,10.777916935517718
+NIBIO,plot9_2,Pinus sylvestris,Pinus,60.02157410002037,10.777941874394314
+NIBIO,plot9_3,Picea abies,Picea,60.02153464089268,10.77794811995602
+NIBIO,plot9_4,Picea abies,Picea,60.02154544472008,10.7780170856634
+NIBIO,plot9_5,Picea abies,Picea,60.02151080462674,10.777947357166951
+NIBIO,plot9_6,Pinus sylvestris,Pinus,60.0214893184226,10.777984324025324
+NIBIO,plot9_7,Picea abies,Picea,60.02145385858488,10.777987681871766
+NIBIO,plot9_8,Betula sp.,Betula,60.021458494384525,10.777864685815956
+NIBIO,plot9_9,Pinus sylvestris,Pinus,60.021508415790905,10.777783439315227
+NIBIO,plot9_10,Picea abies,Picea,60.02153187504631,10.77776108912683
+NIBIO,plot9_11,Picea abies,Picea,60.02155570804921,10.777910316523473
+NIBIO,plot9_12,Picea abies,Picea,60.02158041427355,10.777890121972844
+NIBIO,plot9_13,Picea abies,Picea,60.02159005397744,10.777943793946758
+NIBIO,plot9_14,Picea abies,Picea,60.021574337784266,10.777952754292247
+NIBIO,plot9_15,Picea abies,Picea,60.02157798413174,10.777986835416844
+NIBIO,plot9_21,Picea abies,Picea,60.02151940772759,10.778048534239169
+NIBIO,plot9_22,Picea abies,Picea,60.02150460010395,10.778058872240788
+NIBIO,plot9_23,Pinus sylvestris,Pinus,60.0214994200478,10.778036388661397
+NIBIO,plot9_24,Betula sp.,Betula,60.021483845615286,10.778033633789724
+Puliti ULS 2,1,Betula pendula,Betula,59.67000975146282,10.783290487073826
+Puliti ULS 2,10,Betula pendula,Betula,59.670086728552,10.783528581539064
+Puliti ULS 2,100,Betula pendula,Betula,59.67040691954421,10.78336629323396
+Puliti ULS 2,1001,Betula pendula,Betula,59.671047760133,10.78867194909498
+Puliti ULS 2,10010,Betula pendula,Betula,59.67058672843042,10.784447250921527
+Puliti ULS 2,10011,Betula pendula,Betula,59.670683158845954,10.78436437682784
+Puliti ULS 2,100123,Betula pendula,Betula,59.67064397081491,10.78442057689032
+Puliti ULS 2,1002,Betula pendula,Betula,59.67099679052769,10.788517230268788
+Puliti ULS 2,1003,Betula pendula,Betula,59.67099258777572,10.788634033831102
+Puliti ULS 2,1004,Betula pendula,Betula,59.67101859459638,10.788668214474107
+Puliti ULS 2,1005,Betula pendula,Betula,59.671002283092605,10.788675497512592
+Puliti ULS 2,1006,Betula pendula,Betula,59.67105588649914,10.788606771242826
+Puliti ULS 2,1007,Betula pendula,Betula,59.67095509478104,10.788557614287692
+Puliti ULS 2,1008,Betula pendula,Betula,59.67096036179168,10.788691429596184
+Puliti ULS 2,1009,Betula pendula,Betula,59.67096540527742,10.788669913516994
+Puliti ULS 2,101,Betula pendula,Betula,59.67038329806282,10.783329900455753
+Puliti ULS 2,1010,Betula pendula,Betula,59.67098127382752,10.788663533505051
+Puliti ULS 2,1011,Betula pendula,Betula,59.67088504220492,10.78859864529228
+Puliti ULS 2,1012,Betula pendula,Betula,59.6709173127099,10.78853686438885
+Puliti ULS 2,1013,Betula pendula,Betula,59.67096813379472,10.788451796367758
+Puliti ULS 2,1014,Betula pendula,Betula,59.67095117039309,10.788433797782778
+Puliti ULS 2,1015,Betula pendula,Betula,59.67089287627962,10.788462013866196
+Puliti ULS 2,1016,Betula pendula,Betula,59.67094108545304,10.78864821531212
+Puliti ULS 2,1017,Betula pendula,Betula,59.67090025940252,10.788640811161214
+Puliti ULS 2,1018,Betula pendula,Betula,59.67092206632384,10.788643921711452
+Puliti ULS 2,1019,Betula pendula,Betula,59.67093909787222,10.78845857735237
+Puliti ULS 2,1020,Betula pendula,Betula,59.6708675523516,10.788663559003831
+Puliti ULS 2,1021,Betula pendula,Betula,59.670836650557845,10.788593959695255
+Puliti ULS 2,1023,Betula pendula,Betula,59.67086037274654,10.788571125249256
+Puliti ULS 2,1024,Betula pendula,Betula,59.6709007956019,10.788522899512763
+Puliti ULS 2,1025,Betula pendula,Betula,59.67101410174446,10.788718577751997
+Puliti ULS 2,1026,Betula pendula,Betula,59.67088635916042,10.788549756884969
+Puliti ULS 2,1027,Betula pendula,Betula,59.67089655505185,10.788560805116548
+Puliti ULS 2,1028,Betula pendula,Betula,59.670937343415815,10.7886770887744
+Puliti ULS 2,1029,Betula pendula,Betula,59.6709221736164,10.788576952759987
+Puliti ULS 2,103,Betula pendula,Betula,59.67036799526768,10.783645718562452
+Puliti ULS 2,1030,Betula pendula,Betula,59.67093399615378,10.788572552502744
+Puliti ULS 2,1031,Betula pendula,Betula,59.67091506735876,10.788608975144708
+Puliti ULS 2,1032,Betula pendula,Betula,59.67090962804286,10.788706692031155
+Puliti ULS 2,104,Betula pendula,Betula,59.67035501804786,10.783530509389816
+Puliti ULS 2,105,Betula pendula,Betula,59.67035427126157,10.783306041372684
+Puliti ULS 2,106,Betula pendula,Betula,59.6704207760198,10.783551082628849
+Puliti ULS 2,107,Betula pendula,Betula,59.67042237524697,10.783640216244068
+Puliti ULS 2,109,Betula pendula,Betula,59.67044582655159,10.78344372818219
+Puliti ULS 2,11,Betula pendula,Betula,59.66998798762063,10.78352060098496
+Puliti ULS 2,110,Betula pendula,Betula,59.67046233504533,10.78341548896165
+Puliti ULS 2,1100,Betula pendula,Betula,59.670962183341246,10.788482428997147
+Puliti ULS 2,111,Betula pendula,Betula,59.67046267213605,10.783401144192116
+Puliti ULS 2,112,Betula pendula,Betula,59.670332387948456,10.783477503678265
+Puliti ULS 2,113,Betula pendula,Betula,59.67028904914684,10.783405473593914
+Puliti ULS 2,114,Betula pendula,Betula,59.67031389139035,10.783423545035234
+Puliti ULS 2,115,Betula pendula,Betula,59.67034038533195,10.783395275161348
+Puliti ULS 2,116,Betula pendula,Betula,59.67031798925442,10.78335874255222
+Puliti ULS 2,117,Betula pendula,Betula,59.67033199487046,10.78355887593075
+Puliti ULS 2,118,Betula pendula,Betula,59.670324992310704,10.783522170913004
+Puliti ULS 2,119,Betula pendula,Betula,59.67030345986996,10.783600512460236
+Puliti ULS 2,12,Betula pendula,Betula,59.67002608142881,10.783530914818558
+Puliti ULS 2,120,Betula pendula,Betula,59.67029048854801,10.783546928838552
+Puliti ULS 2,121,Betula pendula,Betula,59.67029417781491,10.783507850761469
+Puliti ULS 2,122,Betula pendula,Betula,59.670263679925824,10.783537099431667
+Puliti ULS 2,13,Betula pendula,Betula,59.67001060939137,10.783571081593385
+Puliti ULS 2,14,Betula pendula,Betula,59.67004882757612,10.783480538660069
+Puliti ULS 2,15,Betula pendula,Betula,59.66998260076553,10.783309484314264
+Puliti ULS 2,17,Betula pendula,Betula,59.67004370199584,10.783415461798722
+Puliti ULS 2,18,Betula pendula,Betula,59.66997575490003,10.783281154217772
+Puliti ULS 2,19,Betula pendula,Betula,59.67006226966008,10.783478380995692
+Puliti ULS 2,2,Betula pendula,Betula,59.66997909231598,10.78327322676866
+Puliti ULS 2,201,Betula pendula,Betula,59.670414712068,10.78279673946213
+Puliti ULS 2,202,Betula pendula,Betula,59.67046374984314,10.783016241942658
+Puliti ULS 2,204,Betula pendula,Betula,59.67042631739696,10.78303064188617
+Puliti ULS 2,206,Betula pendula,Betula,59.67039176744639,10.783092037276257
+Puliti ULS 2,207,Betula pendula,Betula,59.67039831854474,10.783024258092276
+Puliti ULS 2,208,Betula pendula,Betula,59.67040119621036,10.782970659855412
+Puliti ULS 2,209,Betula pendula,Betula,59.67041138865527,10.782939838330126
+Puliti ULS 2,210,Betula pendula,Betula,59.6703694736122,10.782928020494506
+Puliti ULS 2,211,Betula pendula,Betula,59.67037001991072,10.78295209151914
+Puliti ULS 2,212,Betula pendula,Betula,59.67036381628981,10.782993689832985
+Puliti ULS 2,213,Betula pendula,Betula,59.67034803797807,10.782943335078434
+Puliti ULS 2,214,Betula pendula,Betula,59.67033918968703,10.78299108266677
+Puliti ULS 2,215,Betula pendula,Betula,59.67032496940639,10.782952291988757
+Puliti ULS 2,216,Betula pendula,Betula,59.67029251524757,10.782988672313948
+Puliti ULS 2,217,Betula pendula,Betula,59.67029168759386,10.782920384890932
+Puliti ULS 2,218,Betula pendula,Betula,59.67032255335214,10.782864616088109
+Puliti ULS 2,219,Betula pendula,Betula,59.67034056706693,10.78286218335394
+Puliti ULS 2,220,Betula pendula,Betula,59.67035102188675,10.78279304145211
+Puliti ULS 2,221,Betula pendula,Betula,59.670388258089375,10.782899053832056
+Puliti ULS 2,222,Betula pendula,Betula,59.67036542265909,10.782894230781256
+Puliti ULS 2,2226,Betula pendula,Betula,59.67043197531014,10.78281290065533
+Puliti ULS 2,223,Betula pendula,Betula,59.67036114946036,10.782865809768971
+Puliti ULS 2,224,Betula pendula,Betula,59.67039317475226,10.782864811922922
+Puliti ULS 2,225,Betula pendula,Betula,59.67041269364599,10.782849480715337
+Puliti ULS 2,2251,Betula pendula,Betula,59.67036891397728,10.782808898317487
+Puliti ULS 2,226,Betula pendula,Betula,59.670444556149405,10.782826277498009
+Puliti ULS 2,227,Betula pendula,Betula,59.67045828120156,10.782838680482596
+Puliti ULS 2,228,Betula pendula,Betula,59.67047344879253,10.782828786429969
+Puliti ULS 2,229,Betula pendula,Betula,59.67048134149713,10.782872988311931
+Puliti ULS 2,23,Betula pendula,Betula,59.67003304747181,10.783354182742729
+Puliti ULS 2,230,Betula pendula,Betula,59.67047969396029,10.782798316157976
+Puliti ULS 2,231,Betula pendula,Betula,59.67033364301559,10.783070270581296
+Puliti ULS 2,233,Betula pendula,Betula,59.670357123077714,10.782912130503624
+Puliti ULS 2,234,Betula pendula,Betula,59.67033635376512,10.78291081018556
+Puliti ULS 2,2340,Betula pendula,Betula,59.67045721013309,10.782924856873132
+Puliti ULS 2,235,Betula pendula,Betula,59.670379300060425,10.782948389137202
+Puliti ULS 2,236,Betula pendula,Betula,59.67034545390722,10.782849205458303
+Puliti ULS 2,237,Betula pendula,Betula,59.670300726057626,10.782868558675275
+Puliti ULS 2,238,Betula pendula,Betula,59.67049408927514,10.782815420770124
+Puliti ULS 2,239,Betula pendula,Betula,59.67034180571736,10.782807340359728
+Puliti ULS 2,24,Betula pendula,Betula,59.6700458109892,10.783331642938398
+Puliti ULS 2,243,Betula pendula,Betula,59.67040218679908,10.782892444464434
+Puliti ULS 2,245,Betula pendula,Betula,59.67031774753728,10.78282687990183
+Puliti ULS 2,2456,Betula pendula,Betula,59.67031189270237,10.783052779914271
+Puliti ULS 2,247,Betula pendula,Betula,59.67035452678682,10.78302029698516
+Puliti ULS 2,248,Betula pendula,Betula,59.67035202401977,10.78298370207914
+Puliti ULS 2,249,Betula pendula,Betula,59.67041497271936,10.78288852311801
+Puliti ULS 2,250,Betula pendula,Betula,59.67038095017241,10.782884174540929
+Puliti ULS 2,255,Betula pendula,Betula,59.6702556984016,10.7847969160252
+Puliti ULS 2,256,Betula pendula,Betula,59.67022914896553,10.785095433044264
+Puliti ULS 2,257,Betula pendula,Betula,59.670186268560734,10.78506273361835
+Puliti ULS 2,258,Betula pendula,Betula,59.67014567008015,10.784783966522284
+Puliti ULS 2,259,Betula pendula,Betula,59.67012889287891,10.78489195972126
+Puliti ULS 2,26,Betula pendula,Betula,59.67001768880189,10.78346242594694
+Puliti ULS 2,260,Betula pendula,Betula,59.670214470771576,10.78473541279839
+Puliti ULS 2,261,Betula pendula,Betula,59.67017510181907,10.784748228559511
+Puliti ULS 2,262,Betula pendula,Betula,59.67020289792792,10.784793648027197
+Puliti ULS 2,263,Betula pendula,Betula,59.670173450901096,10.784847506910245
+Puliti ULS 2,264,Betula pendula,Betula,59.670156684302434,10.784883832989715
+Puliti ULS 2,265,Betula pendula,Betula,59.67015101091182,10.784942010873689
+Puliti ULS 2,2658,Betula pendula,Betula,59.67049018825536,10.782935322803816
+Puliti ULS 2,266,Betula pendula,Betula,59.67015664962192,10.785007146493312
+Puliti ULS 2,267,Betula pendula,Betula,59.67018348229303,10.784958652364043
+Puliti ULS 2,268,Betula pendula,Betula,59.67015013557193,10.785041952079236
+Puliti ULS 2,269,Betula pendula,Betula,59.67026829044941,10.785084126862298
+Puliti ULS 2,27,Betula pendula,Betula,59.67008876201201,10.783337491632548
+Puliti ULS 2,270,Betula pendula,Betula,59.67026812242419,10.785014966512712
+Puliti ULS 2,28,Betula pendula,Betula,59.67008402571272,10.78332147262006
+Puliti ULS 2,280,Betula pendula,Betula,59.67020923775014,10.784999803629765
+Puliti ULS 2,29,Betula pendula,Betula,59.67010137901392,10.78349007538285
+Puliti ULS 2,290,Betula pendula,Betula,59.67022985890093,10.784921244548087
+Puliti ULS 2,291,Betula pendula,Betula,59.67020406504418,10.78486732288304
+Puliti ULS 2,292,Betula pendula,Betula,59.670192320810415,10.784966907929778
+Puliti ULS 2,293,Betula pendula,Betula,59.67015266932285,10.784916756380373
+Puliti ULS 2,294,Betula pendula,Betula,59.67020449347213,10.784833776560427
+Puliti ULS 2,295,Betula pendula,Betula,59.67028967504004,10.78479122651691
+Puliti ULS 2,3,Betula pendula,Betula,59.669962136027365,10.783314848001044
+Puliti ULS 2,30,Betula pendula,Betula,59.67008562587488,10.783510061709348
+Puliti ULS 2,301,Betula pendula,Betula,59.67068971491272,10.786447142242194
+Puliti ULS 2,302,Betula pendula,Betula,59.67076424671019,10.78647500378983
+Puliti ULS 2,303,Betula pendula,Betula,59.67075953713503,10.786382930309053
+Puliti ULS 2,304,Betula pendula,Betula,59.670702586616095,10.786350208825665
+Puliti ULS 2,305,Betula pendula,Betula,59.670740336488926,10.78628504737531
+Puliti ULS 2,306,Betula pendula,Betula,59.67083510957864,10.786615774962316
+Puliti ULS 2,307,Betula pendula,Betula,59.67080311850848,10.786410316121747
+Puliti ULS 2,308,Betula pendula,Betula,59.67082672417669,10.786270831624227
+Puliti ULS 2,309,Betula pendula,Betula,59.67082274556326,10.78653578395241
+Puliti ULS 2,31,Betula pendula,Betula,59.67010077799623,10.783500343256494
+Puliti ULS 2,310,Betula pendula,Betula,59.67079894143717,10.786368308793143
+Puliti ULS 2,311,Betula pendula,Betula,59.67078088222836,10.786208018291552
+Puliti ULS 2,3121,Betula pendula,Betula,59.67084287779396,10.786543312163374
+Puliti ULS 2,313,Betula pendula,Betula,59.67079270576496,10.786317996044705
+Puliti ULS 2,314,Betula pendula,Betula,59.67077599762712,10.786532252480288
+Puliti ULS 2,315,Betula pendula,Betula,59.67087905242892,10.786351295897983
+Puliti ULS 2,316,Betula pendula,Betula,59.67088412775799,10.78642623958668
+Puliti ULS 2,317,Betula pendula,Betula,59.67088414873369,10.78645184670897
+Puliti ULS 2,318,Betula pendula,Betula,59.67075070492886,10.786570022502527
+Puliti ULS 2,319,Betula pendula,Betula,59.67084514552311,10.786258123368846
+Puliti ULS 2,32,Betula pendula,Betula,59.67006993066536,10.783429337028927
+Puliti ULS 2,320,Betula pendula,Betula,59.67071486561199,10.786363548818423
+Puliti ULS 2,321,Betula pendula,Betula,59.67070074576328,10.786298910294937
+Puliti ULS 2,322,Betula pendula,Betula,59.67071532358428,10.78629624640832
+Puliti ULS 2,323,Betula pendula,Betula,59.67073331573201,10.786315146201614
+Puliti ULS 2,324,Betula pendula,Betula,59.67076878562522,10.786502067550014
+Puliti ULS 2,325,Betula pendula,Betula,59.67087676762426,10.78655788846258
+Puliti ULS 2,326,Betula pendula,Betula,59.67086573694984,10.7863266644307
+Puliti ULS 2,327,Betula pendula,Betula,59.67083398592675,10.78621563190878
+Puliti ULS 2,328,Betula pendula,Betula,59.670783976723264,10.786396758478704
+Puliti ULS 2,329,Betula pendula,Betula,59.67082234649301,10.78637238797436
+Puliti ULS 2,330,Betula pendula,Betula,59.67075383270501,10.786451215008515
+Puliti ULS 2,331,Betula pendula,Betula,59.6707930815596,10.786507242488623
+Puliti ULS 2,332,Betula pendula,Betula,59.67077675158322,10.786461163566033
+Puliti ULS 2,333,Betula pendula,Betula,59.67075736731416,10.786554231695336
+Puliti ULS 2,34,Betula pendula,Betula,59.67002357865632,10.783325112643796
+Puliti ULS 2,35,Betula pendula,Betula,59.66993570279221,10.7834086891491
+Puliti ULS 2,36,Betula pendula,Betula,59.66994684549923,10.783444141847037
+Puliti ULS 2,37,Betula pendula,Betula,59.66996311766896,10.783433610712098
+Puliti ULS 2,38,Betula pendula,Betula,59.6699612403245,10.783470335661264
+Puliti ULS 2,39,Betula pendula,Betula,59.66995034120521,10.783513263093852
+Puliti ULS 2,4,Betula pendula,Betula,59.66997547131243,10.78333776917392
+Puliti ULS 2,40,Betula pendula,Betula,59.66994656471833,10.783567098592837
+Puliti ULS 2,401,Betula pendula,Betula,59.67017929236529,10.78617046276272
+Puliti ULS 2,402,Betula pendula,Betula,59.67016113952998,10.786181498038008
+Puliti ULS 2,403,Betula pendula,Betula,59.67004342133648,10.78630463826392
+Puliti ULS 2,404,Betula pendula,Betula,59.67001144425586,10.78632216460952
+Puliti ULS 2,405,Betula pendula,Betula,59.67010234189253,10.786169112431814
+Puliti ULS 2,406,Betula pendula,Betula,59.670190331262674,10.786212080246957
+Puliti ULS 2,407,Betula pendula,Betula,59.6700736822764,10.78619589068452
+Puliti ULS 2,408,Betula pendula,Betula,59.67005503290322,10.786191268863076
+Puliti ULS 2,409,Betula pendula,Betula,59.67002978673064,10.786288849870498
+Puliti ULS 2,41,Betula pendula,Betula,59.67003940147519,10.783309083922443
+Puliti ULS 2,410,Betula pendula,Betula,59.67014017282532,10.786003908867904
+Puliti ULS 2,411,Betula pendula,Betula,59.67015770677408,10.78597625546159
+Puliti ULS 2,412,Betula pendula,Betula,59.67011657554721,10.78600321608335
+Puliti ULS 2,413,Betula pendula,Betula,59.670189231502654,10.786049711770756
+Puliti ULS 2,414,Betula pendula,Betula,59.66999222199728,10.786238343958608
+Puliti ULS 2,415,Betula pendula,Betula,59.67011067222644,10.785932459975
+Puliti ULS 2,416,Betula pendula,Betula,59.67007064466494,10.785960671200378
+Puliti ULS 2,42,Betula pendula,Betula,59.66988488002197,10.783496887685816
+Puliti ULS 2,43,Betula pendula,Betula,59.669894344244376,10.783485374854848
+Puliti ULS 2,44,Betula pendula,Betula,59.66989791952583,10.783507683839614
+Puliti ULS 2,45,Betula pendula,Betula,59.669886742499685,10.78346919703971
+Puliti ULS 2,46,Betula pendula,Betula,59.669904770129946,10.783431238089156
+Puliti ULS 2,47,Betula pendula,Betula,59.67006668509864,10.783361681469591
+Puliti ULS 2,48,Betula pendula,Betula,59.670013464146685,10.783290879004529
+Puliti ULS 2,50,Betula pendula,Betula,59.66987628156462,10.784749850445053
+Puliti ULS 2,501,Betula pendula,Betula,59.67098646052999,10.787787526322804
+Puliti ULS 2,502,Betula pendula,Betula,59.67098433988367,10.787821473249275
+Puliti ULS 2,503,Betula pendula,Betula,59.6710184027292,10.788006643248124
+Puliti ULS 2,504,Betula pendula,Betula,59.67096518424027,10.78815233595609
+Puliti ULS 2,505,Betula pendula,Betula,59.67092417135528,10.788126257730282
+Puliti ULS 2,506,Betula pendula,Betula,59.6709786782754,10.788015748356832
+Puliti ULS 2,507,Betula pendula,Betula,59.67109195082446,10.787951619990912
+Puliti ULS 2,508,Betula pendula,Betula,59.67109746413644,10.78794988710449
+Puliti ULS 2,509,Betula pendula,Betula,59.67102743130244,10.787849783749468
+Puliti ULS 2,51,Betula pendula,Betula,59.66984094866922,10.784710807446263
+Puliti ULS 2,510,Betula pendula,Betula,59.671100406647554,10.788072632508689
+Puliti ULS 2,52,Betula pendula,Betula,59.66987666618155,10.78483275646519
+Puliti ULS 2,53,Betula pendula,Betula,59.66989875961583,10.784670517146385
+Puliti ULS 2,54,Betula pendula,Betula,59.66990853285856,10.784716460034437
+Puliti ULS 2,5474,Betula pendula,Betula,59.670298226785775,10.782828093252226
+Puliti ULS 2,55,Betula pendula,Betula,59.669868670453184,10.784650005654717
+Puliti ULS 2,555,Betula pendula,Betula,59.67073381920522,10.784438561727306
+Puliti ULS 2,556,Betula pendula,Betula,59.67065816098815,10.784175343132183
+Puliti ULS 2,557,Betula pendula,Betula,59.67060103798776,10.78425589208238
+Puliti ULS 2,558,Betula pendula,Betula,59.67073570857952,10.78433525060714
+Puliti ULS 2,559,Betula pendula,Betula,59.67070831074322,10.784357098200186
+Puliti ULS 2,56,Betula pendula,Betula,59.669899657637565,10.784579044554636
+Puliti ULS 2,560,Betula pendula,Betula,59.67063062320567,10.78430937697553
+Puliti ULS 2,561,Betula pendula,Betula,59.67065947914007,10.784346179099389
+Puliti ULS 2,562,Betula pendula,Betula,59.67068412987495,10.784156984582877
+Puliti ULS 2,563,Betula pendula,Betula,59.67069137578966,10.784186936547387
+Puliti ULS 2,564,Betula pendula,Betula,59.670668846944494,10.784191190080367
+Puliti ULS 2,565,Betula pendula,Betula,59.67070025504243,10.784253350664228
+Puliti ULS 2,57,Betula pendula,Betula,59.66984655999914,10.784602644293166
+Puliti ULS 2,58,Betula pendula,Betula,59.66993377973276,10.784596045666516
+Puliti ULS 2,59,Betula pendula,Betula,59.66981195783863,10.784673607655332
+Puliti ULS 2,6,Betula pendula,Betula,59.66995622873064,10.78357041123433
+Puliti ULS 2,60,Betula pendula,Betula,59.66996139770404,10.78461023667631
+Puliti ULS 2,601,Betula pendula,Betula,59.67111019837406,10.784389275276256
+Puliti ULS 2,602,Betula pendula,Betula,59.67094960694014,10.784531868792593
+Puliti ULS 2,603,Betula pendula,Betula,59.67112481368707,10.784493116650156
+Puliti ULS 2,604,Betula pendula,Betula,59.671015393505584,10.78455976533865
+Puliti ULS 2,605,Betula pendula,Betula,59.6709965936196,10.784453924878663
+Puliti ULS 2,606,Betula pendula,Betula,59.6710124158349,10.78432367219347
+Puliti ULS 2,607,Betula pendula,Betula,59.67101159812885,10.78455019033016
+Puliti ULS 2,608,Betula pendula,Betula,59.67100642768032,10.784616305911188
+Puliti ULS 2,609,Betula pendula,Betula,59.67111831994104,10.784361915627498
+Puliti ULS 2,61,Betula pendula,Betula,59.66989454742687,10.784914439909508
+Puliti ULS 2,610,Betula pendula,Betula,59.671125787279415,10.78441936693256
+Puliti ULS 2,611,Betula pendula,Betula,59.67104917613738,10.784563006910988
+Puliti ULS 2,612,Betula pendula,Betula,59.67099261473262,10.784319864930795
+Puliti ULS 2,613,Betula pendula,Betula,59.671032932876535,10.784433301266397
+Puliti ULS 2,614,Betula pendula,Betula,59.67105125019102,10.784476020770398
+Puliti ULS 2,615,Betula pendula,Betula,59.670963781826565,10.784461415382545
+Puliti ULS 2,62,Betula pendula,Betula,59.66992145417717,10.784845884454192
+Puliti ULS 2,63,Betula pendula,Betula,59.66991089279348,10.784775103726265
+Puliti ULS 2,64,Betula pendula,Betula,59.66995050872438,10.784762025808991
+Puliti ULS 2,65,Betula pendula,Betula,59.6699613005491,10.784858489941625
+Puliti ULS 2,6583,Betula pendula,Betula,59.67035607699204,10.783113537734057
+Puliti ULS 2,66,Betula pendula,Betula,59.66997850384231,10.78486291425528
+Puliti ULS 2,660,Betula pendula,Betula,59.67021795594494,10.782130621655275
+Puliti ULS 2,661,Betula pendula,Betula,59.67018593266415,10.782254883578034
+Puliti ULS 2,662,Betula pendula,Betula,59.67016337686346,10.782246046572816
+Puliti ULS 2,663,Betula pendula,Betula,59.6701537635482,10.78226809762701
+Puliti ULS 2,664,Betula pendula,Betula,59.67018468002671,10.782102266942704
+Puliti ULS 2,665,Betula pendula,Betula,59.670218634019214,10.782101429720075
+Puliti ULS 2,667,Betula pendula,Betula,59.67021612143402,10.782155393423237
+Puliti ULS 2,668,Betula pendula,Betula,59.67030437641917,10.782211853574744
+Puliti ULS 2,669,Betula pendula,Betula,59.6702910082556,10.782272757278411
+Puliti ULS 2,67,Betula pendula,Betula,59.66998871570153,10.784775350435847
+Puliti ULS 2,670,Betula pendula,Betula,59.670312483899146,10.78234155340231
+Puliti ULS 2,671,Betula pendula,Betula,59.670309441540994,10.782366549934272
+Puliti ULS 2,68,Betula pendula,Betula,59.66992242162602,10.784921423764484
+Puliti ULS 2,69,Betula pendula,Betula,59.66995901583207,10.78493580929244
+Puliti ULS 2,7,Betula pendula,Betula,59.670060192569125,10.783347961667552
+Puliti ULS 2,70,Betula pendula,Betula,59.66994242009091,10.78490139764902
+Puliti ULS 2,700,Betula pendula,Betula,59.6704963698726,10.782520488259973
+Puliti ULS 2,701,Betula pendula,Betula,59.670514379330086,10.78238660452697
+Puliti ULS 2,702,Betula pendula,Betula,59.670533217917786,10.78247705659207
+Puliti ULS 2,703,Betula pendula,Betula,59.67054482607206,10.782526821147876
+Puliti ULS 2,704,Betula pendula,Betula,59.67059582705806,10.782364179449356
+Puliti ULS 2,705,Betula pendula,Betula,59.6705531141355,10.782353509597034
+Puliti ULS 2,706,Betula pendula,Betula,59.67056295980615,10.78243121219932
+Puliti ULS 2,707,Betula pendula,Betula,59.67058051430467,10.782288422952767
+Puliti ULS 2,708,Betula pendula,Betula,59.67053237633859,10.782291674959612
+Puliti ULS 2,709,Betula pendula,Betula,59.67055916419559,10.782609723089635
+Puliti ULS 2,71,Betula pendula,Betula,59.66992668950638,10.784721412984435
+Puliti ULS 2,710,Betula pendula,Betula,59.67055525287638,10.782513423038084
+Puliti ULS 2,711,Betula pendula,Betula,59.67058407126698,10.782526545126814
+Puliti ULS 2,712,Betula pendula,Betula,59.67055645191787,10.782450009152836
+Puliti ULS 2,713,Betula pendula,Betula,59.67053048488749,10.782255882314772
+Puliti ULS 2,714,Betula pendula,Betula,59.67041795081201,10.782499322938769
+Puliti ULS 2,715,Betula pendula,Betula,59.67042472034659,10.782467786059764
+Puliti ULS 2,716,Betula pendula,Betula,59.67045164604647,10.782424348358076
+Puliti ULS 2,717,Betula pendula,Betula,59.6706203016016,10.782427803100653
+Puliti ULS 2,718,Betula pendula,Betula,59.67060453088067,10.782353650590446
+Puliti ULS 2,719,Betula pendula,Betula,59.67062195261632,10.782468454829797
+Puliti ULS 2,72,Betula pendula,Betula,59.66993097985678,10.78466257787733
+Puliti ULS 2,720,Betula pendula,Betula,59.67061142250907,10.782524585511783
+Puliti ULS 2,721,Betula pendula,Betula,59.67048976460645,10.782529353849686
+Puliti ULS 2,722,Betula pendula,Betula,59.67050677919587,10.782446953691837
+Puliti ULS 2,73,Betula pendula,Betula,59.669968324067966,10.784674425402216
+Puliti ULS 2,74,Betula pendula,Betula,59.66983575870196,10.784780378622504
+Puliti ULS 2,75,Betula pendula,Betula,59.66979381832496,10.784791366260126
+Puliti ULS 2,76,Betula pendula,Betula,59.66979301006976,10.784723039065756
+Puliti ULS 2,77,Betula pendula,Betula,59.66981033668379,10.78486441566576
+Puliti ULS 2,78,Betula pendula,Betula,59.66985264182642,10.784917395162642
+Puliti ULS 2,79,Betula pendula,Betula,59.66984077168728,10.784947530669132
+Puliti ULS 2,8,Betula pendula,Betula,59.67007062427528,10.783433160144648
+Puliti ULS 2,80,Betula pendula,Betula,59.669865448985966,10.784969056673225
+Puliti ULS 2,81,Betula pendula,Betula,59.66981908934018,10.784931767582842
+Puliti ULS 2,82,Betula pendula,Betula,59.66996648272526,10.784649326243844
+Puliti ULS 2,83,Betula pendula,Betula,59.66996340372864,10.784887102508634
+Puliti ULS 2,84,Betula pendula,Betula,59.66994377540878,10.784860145287148
+Puliti ULS 2,85,Betula pendula,Betula,59.66998259612338,10.78474303560292
+Puliti ULS 2,86,Betula pendula,Betula,59.66985641690992,10.784776859672563
+Puliti ULS 2,87,Betula pendula,Betula,59.669895909586806,10.784927210581277
+Puliti ULS 2,88,Betula pendula,Betula,59.6700104583094,10.784797217491915
+Puliti ULS 2,89,Betula pendula,Betula,59.669925882310245,10.784781097630944
+Puliti ULS 2,9,Betula pendula,Betula,59.67011011511226,10.783487880108549
+Puliti ULS 2,90,Betula pendula,Betula,59.669848204089874,10.7849728656609
+Puliti ULS 2,91,Betula pendula,Betula,59.66981242192553,10.784753218507612
+Puliti ULS 2,92,Betula pendula,Betula,59.66989320962836,10.78491095886404
+Puliti ULS 2,93,Betula pendula,Betula,59.66985335596177,10.78482635655171
+Puliti ULS 2,94,Betula pendula,Betula,59.66990029780642,10.78475926816706
+Puliti ULS 2,95,Betula pendula,Betula,59.66992477255793,10.784555060971972
+Puliti ULS 2,96,Betula pendula,Betula,59.66997629643749,10.784739879495929
+Puliti ULS 2,16,Picea abies,Picea,59.66993826167976,10.7847681933599
+Puliti ULS 2,20,Picea abies,Picea,59.67029948631643,10.784878659511923
+Puliti ULS 2,21,Picea abies,Picea,59.67019560506156,10.784925661877333
+Puliti ULS 2,22,Picea abies,Picea,59.670183097258246,10.784906269317815
+Puliti ULS 2,25,Picea abies,Picea,59.670159843844615,10.784791660922332
+Puliti ULS 2,33,Picea abies,Picea,59.67017715842233,10.784982892357814
+Puliti ULS 2,5,Picea abies,Picea,59.66989795769592,10.784716441148095
+Puliti ULS 2,09,Pinus sylvestris,Pinus,59.67034316934944,10.787158401080935
+Puliti ULS 2,102,Pinus sylvestris,Pinus,59.671541512062994,10.782629762983754
+Puliti ULS 2,108,Pinus sylvestris,Pinus,59.67158441253186,10.782716526402448
+Puliti ULS 2,123,Pinus sylvestris,Pinus,59.671709616326126,10.78334062966602
+Puliti ULS 2,124,Pinus sylvestris,Pinus,59.67173591865553,10.783298917791171
+Puliti ULS 2,125,Pinus sylvestris,Pinus,59.67176724424624,10.783303547197397
+Puliti ULS 2,126,Pinus sylvestris,Pinus,59.67179893959423,10.78330409899398
+Puliti ULS 2,127,Pinus sylvestris,Pinus,59.671839283862674,10.78331479222296
+Puliti ULS 2,128,Pinus sylvestris,Pinus,59.67170158443617,10.783443371938857
+Puliti ULS 2,129,Pinus sylvestris,Pinus,59.67173332358824,10.78347880530555
+Puliti ULS 2,130,Pinus sylvestris,Pinus,59.67176757963732,10.783473448542155
+Puliti ULS 2,140,Pinus sylvestris,Pinus,59.67181477069328,10.78349554029679
+Puliti ULS 2,141,Pinus sylvestris,Pinus,59.67182420897232,10.783234122807016
+Puliti ULS 2,142,Pinus sylvestris,Pinus,59.67168737168369,10.78320683457514
+Puliti ULS 2,143,Pinus sylvestris,Pinus,59.67178356762545,10.783548451314608
+Puliti ULS 2,144,Pinus sylvestris,Pinus,59.67165712130421,10.783251936442142
+Puliti ULS 2,145,Pinus sylvestris,Pinus,59.67166481036338,10.78337634082711
+Puliti ULS 2,146,Pinus sylvestris,Pinus,59.671736263328185,10.783407474854798
+Puliti ULS 2,147,Pinus sylvestris,Pinus,59.67174667051895,10.783246500830488
+Puliti ULS 2,148,Pinus sylvestris,Pinus,59.67071216390149,10.782932910461078
+Puliti ULS 2,149,Pinus sylvestris,Pinus,59.670681889795695,10.782917719046662
+Puliti ULS 2,150,Pinus sylvestris,Pinus,59.67073898620148,10.783067129544342
+Puliti ULS 2,151,Pinus sylvestris,Pinus,59.67073898620148,10.783067129544342
+Puliti ULS 2,152,Pinus sylvestris,Pinus,59.67074850685521,10.782977990154016
+Puliti ULS 2,153,Pinus sylvestris,Pinus,59.67077515652973,10.783071766401886
+Puliti ULS 2,154,Pinus sylvestris,Pinus,59.6708142226669,10.782967197509372
+Puliti ULS 2,155,Pinus sylvestris,Pinus,59.67080065228334,10.783025823005527
+Puliti ULS 2,156,Pinus sylvestris,Pinus,59.67079488313224,10.782902992185168
+Puliti ULS 2,157,Pinus sylvestris,Pinus,59.67082114024548,10.782833274976271
+Puliti ULS 2,158,Pinus sylvestris,Pinus,59.67072737813377,10.78283248190139
+Puliti ULS 2,159,Pinus sylvestris,Pinus,59.67079153670296,10.782831906017378
+Puliti ULS 2,160,Pinus sylvestris,Pinus,59.670836415835005,10.782781933022942
+Puliti ULS 2,161,Pinus sylvestris,Pinus,59.67072505991675,10.782757380714052
+Puliti ULS 2,162,Pinus sylvestris,Pinus,59.67085450007821,10.78292828801761
+Puliti ULS 2,163,Pinus sylvestris,Pinus,59.67073620506914,10.783640547834116
+Puliti ULS 2,164,Pinus sylvestris,Pinus,59.67066718084655,10.783723782907266
+Puliti ULS 2,165,Pinus sylvestris,Pinus,59.67063570059072,10.783799726680622
+Puliti ULS 2,166,Pinus sylvestris,Pinus,59.67060964293364,10.783728943278154
+Puliti ULS 2,167,Pinus sylvestris,Pinus,59.67060375950599,10.783564939399673
+Puliti ULS 2,168,Pinus sylvestris,Pinus,59.67075843165623,10.783727439845748
+Puliti ULS 2,169,Pinus sylvestris,Pinus,59.67066898512184,10.784235768042414
+Puliti ULS 2,170,Pinus sylvestris,Pinus,59.67070096807812,10.784262596152812
+Puliti ULS 2,171,Pinus sylvestris,Pinus,59.670622297602726,10.784233044701365
+Puliti ULS 2,172,Pinus sylvestris,Pinus,59.670610574154274,10.784330287263105
+Puliti ULS 2,173,Pinus sylvestris,Pinus,59.67057411662395,10.784226328592585
+Puliti ULS 2,174,Pinus sylvestris,Pinus,59.67058733618773,10.784378773748548
+Puliti ULS 2,175,Pinus sylvestris,Pinus,59.67054277645057,10.784376273182632
+Puliti ULS 2,176,Pinus sylvestris,Pinus,59.670652454002834,10.78431703848218
+Puliti ULS 2,177,Pinus sylvestris,Pinus,59.67063989362241,10.78428832554078
+Puliti ULS 2,178,Pinus sylvestris,Pinus,59.67063257189312,10.78451747665018
+Puliti ULS 2,179,Pinus sylvestris,Pinus,59.67060223456419,10.78452815588022
+Puliti ULS 2,180,Pinus sylvestris,Pinus,59.670686070813325,10.784532211575645
+Puliti ULS 2,181,Pinus sylvestris,Pinus,59.67073081971439,10.78435774955087
+Puliti ULS 2,182,Pinus sylvestris,Pinus,59.67072637883008,10.784427093479048
+Puliti ULS 2,183,Pinus sylvestris,Pinus,59.67058904952868,10.78418537248525
+Puliti ULS 2,184,Pinus sylvestris,Pinus,59.67045206438448,10.786998875855842
+Puliti ULS 2,185,Pinus sylvestris,Pinus,59.67041383242148,10.787012831161167
+Puliti ULS 2,186,Pinus sylvestris,Pinus,59.670382590941294,10.78707856028428
+Puliti ULS 2,187,Pinus sylvestris,Pinus,59.67045107560131,10.787165950640032
+Puliti ULS 2,188,Pinus sylvestris,Pinus,59.67040102796059,10.787145650237193
+Puliti ULS 2,189,Pinus sylvestris,Pinus,59.67047039080837,10.78709502629994
+Puliti ULS 2,190,Pinus sylvestris,Pinus,59.67041834855405,10.787195704220805
+Puliti ULS 2,191,Pinus sylvestris,Pinus,59.67039458068804,10.78718836947653
+Puliti ULS 2,192,Pinus sylvestris,Pinus,59.67044418010268,10.787206536279385
+Puliti ULS 2,193,Pinus sylvestris,Pinus,59.6704086181677,10.787262106175076
+Puliti ULS 2,194,Pinus sylvestris,Pinus,59.67044193371476,10.787264996021651
+Puliti ULS 2,195,Pinus sylvestris,Pinus,59.67047135210585,10.787254041671448
+Puliti ULS 2,196,Pinus sylvestris,Pinus,59.67036244900586,10.78721587803683
+Puliti ULS 2,197,Pinus sylvestris,Pinus,59.67050942292333,10.787067118613294
+Puliti ULS 2,198,Pinus sylvestris,Pinus,59.67048888678936,10.787061157581547
+Puliti ULS 2,199,Pinus sylvestris,Pinus,59.67048843085768,10.787185884420865
+Puliti ULS 2,200,Pinus sylvestris,Pinus,59.67052256168076,10.787145375001794
+Puliti ULS 2,203,Pinus sylvestris,Pinus,59.67038470237463,10.786914706903689
+Puliti ULS 2,205,Pinus sylvestris,Pinus,59.67042239944861,10.786909893464683
+Puliti ULS 2,232,Pinus sylvestris,Pinus,59.67186691874737,10.785946097865732
+Puliti ULS 2,240,Pinus sylvestris,Pinus,59.67187222050539,10.786111593266074
+Puliti ULS 2,241,Pinus sylvestris,Pinus,59.671841279244624,10.786123296622105
+Puliti ULS 2,242,Pinus sylvestris,Pinus,59.67187118841457,10.786214206211133
+Puliti ULS 2,244,Pinus sylvestris,Pinus,59.67182899220437,10.786038213190938
+Puliti ULS 2,246,Pinus sylvestris,Pinus,59.67184155970758,10.786057685308815
+Puliti ULS 2,251,Pinus sylvestris,Pinus,59.671910017308754,10.786203116502689
+Puliti ULS 2,252,Pinus sylvestris,Pinus,59.671840450025805,10.786251154509229
+Puliti ULS 2,253,Pinus sylvestris,Pinus,59.67184391626434,10.786230309632684
+Puliti ULS 2,254,Pinus sylvestris,Pinus,59.67186830813007,10.786140479124615
+Puliti ULS 2,49,Pinus sylvestris,Pinus,59.67111674715941,10.786467039258254

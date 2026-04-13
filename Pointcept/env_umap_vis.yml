@@ -1,0 +1,57 @@
+# Conda environment for UMAP feature visualization of the PTv3 tree genus classifier.
+#
+# This is a lighter version of environment.yml — flash-attention, CLIP, PEFT,
+# ocnn, and pointgroup_ops are omitted since they are not needed for inference.
+#
+# After conda env create, install the custom pointops extension manually:
+#   conda activate umap_vis_ptv3
+#   cd /net/pr2/projects/plgrid/plggtreeseg/context_classification_ptv3/Pointcept
+#   pip install ./libs/pointops
+#
+name: umap_vis_ptv3
+channels:
+  - pytorch
+  - nvidia/label/cuda-12.4.1
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - cuda
+  - conda-forge::cudnn
+  - gcc=13.2
+  - gxx=13.2
+  - pytorch=2.5.0
+  - torchvision=0.20.0
+  - torchaudio=2.5.0
+  - pytorch-cuda=12.4
+  - ninja
+  - h5py
+  - pyyaml
+  - tensorboard
+  - tensorboardx
+  - wandb
+  - yapf
+  - addict
+  - einops
+  - scipy
+  - plyfile
+  - termcolor
+  - timm
+  - ftfy
+  - regex
+  - tqdm
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - open3d
+  - pip:
+    - --find-links https://data.pyg.org/whl/torch-2.5.0+cu124.html
+    - torch-cluster
+    - torch-scatter
+    - torch-sparse
+    - torch-geometric
+    - spconv-cu124
+    - peft
+    - umap-learn

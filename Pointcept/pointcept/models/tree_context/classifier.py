@@ -530,6 +530,133 @@ class MultiXAttnCtxCls(nn.Module):
         return result
 
 
+@MODELS.register_module("MultiCatCtxCls-v1m3")
+class MultiCatCtxClsAuxModalityDrop(nn.Module):
+    """PTv3 + multiple context encoders, concat fusion + aux heads + modality dropout.
+
+    Identical to MultiCatCtxCls-v1m2, with one addition: during training each
+    sample independently drops exactly one context modality with probability
+    `modality_dropout_p`.  The dropped embedding is replaced with zeros before
+    the main fusion head, but aux heads always receive the full embeddings so
+    every encoder gets gradient regardless of the dropout state.
+
+    With modality_dropout_p=0.25 and two sources the distribution per sample is:
+        75%  — both sources active
+        12.5% — ctx_ae zeroed, ctx_sinr active
+        12.5% — ctx_ae active, ctx_sinr zeroed
+
+    At eval time both sources are always fully active.
+    """
+
+    def __init__(
+        self,
+        backbone=None,
+        context_encoders=None,
+        context_keys=None,
+        criteria=None,
+        num_classes=13,
+        backbone_embed_dim=512,
+        context_embed_dim=256,
+        aux_loss_weight=0.25,
+        modality_dropout_p=0.25,
+    ):
+        super().__init__()
+        if context_encoders is None:
+            context_encoders = []
+        if context_keys is None:
+            context_keys = []
+        assert len(context_encoders) == len(context_keys), \
+            "context_encoders and context_keys must have the same length"
+
+        self.backbone = build_model(backbone)
+        self.context_encoders = nn.ModuleList(
+            [build_model(cfg) for cfg in context_encoders]
+        )
+        self.context_keys = context_keys
+        self.criteria = build_criteria(criteria)
+        self.aux_loss_weight = aux_loss_weight
+        self.modality_dropout_p = modality_dropout_p
+        self.n_ctx = len(context_encoders)
+
+        # Main fusion head
+        fused_dim = backbone_embed_dim + self.n_ctx * context_embed_dim
+        self.cls_head = nn.Sequential(
+            nn.Linear(fused_dim, 512),
+            nn.LayerNorm(512),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5),
+            nn.Linear(512, num_classes),
+        )
+
+        # Auxiliary heads: one per branch (lidar + each context source)
+        self.aux_head_lidar = nn.Linear(backbone_embed_dim, num_classes)
+        self.aux_heads_ctx = nn.ModuleList(
+            [nn.Linear(context_embed_dim, num_classes) for _ in context_encoders]
+        )
+        self.aux_criterion = nn.CrossEntropyLoss(ignore_index=-1)
+
+    def forward(self, input_dict):
+        point = Point(input_dict)
+        point = self.backbone(point)
+
+        tree_feat = torch_scatter.segment_csr(
+            src=point.feat,
+            indptr=nn.functional.pad(point.offset, (1, 0)),
+            reduce="mean",
+        )
+
+        # Encode all sources (full embeddings, always)
+        ctx_feats = [
+            enc(input_dict[key])
+            for enc, key in zip(self.context_encoders, self.context_keys)
+        ]  # list of (B, context_embed_dim)
+
+        if "category" not in input_dict:
+            fused = torch.cat([tree_feat] + ctx_feats, dim=-1)
+            return dict(cls_logits=self.cls_head(fused))
+
+        labels = input_dict["category"]
+
+        # Aux losses on full (pre-dropout) embeddings
+        aux_logits_lidar = self.aux_head_lidar(tree_feat)
+        aux_logits_ctx = [head(feat) for head, feat in zip(self.aux_heads_ctx, ctx_feats)]
+        loss_aux_lidar = self.aux_criterion(aux_logits_lidar, labels)
+        loss_aux_ctx = [self.aux_criterion(lgts, labels) for lgts in aux_logits_ctx]
+        loss_aux_total = loss_aux_lidar + sum(loss_aux_ctx)
+
+        # Modality dropout — training only, per sample
+        if self.training and self.modality_dropout_p > 0:
+            B = tree_feat.shape[0]
+            # Which samples drop a modality
+            drop_sample = torch.rand(B, device=tree_feat.device) < self.modality_dropout_p
+            # Which modality gets dropped (uniform over n_ctx)
+            which_drop = torch.randint(0, self.n_ctx, (B,), device=tree_feat.device)
+            ctx_feats_fused = [f.clone() for f in ctx_feats]
+            for src_idx in range(self.n_ctx):
+                mask = drop_sample & (which_drop == src_idx)  # (B,)
+                if mask.any():
+                    ctx_feats_fused[src_idx][mask] = 0.0
+        else:
+            ctx_feats_fused = ctx_feats
+
+        fused = torch.cat([tree_feat] + ctx_feats_fused, dim=-1)
+        cls_logits = self.cls_head(fused)
+        loss_main = self.criteria(cls_logits, labels)
+        loss = loss_main + self.aux_loss_weight * loss_aux_total
+
+        if self.training:
+            result = dict(loss=loss, loss_main=loss_main, loss_aux_lidar=loss_aux_lidar)
+            for i, key in enumerate(self.context_keys):
+                result[f"loss_aux_{key}"] = loss_aux_ctx[i]
+            return result
+
+        result = dict(loss=loss, loss_main=loss_main, cls_logits=cls_logits,
+                      aux_logits_lidar=aux_logits_lidar)
+        for key, lgts in zip(self.context_keys, aux_logits_ctx):
+            result[f"aux_logits_{key}"] = lgts
+        return result
+
+
 @MODELS.register_module("MidFusionCtxCls-v1m1")
 class MidFusionCtxCls(nn.Module):
     """PTv3 + single context encoder, mid-level feature injection (concat).

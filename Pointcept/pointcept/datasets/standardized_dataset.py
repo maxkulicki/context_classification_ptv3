@@ -60,6 +60,12 @@ _SOURCE_META = {
         "key": "ctx_ae_pool",
         "col_filter": lambda c: False,
     },
+    # Pool of K precomputed spatially-shifted SINR embeddings per tree (shape K×256).
+    # Only loaded from .pth files (never from CSV), so col_filter is unused.
+    "sinr_pool": {
+        "key": "ctx_sinr_pool",
+        "col_filter": lambda c: False,
+    },
 }
 
 
