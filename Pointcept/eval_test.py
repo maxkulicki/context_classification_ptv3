@@ -208,9 +208,10 @@ def main():
     f1_cls   = 2 * prec_cls * rec_cls / (prec_cls + rec_cls + 1e-10)
 
     all_acc     = float(tp.sum() / (confusion.sum() + 1e-10))
-    m_acc       = float(acc_cls.mean())
-    macro_f1    = float(f1_cls.mean())
-    weighted_f1 = float(np.average(f1_cls, weights=support))
+    present     = support > 0
+    m_acc       = float(acc_cls[present].mean())
+    macro_f1    = float(f1_cls[present].mean())
+    weighted_f1 = float(np.average(f1_cls[present], weights=support[present]))
 
     per_genus = {
         name: {

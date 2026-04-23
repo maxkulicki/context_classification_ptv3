@@ -1,0 +1,58 @@
+% All metrics are last-epoch values pulled from WandB (makskulicki/pointcept, group snapshot_10class_dual_val).
+% macroF1 = unweighted mean F1 over present genera (zero-support classes excluded).
+% mAcc = mean per-class accuracy; allAcc = overall accuracy.
+% AE aug: vMF = CtxVMFAugment (kappa=100); sp = spatial pool (500m--2km shifts);
+%         tmp = temporal pool (random years); comb = combined spatial+temporal pool + vMF.
+% SINR aug: Gauss = CtxGaussianNoise (sigma=0.1, p_drop=0.2); sp = spatial pool.
+% SINR checkpoint: distilled = distilled_from_env (default); hc100/hc1000 = hard_cap_num_per_class_100/1000.
+% Aux: auxiliary branch classification head loss weight (-- = no aux heads).
+% Test F1: computed from predictions.csv, skipping zero-support genera (Abies, Carpinus absent from test set).
+
+\begin{table}[t]
+\centering
+\caption{%
+  Ablation of context sources and augmentation strategies for PTv3 tree species classification (120 epochs, 10 genera).
+  Val metrics reported at the last training epoch (pulled from WandB).
+  Test macro F1 evaluated on held-out test set; absent genera excluded from macro average.
+  \emph{macroF1} = unweighted mean F1 over present genera;
+  \emph{mAcc} = mean per-class accuracy; \emph{allAcc} = overall accuracy.
+  Bold: best per column.
+}
+\label{tab:ablation}
+\setlength{\tabcolsep}{4pt}
+\small
+\begin{tabular}{clccccr rrr rrr r}
+\toprule
+ & & & & & & & \multicolumn{3}{c}{\textbf{val-id}} & \multicolumn{3}{c}{\textbf{val-ood}} & \textbf{test} \\
+\cmidrule(lr){8-10}\cmidrule(lr){11-13}\cmidrule(lr){14-14}
+\# & Model & AE & SINR & AE aug & SINR aug & Aux & F1 & mAcc & allAcc & F1 & mAcc & allAcc & F1 \\
+\midrule
+\multicolumn{14}{l}{\textit{No context (baseline)}} \\
+1  & Baseline                    & --         & --         & --   & --    & --   & .673 & .715 & .853 & .490 & .515 & .804 & .384 \\
+\midrule
+\multicolumn{14}{l}{\textit{SINR context only}} \\
+2  & SINR (distilled) + Gauss    & --         & \checkmark & --   & Gauss & --   & .828 & .843 & .916 & .702 & .735 & .896 & .298 \\
+3  & SINR (hc100) + Gauss        & --         & \checkmark & --   & Gauss & --   & .750 & .783 & .881 & .662 & .685 & .877 & .253 \\
+4  & SINR (hc1000) + Gauss       & --         & \checkmark & --   & Gauss & --   & .790 & .794 & .905 & .706 & .707 & .892 & .285 \\
+5  & SINR (distilled) + sp pool  & --         & \checkmark & --   & sp    & --   & .767 & .765 & .892 & .605 & .631 & .856 & .337 \\
+\midrule
+\multicolumn{14}{l}{\textit{AE context only}} \\
+6  & AE + spatial pool           & \checkmark & --         & sp   & --    & --   & .795 & .808 & .907 & .682 & .701 & .880 & .350 \\
+7  & AE + temporal pool          & \checkmark & --         & tmp  & --    & --   & .855 & .851 & .914 & .601 & .583 & .848 & .344 \\
+8  & AE + combined pool + vMF    & \checkmark & --         & comb & --    & --   & .810 & .815 & .908 & .710 & .719 & .890 & .380 \\
+\midrule
+\multicolumn{14}{l}{\textit{AE + SINR, aux loss weight ablation}} \\
+9  & AE+SINR, no aux             & \checkmark & \checkmark & vMF  & --    & --   & .861 & .876 & .929 & .663 & .730 & .875 & .279 \\
+10 & AE+SINR, aux=0.1            & \checkmark & \checkmark & vMF  & --    & 0.1  & .857 & .874 & .924 & .686 & .729 & .890 & .307 \\
+11 & AE+SINR, aux=0.25 + mdrop   & \checkmark & \checkmark & vMF  & --    & 0.25 & .872 & .867 & .932 & .750 & .766 & .913 & .286 \\
+12 & AE+SINR, aux=0.5            & \checkmark & \checkmark & vMF  & --    & 0.5  & .865 & .875 & .935 & \textbf{.770} & \textbf{.780} & \textbf{.921} & .297 \\
+13 & AE+SINR, aux=1.0            & \checkmark & \checkmark & vMF  & --    & 1.0  & .860 & .863 & .933 & .742 & .748 & .912 & .310 \\
+\midrule
+\multicolumn{14}{l}{\textit{AE + SINR, context augmentation ablation (aux=0.5 unless noted)}} \\
+14 & + SINR Gauss, no aux        & \checkmark & \checkmark & vMF  & Gauss & --   & .874 & .898 & .927 & .634 & .670 & .869 & .283 \\
+15 & + SINR Gauss, aux=0.5       & \checkmark & \checkmark & vMF  & Gauss & 0.5  & .866 & .875 & .931 & .751 & .770 & .919 & .339 \\
+16 & + combined AE aug, aux=0.5  & \checkmark & \checkmark & comb & --    & 0.5  & .843 & .846 & .926 & .685 & .693 & .905 & .317 \\
+17 & No context aug, aux=0.5     & \checkmark & \checkmark & --   & --    & 0.5  & \textbf{.905} & \textbf{.900} & \textbf{.942} & .742 & .744 & .908 & \textbf{.430} \\
+\bottomrule
+\end{tabular}
+\end{table}

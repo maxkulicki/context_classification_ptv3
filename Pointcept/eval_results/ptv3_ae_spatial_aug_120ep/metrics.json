@@ -1,0 +1,106 @@
+{
+  "checkpoint": "/net/pr2/projects/plgrid/plggtreeseg/context_classification_ptv3/Pointcept/exp/snapshot_10class_dual_val/ptv3_ctx_ae_spatial_aug_4gpu_120ep/model/model_best_ood.pth",
+  "config": "/net/pr2/projects/plgrid/plggtreeseg/context_classification_ptv3/Pointcept/configs/standardized_dataset/cls-ptv3-ctx-ae-spatial-aug-10class-dual-val-4gpu.py",
+  "split": "test",
+  "n_trees": 2331,
+  "overall": {
+    "all_acc": 0.5392535392535162,
+    "m_acc": 0.5073682190805732,
+    "macro_f1": 0.3503674012334845,
+    "weighted_f1": 0.5174551381363547
+  },
+  "per_genus": {
+    "Abies": {
+      "acc": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Acer": {
+      "acc": 0.17953321364449198,
+      "precision": 0.671140939596865,
+      "recall": 0.17953321364449198,
+      "f1": 0.2832861189467883,
+      "support": 557
+    },
+    "Alnus": {
+      "acc": 0.499999999975,
+      "precision": 0.01785714285711097,
+      "recall": 0.499999999975,
+      "f1": 0.03448275861391201,
+      "support": 2
+    },
+    "Betula": {
+      "acc": 0.889610389609812,
+      "precision": 0.23661485319512318,
+      "recall": 0.889610389609812,
+      "f1": 0.3738062755465159,
+      "support": 154
+    },
+    "Carpinus": {
+      "acc": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    },
+    "Fagus": {
+      "acc": 0.49999999999375,
+      "precision": 0.05970149253722432,
+      "recall": 0.49999999999375,
+      "f1": 0.10666666664732442,
+      "support": 8
+    },
+    "Larix": {
+      "acc": 0.3414634146333135,
+      "precision": 0.7777777777734569,
+      "recall": 0.3414634146333135,
+      "f1": 0.47457627114243034,
+      "support": 41
+    },
+    "Picea": {
+      "acc": 0.09111111111109087,
+      "precision": 0.74545454545319,
+      "recall": 0.09111111111109087,
+      "f1": 0.16237623760428824,
+      "support": 450
+    },
+    "Pinus": {
+      "acc": 0.9578686493183447,
+      "precision": 0.9438339438338286,
+      "recall": 0.9578686493183447,
+      "f1": 0.9507995079449657,
+      "support": 807
+    },
+    "Quercus": {
+      "acc": 0.5993589743587823,
+      "precision": 0.319658119658065,
+      "recall": 0.5993589743587823,
+      "f1": 0.416945373421651,
+      "support": 312
+    }
+  },
+  "per_dataset": {
+    "TreeScanPL": {
+      "acc": 0.8718159408381265,
+      "correct": 1061,
+      "total": 1217
+    },
+    "Weiser": {
+      "acc": 0.30952380952380953,
+      "correct": 13,
+      "total": 42
+    },
+    "NIBIO": {
+      "acc": 0.13721413721413722,
+      "correct": 66,
+      "total": 481
+    },
+    "WythamWoods": {
+      "acc": 0.19796954314720813,
+      "correct": 117,
+      "total": 591
+    }
+  }
+}

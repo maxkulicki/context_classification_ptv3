@@ -1,0 +1,121 @@
+{
+  "checkpoint": "/net/pr2/projects/plgrid/plggtreeseg/context_classification_ptv3/Pointcept/exp/snapshot_10class_dual_val/ptv3_ctx_sinr_gauss_4gpu_120ep/model/model_best_ood.pth",
+  "config": "/net/pr2/projects/plgrid/plggtreeseg/context_classification_ptv3/Pointcept/exp/snapshot_10class_dual_val/ptv3_ctx_sinr_gauss_4gpu_120ep/config.py",
+  "split": "val_id",
+  "n_trees": 1319,
+  "overall": {
+    "all_acc": 0.9120545868081188,
+    "m_acc": 0.8326528529404664,
+    "macro_f1": 0.8231244723532246,
+    "weighted_f1": 0.9143740704398583
+  },
+  "per_genus": {
+    "Abies": {
+      "acc": 0.9999999999986111,
+      "precision": 0.899999999998875,
+      "recall": 0.9999999999986111,
+      "f1": 0.9473684210015235,
+      "support": 72
+    },
+    "Acer": {
+      "acc": 0.6153846153798816,
+      "precision": 0.6153846153798816,
+      "recall": 0.6153846153798816,
+      "f1": 0.6153846153298816,
+      "support": 13
+    },
+    "Alnus": {
+      "acc": 0.7999999999946666,
+      "precision": 0.9230769230698225,
+      "recall": 0.7999999999946666,
+      "f1": 0.8571428570869898,
+      "support": 15
+    },
+    "Betula": {
+      "acc": 0.9622641509424884,
+      "precision": 0.6623376623372323,
+      "recall": 0.9622641509424884,
+      "f1": 0.7846153845664853,
+      "support": 106
+    },
+    "Carpinus": {
+      "acc": 0.599999999997,
+      "precision": 0.7999999999946666,
+      "recall": 0.599999999997,
+      "f1": 0.6857142856613878,
+      "support": 20
+    },
+    "Fagus": {
+      "acc": 0.9499999999988125,
+      "precision": 0.8539325842687034,
+      "recall": 0.9499999999988125,
+      "f1": 0.8994082839727461,
+      "support": 80
+    },
+    "Larix": {
+      "acc": 0.8333333333263889,
+      "precision": 0.7142857142806123,
+      "recall": 0.8333333333263889,
+      "f1": 0.769230769175148,
+      "support": 12
+    },
+    "Picea": {
+      "acc": 0.8881578947362578,
+      "precision": 0.8881578947362578,
+      "recall": 0.8881578947362578,
+      "f1": 0.8881578946862578,
+      "support": 152
+    },
+    "Pinus": {
+      "acc": 0.9273885350317289,
+      "precision": 0.9877883310717791,
+      "recall": 0.9273885350317289,
+      "f1": 0.9566360052061657,
+      "support": 785
+    },
+    "Quercus": {
+      "acc": 0.7499999999988282,
+      "precision": 0.9230769230751479,
+      "recall": 0.7499999999988282,
+      "f1": 0.82758620684566,
+      "support": 64
+    }
+  },
+  "per_dataset": {
+    "TreeScanPL": {
+      "acc": 0.9352331606217616,
+      "correct": 722,
+      "total": 772
+    },
+    "Weiser": {
+      "acc": 0.6363636363636364,
+      "correct": 21,
+      "total": 33
+    },
+    "CULS": {
+      "acc": 1.0,
+      "correct": 6,
+      "total": 6
+    },
+    "Frey2022": {
+      "acc": 0.875,
+      "correct": 49,
+      "total": 56
+    },
+    "Junttila": {
+      "acc": 1.0,
+      "correct": 6,
+      "total": 6
+    },
+    "PulitiULS2": {
+      "acc": 0.6134453781512605,
+      "correct": 73,
+      "total": 119
+    },
+    "Saarinen2021": {
+      "acc": 0.9969418960244648,
+      "correct": 326,
+      "total": 327
+    }
+  }
+}

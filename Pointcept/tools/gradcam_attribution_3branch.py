@@ -160,6 +160,8 @@ def main():
     parser.add_argument("--checkpoint", default=DEFAULT_CHECKPOINT)
     parser.add_argument("--out-dir", default=DEFAULT_OUT_DIR,
                         help="Directory to write CSV files")
+    parser.add_argument("--prefix", default=None,
+                        help="Output filename prefix (default: derived from config stem)")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -168,7 +170,7 @@ def main():
     backbone_embed_dim = cfg.model.get("backbone_embed_dim", 512)
     context_embed_dim  = cfg.model.get("context_embed_dim", 256)
 
-    config_stem = os.path.splitext(os.path.basename(args.config))[0]
+    config_stem = args.prefix if args.prefix else os.path.splitext(os.path.basename(args.config))[0]
     os.makedirs(args.out_dir, exist_ok=True)
 
     print(f"Config:     {args.config}")
@@ -179,11 +181,12 @@ def main():
 
     model = load_model(cfg, args.checkpoint, device)
 
-    # train split uses cfg.data.train; val splits share cfg.data.val with split override
+    # train split uses cfg.data.train; val/test splits share cfg.data.val with split override
     splits = [
         ("train",   cfg.data.train.copy()),
         ("val_id",  {**cfg.data.val.copy(), "split": "val_id"}),
         ("val_ood", {**cfg.data.val.copy(), "split": "val_ood"}),
+        ("test",    {**cfg.data.val.copy(), "split": "test"}),
     ]
 
     for split, split_cfg in splits:

@@ -28,8 +28,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT_DIR = os.path.join(HERE, "plots")
 os.makedirs(OUT_DIR, exist_ok=True)
 
-SPLITS = ["train", "val_id", "val_ood"]
-SPLIT_LABELS = {"train": "Train", "val_id": "Val (ID)", "val_ood": "Val (OOD)"}
+SPLITS = ["train", "val_id", "val_ood", "test"]
+SPLIT_LABELS = {"train": "Train", "val_id": "Val (ID)", "val_ood": "Val (OOD)", "test": "Test"}
 
 BRANCH_COLS = ["ptv3_prop", "ae_prop", "sinr_prop"]
 BRANCH_LABELS = ["PTv3", "AE context", "SINR context"]
@@ -61,7 +61,7 @@ def plot_mean_by_split(df):
     means = (
         df.groupby("split")[BRANCH_COLS].mean().reindex(SPLITS)
     )
-    fig, ax = plt.subplots(figsize=(5, 4))
+    fig, ax = plt.subplots(figsize=(6, 4))
     bottom = np.zeros(len(SPLITS))
     x = np.arange(len(SPLITS))
     for col, label, color in zip(BRANCH_COLS, BRANCH_LABELS, BRANCH_COLORS):
@@ -77,12 +77,12 @@ def plot_mean_by_split(df):
     ax.set_xticklabels([SPLIT_LABELS[s] for s in SPLITS])
     ax.set_ylabel("Mean attribution proportion")
     ax.set_ylim(0, 1.05)
-    ax.legend(loc="upper right", fontsize=8)
+    ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1), borderaxespad=0, fontsize=8)
     ax.set_title("Mean branch attribution by split")
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT_DIR, "01_mean_branch_by_split.png"), dpi=DPI)
+    fig.savefig(os.path.join(OUT_DIR, "01_mean_branch_by_split_with_test.png"), dpi=DPI, bbox_inches="tight")
     plt.close(fig)
-    print("Saved 01_mean_branch_by_split.png")
+    print("Saved 01_mean_branch_by_split_with_test.png")
 
 
 # ── plot 2: heatmap per species (one column per branch x split) ───────────────
@@ -157,7 +157,7 @@ def plot_distributions(df):
     long["branch"] = long["branch"].map(dict(zip(BRANCH_COLS, BRANCH_LABELS)))
     long["split_label"] = long["split"].map(SPLIT_LABELS)
 
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4), sharey=True)
+    fig, axes = plt.subplots(1, len(SPLITS), figsize=(4 * len(SPLITS), 4), sharey=True)
     for ax, split in zip(axes, SPLITS):
         sub = long[long["split"] == split]
         sns.violinplot(
@@ -190,7 +190,7 @@ def plot_correct_vs_wrong(df):
     long["outcome"] = long["correct"].map({1: "Correct", 0: "Wrong"})
     long["split_label"] = long["split"].map(SPLIT_LABELS)
 
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
+    fig, axes = plt.subplots(1, len(SPLITS), figsize=(4.25 * len(SPLITS), 4), sharey=True)
     palette = {"Correct": "#2ca02c", "Wrong": "#d62728"}
 
     for ax, split in zip(axes, SPLITS):
@@ -220,7 +220,7 @@ def plot_correct_vs_wrong(df):
 
 # ── plot 6: confidence vs ptv3_prop scatter ───────────────────────────────────
 def plot_confidence_vs_ptv3(df):
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True, sharex=True)
+    fig, axes = plt.subplots(1, len(SPLITS), figsize=(4.25 * len(SPLITS), 4), sharey=True, sharex=True)
     palette = {1: "#2ca02c", 0: "#d62728"}
     labels = {1: "Correct", 0: "Wrong"}
 
