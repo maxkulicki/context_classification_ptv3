@@ -15,8 +15,11 @@ Pointcept/wandb/
 Pointcept/pointcept/ops/build/
 
 # Logs & outputs
-*log*
+*.log
+old_logs/
 Pointcept/outputs/
+Pointcept/eval_results/
+Pointcept/umap_vis/
 
 # IDE
 .vscode/
